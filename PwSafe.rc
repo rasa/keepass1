@@ -1,0 +1,1200 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\PwSafe.rc2""  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen\r\n"
+    "#include ""afxres.rc""         // Standardkomponenten\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\PwSafe.ico"
+IDI_KEY                 ICON    DISCARDABLE     "res\\key.ico"
+IDI_SEARCH              ICON    DISCARDABLE     "res\\search.ico"
+IDI_ICONPIC             ICON    DISCARDABLE     "res\\iconpic.ico"
+IDI_WORLD               ICON    DISCARDABLE     "res\\world.ico"
+IDI_OPTIONS             ICON    DISCARDABLE     "res\\options.ico"
+IDI_LOCKED              ICON    DISCARDABLE     "res\\locked.ico"
+IDI_UNLOCKED            ICON    DISCARDABLE     "res\\unlocked.ico"
+IDI_KEYHOLE             ICON    DISCARDABLE     "res\\keyhole.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 268, 86
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "About KeePass..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Copyright (c) 2003/2004 Dominik Reichl.",IDC_STATIC,7,7,
+                    254,8
+    DEFPUSHBUTTON   "&OK",IDOK,209,65,52,14,WS_GROUP
+    LTEXT           "Database Format Version:",IDC_STATIC_DBFORMATTEXT,7,33,
+                    97,8
+    LTEXT           "<DYN_VERSION>",IDC_STATIC_DBFORMAT,106,33,155,8
+    PUSHBUTTON      "Open &Help File",IDC_README_BTN,7,65,94,14
+    PUSHBUTTON      "Open &License File",IDC_LICENSE_BTN,104,65,90,14
+    LTEXT           "KeePass is OSI Certified Open Source Software.",
+                    IDC_STATIC,7,20,254,8
+    LTEXT           "Visit KeePass Homepage",IDC_HLINK_HOMEPAGE,7,47,254,8
+END
+
+IDD_PWSAFE_DIALOG DIALOGEX 0, 0, 448, 228
+STYLE DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_MINIMIZEBOX | 
+    WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | 
+    WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Password Safe"
+MENU IDR_MAINMENU
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_MENULINE,"Static",SS_ETCHEDHORZ,0,0,69,1
+    CONTROL         "List1",IDC_PWLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,135,27,144,
+                    129
+    PUSHBUTTON      "&Open Database...",IDC_TB_OPEN,17,3,15,14,NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Save Database",IDC_TB_SAVE,33,3,15,14,NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC_TBSEP0,"Static",SS_ETCHEDVERT,51,3,1,15
+    PUSHBUTTON      "&Add Entry...",IDC_TB_ADDENTRY,55,3,15,14,NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Edit/View Entry...",IDC_TB_EDITENTRY,71,3,15,14,NOT 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Delete Entry",IDC_TB_DELETEENTRY,87,3,15,14,NOT 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC_TBSEP1,"Static",SS_ETCHEDVERT,105,3,1,15
+    PUSHBUTTON      "Copy User&Name To Clipboard",IDC_TB_COPYUSER,109,3,15,
+                    14,NOT WS_TABSTOP
+    PUSHBUTTON      "Copy &Password To Clipboard",IDC_TB_COPYPW,125,3,15,14,
+                    NOT WS_TABSTOP
+    PUSHBUTTON      "&New Database...",IDC_TB_NEW,1,3,15,14,NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC_TBSEP2,"Static",SS_ETCHEDVERT,143,3,1,15
+    PUSHBUTTON      "&Find In Database...",IDC_TB_FIND,147,3,15,14,NOT 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC_TBSEP3,"Static",SS_ETCHEDVERT,165,3,1,15
+    PUSHBUTTON      "&Lock Workspace",IDC_TB_LOCK,169,3,15,14,NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC_TBSEP4,"Static",SS_ETCHEDVERT,187,3,1,15
+    PUSHBUTTON      "&About KeePass...",IDC_TB_ABOUT,191,3,15,14,NOT 
+                    WS_TABSTOP
+    CONTROL         "",IDC_RE_ENTRYVIEW,"RICHEDIT",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP,136,162,248,52
+    CONTROL         "Tree1",IDC_GROUPLIST,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,7,45,114,127
+    CONTROL         "",IDC_STATIC_TBSEP5,"Static",SS_ETCHEDVERT,209,3,1,15
+    EDITTEXT        IDC_EDIT_QUICKFIND,213,3,88,13,ES_AUTOHSCROLL
+END
+
+IDD_PASSWORD_DLG DIALOG DISCARDABLE  0, 0, 352, 140
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "<DYN_TITLE>"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,229,119,56,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,289,119,56,14
+    GROUPBOX        "Key",IDC_STATIC,7,28,338,81
+    LTEXT           "<DYN_INTRO>",IDC_STATIC_INTRO,7,7,338,18
+    LTEXT           "Enter password:",IDC_STATIC_ENTERPW,13,40,94,8
+    EDITTEXT        IDC_EDIT_PASSWORD,109,38,211,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    CONTROL         "***",IDC_CHECK_STARS,"Button",BS_AUTOCHECKBOX | 
+                    BS_CENTER | BS_VCENTER | BS_PUSHLIKE | WS_TABSTOP,321,38,
+                    16,14
+    LTEXT           "or",IDC_STATIC_OR,13,65,84,8
+    LTEXT           "<DYN_SELDISK>",IDC_STATIC_SELDISK,13,80,195,8
+    COMBOBOX        IDC_COMBO_DISKLIST,209,78,128,150,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Generate Random Password",IDC_MAKEPASSWORD_BTN,7,119,
+                    124,14
+    CONTROL         "Progress1",IDC_PROGRESS_PASSQUALITY,"msctls_progress32",
+                    WS_BORDER,109,53,180,9
+    RTEXT           "9999 bits",IDC_STATIC_PASSBITS,290,53,30,8
+    LTEXT           "Select key-file manually...",IDC_HL_SELECTFILE,209,93,
+                    130,8
+END
+
+IDD_ADDENTRY_DLG DIALOG DISCARDABLE  0, 0, 315, 279
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "<DYN_TITLE>"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,189,258,58,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,250,258,58,14
+    COMBOBOX        IDC_COMBO_GROUPS,67,7,167,211,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Icon:",IDC_STATIC,246,9,23,8
+    PUSHBUTTON      "&Pick One",IDC_PICKICON_BTN,271,7,37,14
+    LTEXT           "Group:",IDC_STATIC,7,9,59,8
+    LTEXT           "Title:",IDC_STATIC,7,27,58,8
+    LTEXT           "UserName:",IDC_STATIC,7,46,58,8
+    LTEXT           "Password:",IDC_STATIC,7,84,57,8
+    LTEXT           "Repeat Password:",IDC_STATIC,7,98,58,8
+    LTEXT           "URL:",IDC_STATIC,7,66,57,8
+    LTEXT           "Notes:",IDC_STATIC,7,126,58,8
+    EDITTEXT        IDC_EDIT_TITLE,67,25,241,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_USERNAME,67,44,241,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_URL,67,63,241,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PASSWORD,67,82,219,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    CONTROL         "***",IDC_CHECK_HIDEPW,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,287,82,21,14
+    EDITTEXT        IDC_EDIT_REPEATPW,67,96,219,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "&Gen",IDC_RANDOMPW_BTN,287,96,21,14
+    CONTROL         "",IDC_RE_NOTES,"RICHEDIT",ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,67,124,241,86
+    EDITTEXT        IDC_EDIT_EXPIRE_DATE,67,215,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_EXPIRE_TIME,135,215,173,14,ES_AUTOHSCROLL
+    LTEXT           "Attachment:",IDC_STATIC,7,237,59,8
+    EDITTEXT        IDC_EDIT_ATTACHMENT,67,234,176,14,ES_AUTOHSCROLL | 
+                    ES_NOHIDESEL | ES_READONLY
+    PUSHBUTTON      "",IDC_SETATTACH_BTN,244,234,22,14
+    PUSHBUTTON      "",IDC_SAVEATTACH_BTN,266,234,21,14
+    PUSHBUTTON      "",IDC_REMOVEATTACH_BTN,287,234,21,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,254,315,1
+    LTEXT           "Expires:",IDC_STATIC,7,217,58,8
+    LTEXT           "Quality:",IDC_STATIC,7,111,58,8
+    CONTROL         "Progress1",IDC_PROGRESS_PASSQUALITY,"msctls_progress32",
+                    WS_BORDER,67,110,187,9
+    RTEXT           "1024 bits",IDC_STATIC_PASSBITS,256,111,30,8
+END
+
+IDD_ICONPICKER_DLG DIALOG DISCARDABLE  0, 0, 320, 210
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Pick an icon"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,194,189,58,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,255,189,58,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,184,319,1
+    LTEXT           "Pick an icon",IDC_STATIC,7,194,173,8,WS_DISABLED
+    CONTROL         "List1",IDC_ICONLIST,"SysListView32",LVS_LIST | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,7,7,306,170
+END
+
+IDD_ADDGROUP_DLG DIALOG DISCARDABLE  0, 0, 262, 71
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "<DYN_TITLE>"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,137,50,57,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,198,50,57,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,45,261,1
+    LTEXT           "Group Name:",IDC_STATIC,7,9,56,8
+    EDITTEXT        IDC_EDIT_GROUPNAME,65,7,190,14,ES_AUTOHSCROLL
+    LTEXT           "Icon:",IDC_STATIC,7,28,55,8
+    PUSHBUTTON      "&Pick One",IDC_SETICON_BTN,65,25,50,14
+END
+
+IDD_GETRANDOM_DLG DIALOGEX 0, 0, 402, 215
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Get Random"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,277,194,57,14
+    CONTROL         143,IDC_STATIC_RANDOM,"Static",SS_BITMAP | 
+                    SS_REALSIZEIMAGE,13,17,172,100,WS_EX_STATICEDGE
+    GROUPBOX        "Random mouse input",IDC_STATIC,7,7,184,182
+    GROUPBOX        "Random keyboard input",IDC_STATIC,197,7,198,182
+    LTEXT           "Hint: It is best to use both mouse and keyboard random sources.",
+                    IDC_STATIC,7,199,265,9,WS_DISABLED
+    LTEXT           "Click to begin:",IDC_STATIC,13,123,172,9
+    PUSHBUTTON      "Use &Mouse As Random Source",IDC_BEGIN_MOUSEINPUT,14,
+                    135,171,14
+    CONTROL         "Progress1",IDC_PROGRESS_MOUSE,"msctls_progress32",
+                    WS_BORDER,13,168,171,14
+    EDITTEXT        IDC_EDIT_RANDOMSTRING,204,18,184,98,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_NOHIDESEL | ES_WANTRETURN
+    LTEXT           "Just hack some random keys into the edit box above.",
+                    IDC_STATIC,204,123,185,8
+    LTEXT           "You don't have to remember the keys you type in. They are used to generate a random value.",
+                    IDC_STATIC,203,134,186,17
+    LTEXT           "So, the more the better. The different, the better.",
+                    IDC_STATIC,203,152,185,8
+    LTEXT           "Move the mouse in the field above until this is full:",
+                    IDC_STATIC,13,157,172,8
+    LTEXT           "The random the better.",IDC_STATIC,203,162,186,8
+    PUSHBUTTON      "&Cancel",IDCANCEL,338,194,57,14
+END
+
+IDD_PW_GENERATOR_DLG DIALOG DISCARDABLE  0, 0, 316, 274
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Password Generator"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Accept",IDOK,189,253,58,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,251,253,58,14
+    PUSHBUTTON      "&Generate",IDC_GENERATE_BTN,251,216,58,14
+    LTEXT           "Your new password:",IDC_STATIC,7,218,85,8
+    EDITTEXT        IDC_EDIT_PW,93,216,154,14,ES_AUTOHSCROLL | ES_NOHIDESEL
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,248,315,1
+    GROUPBOX        "Password Generation Options",IDC_STATIC,7,7,302,201
+    CONTROL         "List1",IDC_LIST_OPTIONS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,13,17,290,130
+    LTEXT           "Number of characters:",IDC_STATIC,13,174,123,8
+    EDITTEXT        IDC_EDIT_NUMCHARACTERS,137,171,156,14,ES_AUTOHSCROLL | 
+                    ES_NOHIDESEL | ES_NUMBER
+    CONTROL         "&Only the following characters:",IDC_CHECK_CHARSPEC,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,154,123,10
+    EDITTEXT        IDC_EDIT_ONLYCHARSPEC,137,152,166,14,ES_AUTOHSCROLL
+    CONTROL         "Collect &entropy (recommended for strong passwords)",
+                    IDC_CHECK_GETENTROPY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,191,289,10
+    CONTROL         "Spin1",IDC_SPIN_NUMCHARS,"msctls_updown32",
+                    UDS_ARROWKEYS,293,171,10,14
+    LTEXT           "Quality:",IDC_STATIC,7,231,83,8
+    CONTROL         "Progress1",IDC_PROGRESS_PASSQUALITY,"msctls_progress32",
+                    WS_BORDER,93,231,122,9
+    RTEXT           "9999 bits",IDC_STATIC_PASSBITS,216,231,30,8
+END
+
+IDD_FIND_DLG DIALOG DISCARDABLE  0, 0, 231, 138
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Find text in password list"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Find",IDOK,105,117,58,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,166,117,58,14
+    LTEXT           "Search this text:",IDC_STATIC_SEARCHTHIS,7,9,52,8
+    EDITTEXT        IDC_EDIT_FINDTEXT,65,7,159,14,ES_AUTOHSCROLL
+    GROUPBOX        "Search in",IDC_STATIC,7,26,217,54
+    CONTROL         "&Title",IDC_CHECK_TITLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,38,72,10
+    CONTROL         "User &Name",IDC_CHECK_USERNAME,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,51,72,10
+    CONTROL         "&URL",IDC_CHECK_URL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,64,71,10
+    CONTROL         "&Password",IDC_CHECK_PASSWORD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,87,38,131,10
+    CONTROL         "N&otes",IDC_CHECK_NOTES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,87,51,131,10
+    CONTROL         "&Group Name",IDC_CHECK_GROUPNAME,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,87,64,131,10
+    GROUPBOX        "Options",IDC_STATIC,7,83,217,28
+    CONTROL         "&Case sensitive",IDC_CHECK_CASESENSITIVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,95,205,10
+END
+
+IDD_LANGUAGES_DLG DIALOG DISCARDABLE  0, 0, 460, 212
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Load language file"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDCANCEL,397,191,56,14
+    CONTROL         "List1",IDC_LANGUAGES_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SORTASCENDING | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,7,7,446,179
+    PUSHBUTTON      "&Get more languages...",IDC_BTN_GETLANGUAGE,7,191,149,
+                    14
+END
+
+IDD_OPTIONS_DLG DIALOG DISCARDABLE  0, 0, 394, 225
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,269,204,56,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,331,204,56,14
+    LTEXT           "Newline sequence:",IDC_STATIC_NEWLINETEXT,19,45,336,8
+    CONTROL         "Windows newline sequence (\\r\\n)",IDC_RADIO_NEWLINE_0,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,18,68,337,10
+    CONTROL         "Unix newline sequence (\\n)",IDC_RADIO_NEWLINE_1,"Button",
+                    BS_AUTORADIOBUTTON,18,77,337,10
+    LTEXT           "Clipboard auto-clear time (seconds):",
+                    IDC_STATIC_CLIPCLEARTXT,18,106,337,8
+    EDITTEXT        IDC_EDIT_CLIPBOARDTIME,19,53,336,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Automatically open last used database on startup",
+                    IDC_CHECK_AUTOOPENLASTDB,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,92,338,10
+    CONTROL         "GUI: Display images on buttons",IDC_CHECK_IMGBUTTONS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,99,337,10
+    CONTROL         "GUI: Show grid lines in password entry list",
+                    IDC_CHECK_ENTRYGRID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,111,339,10
+    CONTROL         "Automatically save database on exit",IDC_CHECK_AUTOSAVE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,85,337,10
+    PUSHBUTTON      "Select &Font",IDC_BTN_SELFONT,18,138,82,14
+    LTEXT           "Select a new font for the list controls.",
+                    IDC_STATIC_SELFONTTXT,18,121,337,8
+    CONTROL         "Lock workspace when minimizing the main window",
+                    IDC_CHECK_LOCKMIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    19,128,337,10
+    CONTROL         "Minimize to tray instead of taskbar",IDC_CHECK_MINTRAY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,189,340,10
+    CONTROL         "Tab1",IDC_TAB_MENU,"SysTabControl32",0x0,7,7,380,192
+    CONTROL         "Automatically lock workspace after the following number of seconds:",
+                    IDC_CHECK_LOCKAFTERTIME,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,178,336,10
+    EDITTEXT        IDC_EDIT_LOCKSECONDS,19,0,336,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Color",IDC_BTN_ROWHIGHLIGHTSEL,343,0,50,14
+    LTEXT           "Every second row has a different background color. Use this color:",
+                    IDC_STATIC_SELROWHIGHLIGHT,17,210,340,8
+    LTEXT           "Start:",IDC_STATIC_START,0,172,105,8
+    LTEXT           "Exit:",IDC_STATIC_EXIT,0,210,105,8
+    CONTROL         "GUI: Automatically resize table columns when resizing the main window",
+                    IDC_CHECK_COLAUTOSIZE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,185,341,10
+    CONTROL         "Close button [X] minimizes the main window instead of terminating the application",
+                    IDC_CHECK_CLOSEMIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    18,198,341,10
+    PUSHBUTTON      "Create &Association",IDC_BTN_CREATEASSOC,13,211,113,14
+    PUSHBUTTON      "&Remove Association",IDC_BTN_DELETEASSOC,129,211,113,14
+    LTEXT           "Here you can associate .kdb files with KeePass (so KeePass opens the file when double-clicking on it):",
+                    IDC_STATIC_ASSOC,7,187,359,17
+    CONTROL         "Disable unsafe (security-critical) operations like exports, etc.",
+                    IDC_CHECK_DISABLEUNSAFE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,202,342,10
+    CONTROL         "Remember last opened file",IDC_CHECK_REMEMBERLAST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,215,343,10
+    CONTROL         "Use PuTTY for ssh: and telnet: URLs",
+                    IDC_CHECK_PUTTYURLS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,0,195,344,10
+    CONTROL         "Mark database as modified on last-access time change",
+                    IDC_CHECK_SAVEONLATMOD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,0,183,342,10
+END
+
+IDD_ENTRYPROPERTIES_DLG DIALOG DISCARDABLE  0, 0, 351, 114
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "<DYN_TITLE>"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,217,93,61,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,283,93,61,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,87,351,1
+    CONTROL         "Change group:",IDC_CHECK_MODGROUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,8,115,10
+    COMBOBOX        IDC_COMBO_GROUPS,124,7,220,141,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Change entry icon:",IDC_CHECK_MODICON,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,31,115,10
+    PUSHBUTTON      "&Pick One",IDC_BUTTON_SELECT_ICON,124,29,50,14
+    CONTROL         "Change expiration time:",IDC_CHECK_MODEXPIRE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,53,115,10
+    EDITTEXT        IDC_EDIT_EXPIRE_DATE,124,51,62,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_EXPIRE_TIME,186,51,158,14,ES_AUTOHSCROLL
+END
+
+IDD_TANWIZARD_DLG DIALOG DISCARDABLE  0, 0, 378, 258
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TAN Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,239,237,64,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,307,237,64,14
+    EDITTEXT        IDC_EDIT_TANS,7,36,364,192,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_WANTRETURN | WS_VSCROLL
+    LTEXT           "Just paste your TANs into the edit window below. Formatting doesn't really matter, all non-alphanumerical characters are ignored (i.e. newlines, tabs, spaces, etc...) and only alphanumerical 'substrings' are added as TAN entries.",
+                    IDC_STATIC_INTRO,7,7,364,25
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,233,377,1
+    LTEXT           "TAN Wizard",IDC_STATIC,7,242,185,8,WS_DISABLED
+END
+
+IDD_ENTRYLIST_DLG DIALOG DISCARDABLE  0, 0, 413, 255
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "<DYN_TITLE>"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,348,234,58,14
+    CONTROL         "List1",IDC_ENTRYLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,20,399,210
+    LTEXT           "Click on an entry to jump to it.",IDC_STATIC,7,7,399,8
+END
+
+IDD_DBSETTINGS_DLG DIALOG DISCARDABLE  0, 0, 377, 146
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_NOFAILCREATE | DS_CENTER | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Database Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,247,125,59,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,311,125,59,14
+    LTEXT           "Encryption algorithm to use (for this database):",
+                    IDC_STATIC,13,18,350,8
+    COMBOBOX        IDC_COMBO_ENCALGOS,13,29,351,135,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Security",IDC_STATIC,7,7,363,110
+    LTEXT           "Number of key encryption rounds:",IDC_STATIC,13,80,177,
+                    8
+    EDITTEXT        IDC_EDIT_KEYENC,193,77,171,14,ES_AUTOHSCROLL | 
+                    ES_NOHIDESEL | ES_NUMBER
+    LTEXT           "Your key is encrypted several times to make up the final database encryption key. This adds a constant-time factor and makes brute-force attacks much harder.",
+                    IDC_STATIC,13,57,350,16
+    LTEXT           "The higher this number, the harder are brute-force attacks. But also the higher this number, the slower the database loading and saving.",
+                    IDC_STATIC,13,95,350,16
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,9,8,1
+ PRODUCTVERSION 0,9,8,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "http://keepass.sourceforge.net\0"
+            VALUE "CompanyName", "Dominik Reichl\0"
+            VALUE "FileDescription", "KeePass Password Safe v0.98a\0"
+            VALUE "FileVersion", "0, 9, 8, 1\0"
+            VALUE "InternalName", "PwSafe\0"
+            VALUE "LegalCopyright", "Copyright (c) 2003/2004 Dominik Reichl\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "KeePass.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "KeePass Password Safe v0.98a\0"
+            VALUE "ProductVersion", "0, 9, 8, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+
+    IDD_PWSAFE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 441
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 221
+    END
+
+    IDD_PASSWORD_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 345
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_ADDENTRY_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 308
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 272
+    END
+
+    IDD_ICONPICKER_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+
+    IDD_ADDGROUP_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_GETRANDOM_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 395
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_PW_GENERATOR_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 267
+    END
+
+    IDD_FIND_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 224
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_LANGUAGES_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 453
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_OPTIONS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 387
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_ENTRYPROPERTIES_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 344
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 107
+    END
+
+    IDD_TANWIZARD_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 371
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 251
+    END
+
+    IDD_ENTRYLIST_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 406
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_DBSETTINGS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 370
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New Database...",            ID_FILE_NEW
+        MENUITEM "&Open Database...",           ID_FILE_OPEN
+        MENUITEM "&Close Database",             ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "&Save Database",              ID_FILE_SAVE
+        MENUITEM "Save Database &As...",        ID_FILE_SAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Database Settings...",       ID_FILE_SHOWDBINFO
+        MENUITEM "Change &Master Key For This Database...", 
+                                                ID_FILE_CHANGEMASTERPW
+        MENUITEM SEPARATOR
+        MENUITEM "Print Pre&view...",           ID_FILE_PRINTPREVIEW
+        MENUITEM "&Print Complete Password List", ID_FILE_PRINT
+        MENUITEM SEPARATOR
+        POPUP "&Export To"
+        BEGIN
+            MENUITEM "&TXT File...",                ID_EXPORT_TXT
+            MENUITEM "&HTML File...",               ID_EXPORT_HTML
+            MENUITEM "&XML File...",                ID_EXPORT_XML
+            MENUITEM "&CSV File...",                ID_EXPORT_CSV
+        END
+        POPUP "&Import From"
+        BEGIN
+            MENUITEM "&CSV File...",                ID_IMPORT_CSV
+            MENUITEM "Code&Wallet TXT File...",     ID_IMPORT_CWALLET
+            MENUITEM "&PwSafe v2 TXT File...",      ID_IMPORT_PWSAFE
+            MENUITEM "Personal &Vault TXT File...", ID_IMPORT_PVAULT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Lock Workspace",             ID_FILE_LOCK
+        MENUITEM "E&xit",                       ID_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Options...",                 ID_SAFE_OPTIONS
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Change &Language...",         ID_FILE_CHANGELANGUAGE
+        MENUITEM SEPARATOR
+        MENUITEM "Show &ToolBar",               ID_VIEW_SHOWTOOLBAR, CHECKED
+        MENUITEM "Show &Entry View",            ID_VIEW_ENTRYVIEW, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Main Window &Always On Top",  ID_VIEW_ALWAYSONTOP, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Hide &UserNames Behind Asterisks (***)", ID_VIEW_HIDEUSERS
+        , CHECKED
+        MENUITEM "Hide &Passwords Behind Asterisks (***)", ID_VIEW_HIDESTARS
+        , CHECKED
+        MENUITEM SEPARATOR
+        POPUP "Auto-&Sort Password List"
+        BEGIN
+            MENUITEM "N&o Auto-Sort",               ID_VIEW_AUTOSORT_NOSORT
+            MENUITEM SEPARATOR
+            MENUITEM "Sort List By &Title",         ID_VIEW_AUTOSORT_TITLE
+            MENUITEM "Sort List By User&Name",      ID_VIEW_AUTOSORT_USER
+            MENUITEM "Sort List By &URL",           ID_VIEW_AUTOSORT_URL
+            MENUITEM "Sort List By &Password",      ID_VIEW_AUTOSORT_PASSWORD
+
+            MENUITEM "Sort List By Note&s",         ID_VIEW_AUTOSORT_NOTES
+            MENUITEM "Sort List By &Creation Time", ID_VIEW_AUTOSORT_CREATION
+
+            MENUITEM "Sort List By Last &Modify Time", 
+                                                    ID_VIEW_AUTOSORT_LASTMODIFY
+
+            MENUITEM "Sort List By Last &Access Time", 
+                                                    ID_VIEW_AUTOSORT_LASTACCESS
+
+            MENUITEM "Sort List By &Expiration Time", 
+                                                    ID_VIEW_AUTOSORT_EXPIRE
+        END
+        MENUITEM SEPARATOR
+        POPUP "Show &Columns"
+        BEGIN
+            MENUITEM "Show &Title Column",          ID_VIEW_TITLE, CHECKED
+            MENUITEM "Show User&Name Column",       ID_VIEW_USERNAME
+            , CHECKED
+            MENUITEM "Show &URL Column",            ID_VIEW_URL, CHECKED
+            MENUITEM "Show &Password Column",       ID_VIEW_PASSWORD
+            , CHECKED
+            MENUITEM "Show Note&s Column",          ID_VIEW_NOTES, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "Show &Creation Time Column",  ID_VIEW_CREATION
+            , CHECKED
+            MENUITEM "Show Last &Modification Time Column", ID_VIEW_LASTMOD
+            , CHECKED
+            MENUITEM "Show &Last Access Time Column", ID_VIEW_LASTACCESS
+            , CHECKED
+            MENUITEM "Show &Expire Time Column",    ID_VIEW_EXPIRE, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "Show UU&ID Column",           ID_VIEW_UUID, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "Show &Attachment Column",     ID_VIEW_ATTACH, CHECKED
+        END
+    END
+    POPUP "E&xtras"
+    BEGIN
+        MENUITEM "Password &Generator",         ID_EXTRAS_GENPW
+        MENUITEM "&TAN Wizard",                 ID_EXTRAS_TANWIZARD
+        MENUITEM SEPARATOR
+        MENUITEM "Show All &Expired Entries...", ID_EXTRAS_SHOWEXPIRED
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "Visit &KeePass Homepage",     ID_INFO_HOMEPAGE
+        MENUITEM SEPARATOR
+        MENUITEM "Open &Help File",             ID_INFO_README
+        MENUITEM "Open &License File",          ID_INFO_LICENSE
+        MENUITEM "&Print License File",         ID_INFO_PRINTLICENSE
+        MENUITEM SEPARATOR
+        MENUITEM "About &Translation...",       ID_INFO_TRANSLATION
+        MENUITEM "&About KeePass...",           ID_INFO_ABOUT
+    END
+END
+
+IDR_PWLIST_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Submenu"
+    BEGIN
+        MENUITEM "Copy &Password To Clipboard", ID_PWLIST_COPYPW
+        MENUITEM "Copy User&Name To Clipboard", ID_PWLIST_COPYUSER
+        MENUITEM "Open &URL(s)",                ID_PWLIST_VISITURL
+        MENUITEM "&Save Attached File To...",   ID_PWLIST_SAVEATTACH
+        MENUITEM SEPARATOR
+        MENUITEM "Perform Auto-&Type",          ID_PWLIST_AUTOTYPE
+        MENUITEM SEPARATOR
+        MENUITEM "&Add Entry...",               ID_PWLIST_ADD
+        MENUITEM "&Edit/View Entry...",         ID_PWLIST_EDIT
+        MENUITEM "Dupli&cate Entry",            ID_PWLIST_DUPLICATE
+        MENUITEM "&Delete Entry",               ID_PWLIST_DELETE
+        MENUITEM "&Mass Modify (All Selected)...", ID_PWLIST_MASSMODIFY
+        MENUITEM "Se&lect All",                 ID_PWLIST_SELECTALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find In Database...",        ID_PWLIST_FIND
+        MENUITEM "Find In T&his Group...",      ID_PWLIST_FINDINGROUP
+        MENUITEM SEPARATOR
+        POPUP "&Rearrange"
+        BEGIN
+            MENUITEM "Move Entry To &Top",          ID_PWLIST_MOVETOP
+            MENUITEM "Move Entry &One Up",          ID_PWLIST_MOVEUP
+            MENUITEM "Mo&ve Entry One Down",        ID_PWLIST_MOVEDOWN
+            MENUITEM "Move Entry To &Bottom",       ID_PWLIST_MOVEBOTTOM
+            MENUITEM SEPARATOR
+            MENUITEM "Sort List By &Title",         ID_PWLIST_SORT_TITLE
+            MENUITEM "Sort List By User&Name",      ID_PWLIST_SORT_USER
+            MENUITEM "Sort List By &URL",           ID_PWLIST_SORT_URL
+            MENUITEM "Sort List By &Password",      ID_PWLIST_SORT_PASSWORD
+            MENUITEM "Sort List By Note&s",         ID_PWLIST_SORT_NOTES
+            MENUITEM "Sort List By &Creation Time", ID_PWLIST_SORT_CREATION
+            MENUITEM "Sort List By Last &Modify Time", 
+                                                    ID_PWLIST_SORT_LASTMODIFY
+
+            MENUITEM "Sort List By Last &Access Time", 
+                                                    ID_PWLIST_SORT_LASTACCESS
+
+            MENUITEM "Sort List By &Expiration Time", ID_PWLIST_SORT_EXPIRE
+        END
+    END
+END
+
+IDR_GROUPLIST_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Submenu"
+    BEGIN
+        MENUITEM "Add Password &Group...",      ID_SAFE_ADDGROUP
+        MENUITEM "Add Password Su&bgroup...",   ID_SAFE_ADDSUBGROUP
+        MENUITEM SEPARATOR
+        MENUITEM "Modif&y Password Group...",   ID_SAFE_MODIFYGROUP
+        MENUITEM "&Delete Password Group...",   ID_SAFE_REMOVEGROUP
+        MENUITEM SEPARATOR
+        POPUP "&Rearrange"
+        BEGIN
+            MENUITEM "Move Group To &Top",          ID_GROUP_MOVETOP
+            MENUITEM "Move Group One &Up",          ID_GROUP_MOVEUP
+            MENUITEM "Move Group &One Down",        ID_GROUP_MOVEDOWN
+            MENUITEM "Move Group To &Bottom",       ID_GROUP_MOVEBOTTOM
+            MENUITEM SEPARATOR
+            MENUITEM "Move Group One &Left",        ID_GROUP_MOVELEFT
+            MENUITEM "Move Group One &Right",       ID_GROUP_MOVERIGHT
+            MENUITEM SEPARATOR
+            MENUITEM "&Sort Group List",            ID_GROUP_SORT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Find In T&his Group...",      ID_PWLIST_FINDINGROUP
+        MENUITEM SEPARATOR
+        MENUITEM "Pr&int Group",                ID_SAFE_PRINTGROUP
+        POPUP "&Export To"
+        BEGIN
+            MENUITEM "Export Group To &TXT...",     ID_SAFE_EXPORTGROUP_TXT
+            MENUITEM "Export Group To &HTML...",    ID_SAFE_EXPORTGROUP_HTML
+            MENUITEM "Export Group To &XML...",     ID_SAFE_EXPORTGROUP_XML
+            MENUITEM "Export Group To &CSV...",     ID_SAFE_EXPORTGROUP_CSV
+        END
+    END
+END
+
+IDR_SYSTRAY_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Submenu"
+    BEGIN
+        MENUITEM "&Minimize/Maximize Window To/From Tray", ID_VIEW_HIDE
+        MENUITEM SEPARATOR
+        MENUITEM "&Add Entry...",               ID_PWLIST_ADD
+        MENUITEM SEPARATOR
+        MENUITEM "Password &Generator",         ID_EXTRAS_GENPW
+        MENUITEM SEPARATOR
+        MENUITEM "&Options...",                 ID_SAFE_OPTIONS
+        MENUITEM "&About KeePass...",           ID_INFO_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Lock/Unlock Workspace",      ID_FILE_LOCK
+        MENUITEM "E&xit",                       ID_FILE_EXIT
+    END
+END
+
+IDR_RECTX_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Submenu"
+    BEGIN
+        MENUITEM "&Undo",                       ID_RE_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t",                        ID_RE_CUT
+        MENUITEM "&Copy",                       ID_RE_COPYSEL
+        MENUITEM "&Paste",                      ID_RE_PASTE
+        MENUITEM "&Delete",                     ID_RE_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Copy &All",                   ID_RE_COPYALL
+        MENUITEM "&Select All",                 ID_RE_SELECTALL
+    END
+END
+
+IDR_COLVIEW_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Submenu"
+    BEGIN
+        MENUITEM "Show &Title Column",          ID_VIEW_TITLE, CHECKED
+        MENUITEM "Show User&Name Column",       ID_VIEW_USERNAME, CHECKED
+        MENUITEM "Show &URL Column",            ID_VIEW_URL, CHECKED
+        MENUITEM "Show &Password Column",       ID_VIEW_PASSWORD, CHECKED
+        MENUITEM "Show Note&s Column",          ID_VIEW_NOTES, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Show &Creation Time Column",  ID_VIEW_CREATION, CHECKED
+        MENUITEM "Show Last &Modification Time Column", ID_VIEW_LASTMOD
+        , CHECKED
+        MENUITEM "Show &Last Access Time Column", ID_VIEW_LASTACCESS
+        , CHECKED
+        MENUITEM "Show &Expire Time Column",    ID_VIEW_EXPIRE, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Show UU&ID Column",           ID_VIEW_UUID, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Show &Attachment Column",     ID_VIEW_ATTACH, CHECKED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_INFOICONS TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_BUTTON32774
+    BUTTON      ID_FILE_EXIT
+    BUTTON      ID_INFO_ABOUT
+    BUTTON      ID_SAFE_ADDGROUP
+    BUTTON      ID_SAFE_REMOVEGROUP
+    BUTTON      ID_PWLIST_ADD
+    BUTTON      ID_PWLIST_EDIT
+    BUTTON      ID_PWLIST_DELETE
+    BUTTON      ID_PWLIST_VISITURL
+    BUTTON      ID_PWLIST_COPYUSER
+    BUTTON      ID_PWLIST_COPYPW
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    BUTTON      ID_FILE_SAVEAS
+    BUTTON      ID_FILE_CLOSE
+    BUTTON      ID_BUTTON32787
+    BUTTON      ID_BUTTON32788
+    BUTTON      ID_BUTTON32789
+    BUTTON      ID_BUTTON32790
+    BUTTON      ID_BUTTON32791
+    BUTTON      ID_BUTTON32792
+    BUTTON      ID_FILE_CHANGEMASTERPW
+    BUTTON      ID_EXPORT_TXT
+    BUTTON      ID_EXPORT_HTML
+    BUTTON      ID_EXPORT_XML
+    BUTTON      ID_EXPORT_CSV
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_EXTRAS_GENPW
+    BUTTON      ID_SAFE_MODIFYGROUP
+    BUTTON      ID_PWLIST_FIND
+    BUTTON      ID_PWLIST_FINDINGROUP
+    BUTTON      ID_PWLIST_DUPLICATE
+    BUTTON      ID_INFO_HOMEPAGE
+    BUTTON      ID_SAFE_EXPORTGROUP_CSV
+    BUTTON      ID_SAFE_EXPORTGROUP_HTML
+    BUTTON      ID_SAFE_EXPORTGROUP_XML
+    BUTTON      ID_SAFE_PRINTGROUP
+    BUTTON      ID_PWLIST_MOVETOP
+    BUTTON      ID_PWLIST_MOVEBOTTOM
+    BUTTON      ID_PWLIST_MOVEUP
+    BUTTON      ID_PWLIST_MOVEDOWN
+    BUTTON      ID_FILE_CHANGELANGUAGE
+    BUTTON      ID_INFO_LICENSE
+    BUTTON      ID_INFO_PRINTLICENSE
+    BUTTON      ID_INFO_README
+    BUTTON      ID_SAFE_OPTIONS
+    BUTTON      ID_FILE_LOCK
+    BUTTON      ID_GROUP_MOVETOP
+    BUTTON      ID_GROUP_MOVEBOTTOM
+    BUTTON      ID_GROUP_MOVEUP
+    BUTTON      ID_GROUP_MOVEDOWN
+    BUTTON      ID_IMPORT_CSV
+    BUTTON      ID_GROUP_SORT
+    BUTTON      ID_IMPORT_CWALLET
+    BUTTON      ID_IMPORT_PWSAFE
+    BUTTON      ID_PWLIST_MASSMODIFY
+    BUTTON      ID_BUTTON32904
+    BUTTON      ID_BUTTON32905
+    BUTTON      ID_RE_COPYSEL
+    BUTTON      ID_RE_COPYALL
+    BUTTON      ID_RE_CUT
+    BUTTON      ID_RE_PASTE
+    BUTTON      ID_RE_DELETE
+    BUTTON      ID_RE_SELECTALL
+    BUTTON      ID_RE_UNDO
+    BUTTON      ID_FILE_PRINTPREVIEW
+    BUTTON      ID_EXTRAS_TANWIZARD
+    BUTTON      ID_INFO_TRANSLATION
+    BUTTON      ID_SAFE_ADDSUBGROUP
+    BUTTON      ID_PWLIST_SORT_TITLE
+    BUTTON      ID_PWLIST_SORT_USER
+    BUTTON      ID_PWLIST_SORT_URL
+    BUTTON      ID_PWLIST_SORT_PASSWORD
+    BUTTON      ID_PWLIST_SORT_NOTES
+    BUTTON      ID_PWLIST_SORT_CREATION
+    BUTTON      ID_PWLIST_SORT_LASTACCESS
+    BUTTON      ID_PWLIST_SORT_LASTMODIFY
+    BUTTON      ID_PWLIST_SORT_EXPIRE
+    BUTTON      ID_GROUP_MOVELEFT
+    BUTTON      ID_GROUP_MOVERIGHT
+    BUTTON      ID_PWLIST_SAVEATTACH
+    BUTTON      ID_FILE_SHOWDBINFO
+    BUTTON      ID_EXTRAS_SHOWEXPIRED
+    BUTTON      ID_IMPORT_PVAULT
+    BUTTON      ID_SAFE_EXPORTGROUP_TXT
+    BUTTON      ID_PWLIST_AUTOTYPE
+END
+
+IDR_CLIENTICONS TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_BUTTON32779
+    BUTTON      ID_BUTTON32781
+    BUTTON      ID_BUTTON32803
+    BUTTON      ID_BUTTON32804
+    BUTTON      ID_BUTTON32805
+    BUTTON      ID_BUTTON32806
+    BUTTON      ID_BUTTON32807
+    BUTTON      ID_BUTTON32808
+    BUTTON      ID_BUTTON32809
+    BUTTON      ID_BUTTON32810
+    BUTTON      ID_BUTTON32811
+    BUTTON      ID_BUTTON32812
+    BUTTON      ID_BUTTON32813
+    BUTTON      ID_BUTTON32835
+    BUTTON      ID_BUTTON32814
+    BUTTON      ID_BUTTON32815
+    BUTTON      ID_BUTTON32816
+    BUTTON      ID_BUTTON32817
+    BUTTON      ID_BUTTON32818
+    BUTTON      ID_BUTTON32836
+    BUTTON      ID_BUTTON32819
+    BUTTON      ID_BUTTON32820
+    BUTTON      ID_BUTTON32821
+    BUTTON      ID_BUTTON32822
+    BUTTON      ID_BUTTON32823
+    BUTTON      ID_BUTTON32824
+    BUTTON      ID_BUTTON32825
+    BUTTON      ID_BUTTON32828
+    BUTTON      ID_BUTTON32826
+    BUTTON      ID_BUTTON32837
+    BUTTON      ID_BUTTON32827
+    BUTTON      ID_BUTTON32829
+    BUTTON      ID_BUTTON32830
+    BUTTON      ID_BUTTON32831
+    BUTTON      ID_BUTTON32832
+    BUTTON      ID_BUTTON32833
+    BUTTON      ID_BUTTON32834
+    BUTTON      ID_BUTTON32838
+    BUTTON      ID_BUTTON32839
+    BUTTON      ID_BUTTON32840
+    BUTTON      ID_BUTTON32845
+    BUTTON      ID_BUTTON32872
+    BUTTON      ID_BUTTON32873
+    BUTTON      ID_BUTTON32874
+    BUTTON      ID_BUTTON32875
+    BUTTON      ID_BUTTON32900
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_INFOICONS           BITMAP  DISCARDABLE     "res\\infoicon.bmp"
+IDR_CLIENTICONS         BITMAP  DISCARDABLE     "res\\clientic.bmp"
+IDB_RANDOM_BMP          BITMAP  DISCARDABLE     "res\\random_b.bmp"
+IDB_OK                  BITMAP  DISCARDABLE     "res\\ok.bmp"
+IDB_CANCEL              BITMAP  DISCARDABLE     "res\\cancel.bmp"
+IDB_MOUSE_SMALL         BITMAP  DISCARDABLE     "res\\mouse_sm.bmp"
+IDB_KEY_SMALL           BITMAP  DISCARDABLE     "res\\key_smal.bmp"
+IDB_DOCUMENT_SMALL      BITMAP  DISCARDABLE     "res\\document.bmp"
+IDB_LANGUAGE            BITMAP  DISCARDABLE     "res\\language.bmp"
+IDB_TB_OPEN             BITMAP  DISCARDABLE     "res\\tb_open.bmp"
+IDB_TB_SAVE             BITMAP  DISCARDABLE     "res\\tb_save.bmp"
+IDB_TB_NEW              BITMAP  DISCARDABLE     "res\\tb_new.bmp"
+IDB_TB_ADDENTRY         BITMAP  DISCARDABLE     "res\\tb_adden.bmp"
+IDB_TB_EDITENTRY        BITMAP  DISCARDABLE     "res\\tb_edite.bmp"
+IDB_TB_DELETEENTRY      BITMAP  DISCARDABLE     "res\\tb_delet.bmp"
+IDB_TB_COPYPW           BITMAP  DISCARDABLE     "res\\tb_copyp.bmp"
+IDB_TB_COPYUSER         BITMAP  DISCARDABLE     "res\\tb_copyu.bmp"
+IDB_TB_FIND             BITMAP  DISCARDABLE     "res\\tb_find.bmp"
+IDB_TB_LOCK             BITMAP  DISCARDABLE     "res\\tb_lock.bmp"
+IDB_TB_ABOUT            BITMAP  DISCARDABLE     "res\\tb_about.bmp"
+IDB_FILE                BITMAP  DISCARDABLE     "res\\file.bmp"
+IDB_DISK                BITMAP  DISCARDABLE     "res\\disk.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCEL_MAIN ACCELERATORS DISCARDABLE 
+BEGIN
+    "A",            ID_PWLIST_SELECTALL,    VIRTKEY, CONTROL, NOINVERT
+    "B",            ID_PWLIST_COPYUSER,     VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_PWLIST_COPYPW,       VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_PWLIST_DELETE,       VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_PWLIST_EDIT,         VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_PWLIST_FIND,         VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_SAFE_ADDGROUP,       VIRTKEY, CONTROL, NOINVERT
+    "H",            ID_VIEW_HIDESTARS,      VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_FILE_SHOWDBINFO,     VIRTKEY, CONTROL, NOINVERT
+    "J",            ID_VIEW_HIDEUSERS,      VIRTKEY, CONTROL, NOINVERT
+    "K",            ID_PWLIST_DUPLICATE,    VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_FILE_LOCK,           VIRTKEY, CONTROL, NOINVERT
+    "M",            ID_SAFE_OPTIONS,        VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "Q",            ID_FILE_CLOSE,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_PWLIST_VISITURL,     VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_PWLIST_AUTOTYPE,     VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_INFO_README,         VIRTKEY, NOINVERT
+    VK_F1,          ID_INFO_README,         VIRTKEY, ALT, NOINVERT
+    "X",            ID_FILE_EXIT,           VIRTKEY, CONTROL, NOINVERT
+    "Y",            ID_PWLIST_ADD,          VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EXTRAS_GENPW,        VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About PwSafe..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\PwSafe.rc2"  // Nicht mit Microsoft Visual C++ bearbeitete Ressourcen
+#include "afxres.rc"         // Standardkomponenten
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
