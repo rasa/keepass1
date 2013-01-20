@@ -17,21 +17,43 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ___KEEPASS_API_EX_H___
-#define ___KEEPASS_API_EX_H___
+#ifndef ___STATUS_DIALOG_EX_H___
+#define ___STATUS_DIALOG_EX_H___
 
-#ifndef KP_IMPORT_LIB
-#define KP_SHARE extern "C" __declspec(dllexport)
-#else
-#define KP_SHARE extern "C" __declspec(dllimport)
-#endif
+#pragma once
 
-#define DECL_MFC_INIT AFX_MANAGE_STATE(AfxGetStaticModuleState())
+/*
+#include "../../KeePassLibCpp/SysDefEx.h"
+#include "NewGUICommon.h"
+#include <shlobj.h>
+#include <boost/utility.hpp>
 
-#define DECL_MGR(__p) DECL_MFC_INIT; CPwManager *p = (CPwManager *)(__p)
-#define DECL_MGR_V(__p) DECL_MGR(__p); if(p == NULL) return
-#define DECL_MGR_N(__p) DECL_MGR(__p); if(p == NULL) return 0
-#define DECL_MGR_P(__p) DECL_MGR(__p); if(p == NULL) return NULL
-#define DECL_MGR_B(__p) DECL_MGR_N(__p)
+class CStatusDialogEx : boost::noncopyable
+{
+public:
+	CStatusDialogEx(HWND hParent, bool bCanCancel, bool bMarquee) :
+		m_pDlg(NULL), m_hParent(hParent), m_bCanCancel(bCanCancel),
+		m_bMarquee(bMarquee)
+	{
+	}
 
-#endif
+	virtual ~CStatusDialogEx();
+
+	bool Show();
+	void Release();
+
+	void SetStatus(bool bPrimary, LPCTSTR lpText);
+
+	void SetProgress(ULONGLONG ullCompleted, ULONGLONG ullTotal);
+	bool HasCancelled();
+
+private:
+	HWND m_hParent;
+	bool m_bCanCancel;
+	bool m_bMarquee;
+
+	IProgressDialog* m_pDlg;
+};
+*/
+
+#endif // ___STATUS_DIALOG_EX_H___
