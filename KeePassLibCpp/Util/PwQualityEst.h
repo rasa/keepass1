@@ -17,47 +17,30 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ___KEY_TRANSFORM_H___
-#define ___KEY_TRANSFORM_H___
+#ifndef ___PW_QUALITY_EST_H___
+#define ___PW_QUALITY_EST_H___
 
 #pragma once
 
+#include "../SysDefEx.h"
 #include <boost/utility.hpp>
+#include <boost/shared_ptr.hpp>
+#include <tchar.h>
+#include "StrUtil.h"
+#include "MemUtil.h"
 
-class CKeyTransform : boost::noncopyable
+class CPwQualityEst : boost::noncopyable
 {
+private:
+	CPwQualityEst();
+
 public:
-	CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey);
-
-	void Run();
-	bool Succeeded() const { return m_bSucceeded; }
-
-	static bool Transform256(UINT64 qwRounds, UINT8* pBuffer256, const UINT8* pKeySeed256);
-	static UINT64 Benchmark(DWORD dwTimeMs);
+	static DWORD EstimatePasswordBits(LPCTSTR lpPassword);
 
 private:
-	UINT64 m_qwRounds;
-	UINT8* m_pBuf;
-	const UINT8* m_pKey;
-	bool m_bSucceeded;
+	static DWORD _EstimateQuality(LPCWSTR lpw);
+
+	static void _EnsureInitialized();
 };
 
-class CKeyTransformBenchmark : boost::noncopyable
-{
-public:
-	CKeyTransformBenchmark(DWORD dwTimeMs);
-
-	void Run();
-
-	UINT64 GetComputedRounds() const { return m_qwComputedRounds; }
-
-private:
-	DWORD m_dwTimeMs;
-	UINT64 m_qwComputedRounds;
-};
-
-// Private:
-DWORD WINAPI CKeyTrf_ThreadProc(LPVOID lpParameter);
-DWORD WINAPI CKeyTrfBench_ThreadProc(LPVOID lpParameter);
-
-#endif // ___KEY_TRANSFORM_H___
+#endif // ___PW_QUALITY_EST_H___

@@ -23,7 +23,35 @@
 #pragma once
 
 #include "../SysDefEx.h"
+#include <boost/utility.hpp>
+#include <boost/shared_ptr.hpp>
+#include <tchar.h>
+#include <vector>
+#include <set>
+#include <string>
+#include "StrUtil.h"
+#include "MemUtil.h"
 
-bool IsPopularPassword(LPCTSTR lpPassword);
+typedef std::basic_string<WCHAR> TppWord;
+typedef std::set<TppWord> TppDict;
+typedef boost::shared_ptr<TppDict> TppDictPtr;
+
+class CPopularPasswords : boost::noncopyable
+{
+private:
+	CPopularPasswords();
+
+public:
+	static size_t GetMaxLength();
+	static bool ContainsLength(size_t uLen);
+
+	static bool IsPopular(LPCWSTR lpw, size_t* pdwDictSize);
+
+	static void Add(const UTF8_BYTE* pTextUTF8);
+	static void AddResUTF8(LPCTSTR lpResName, LPCTSTR lpResType);
+
+private:
+	static std::vector<TppDictPtr> m_vDicts;
+};
 
 #endif // ___POPULAR_PASSWORDS_H___

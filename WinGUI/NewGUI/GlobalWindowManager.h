@@ -17,47 +17,28 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ___KEY_TRANSFORM_H___
-#define ___KEY_TRANSFORM_H___
+#ifndef ___GLOBAL_WINDOW_MANAGER_H___
+#define ___GLOBAL_WINDOW_MANAGER_H___
 
 #pragma once
 
+#include <vector>
 #include <boost/utility.hpp>
 
-class CKeyTransform : boost::noncopyable
+class CGlobalWindowManager : boost::noncopyable
 {
 public:
-	CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey);
+	static HRESULT AddDialog(CDialog* pDlg);
+	static HRESULT RemoveDialog(CDialog* pDlg);
 
-	void Run();
-	bool Succeeded() const { return m_bSucceeded; }
+	static DWORD GetCount();
 
-	static bool Transform256(UINT64 qwRounds, UINT8* pBuffer256, const UINT8* pKeySeed256);
-	static UINT64 Benchmark(DWORD dwTimeMs);
-
-private:
-	UINT64 m_qwRounds;
-	UINT8* m_pBuf;
-	const UINT8* m_pKey;
-	bool m_bSucceeded;
-};
-
-class CKeyTransformBenchmark : boost::noncopyable
-{
-public:
-	CKeyTransformBenchmark(DWORD dwTimeMs);
-
-	void Run();
-
-	UINT64 GetComputedRounds() const { return m_qwComputedRounds; }
+	static HWND GetTopWindow();
 
 private:
-	DWORD m_dwTimeMs;
-	UINT64 m_qwComputedRounds;
+	CGlobalWindowManager();
+
+	static std::vector<CDialog*> m_vDialogs;
 };
 
-// Private:
-DWORD WINAPI CKeyTrf_ThreadProc(LPVOID lpParameter);
-DWORD WINAPI CKeyTrfBench_ThreadProc(LPVOID lpParameter);
-
-#endif // ___KEY_TRANSFORM_H___
+#endif // ___GLOBAL_WINDOW_MANAGER_H___
