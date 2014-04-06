@@ -17,32 +17,37 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "StdAfx.h"
-#include "../../KeePassLibCpp/PwManager.h"
-#include "../../KeePassLibCpp/Crypto/KeyTransform.h"
-#include "LibraryAPI.h"
+#ifndef ___FONT_UTIL_H___
+#define ___FONT_UTIL_H___
 
-KP_SHARE DWORD GetKeePassVersion()
-{
-	return PWM_VERSION_DW;
-}
+#pragma once
 
-KP_SHARE LPCTSTR GetKeePassVersionString()
-{
-	return PWM_VERSION_STR;
-}
+#include <afxwin.h>
+#include <boost/utility.hpp>
 
-KP_SHARE DWORD GetLibraryBuild()
+class CFontUtil : boost::noncopyable
 {
-	return KEEPASS_LIBRARY_BUILD;
-}
+public:
+	static void Release();
 
-KP_SHARE BOOL TransformKey256(UINT8* pBuffer256, const UINT8* pKeySeed256, UINT64 qwRounds)
-{
-	return (CKeyTransform::Transform256(qwRounds, pBuffer256, pKeySeed256) ? TRUE : FALSE);
-}
+	static void SetDefaultFont(CFont* pf);
+	static void SetDefaultFontFrom(CWnd* pWnd);
 
-KP_SHARE UINT64 TransformKeyBenchmark256(DWORD dwTimeMs)
-{
-	return CKeyTransform::Benchmark(dwTimeMs);
-}
+	static void AssignBold(CWnd* pWnd, CWnd* pWndParent);
+	static void AssignMono(CWnd* pWnd, CWnd* pWndParent);
+	static void AssignSymbol(CWnd* pWnd, CWnd* pWndParent);
+
+private:
+	CFontUtil();
+
+	static bool EnsureBold(CWnd* pWndParent);
+	static bool EnsureMono(CWnd* pWndParent);
+	static bool EnsureSymbol(CWnd* pWndParent);
+
+	static LOGFONT* g_plfDefault;
+	static CFont* g_pfBold;
+	static CFont* g_pfMono;
+	static CFont* g_pfSymbol;
+};
+
+#endif // ___FONT_UTIL_H___
