@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -47,11 +47,13 @@ typedef struct _PG_TREENODE
 typedef BOOL(WINAPI *LPENCRYPTFILE)(LPCTSTR lpFileName);
 
 template<typename T>
-class CNullableEx : boost::noncopyable
+class CNullableEx
 {
 public:
 	CNullableEx() : m_bHasValue(false), m_tValue() { }
 	CNullableEx(const T& t) : m_bHasValue(true), m_tValue(t) { }
+	CNullableEx(const CNullableEx<T>& t) : m_bHasValue(t.m_bHasValue),
+		m_tValue(t.m_tValue) { }
 
 	bool HasValue() const { return m_bHasValue; }
 	const T& GetValue() const { return m_tValue; }

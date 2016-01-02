@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2015 Dominik Reichl
+  Copyright (C) 2008-2016 Dominik Reichl
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -222,7 +222,12 @@ typedef struct _KP_KEYPROV_INFO
 /// A key returned by a key provider.
 typedef struct _KP_KEYPROV_KEY
 {
-	DWORD dwType; ///< Reserved for future use, must be 0.
+	/// Type flags.
+	/// - If KPKTF_DIRECT is set and the data size is 32, the data
+	///   is used directly, i.e. without being hashed using SHA-256.
+	///   Unless you know exactly what you're doing, do not use this flag.
+	DWORD dwType;
+
 	DWORD dwFormat; ///< Reserved for future use, must be 0.
 	LPVOID lpData; ///< Key data pointer.
 	DWORD dwDataSize; ///< Size of the key (lpData) in bytes.

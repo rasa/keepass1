@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -100,23 +100,36 @@ HICON NewGUI_CreateColorizedIcon(HICON hBase, HICON hOverlay, COLORREF clr, int 
 	VERIFY(pg->SetInterpolationMode(InterpolationModeHighQualityBicubic) == Ok);
 	VERIFY(pg->SetSmoothingMode(SmoothingModeHighQuality) == Ok);
 
+	bool bDrawDefault = true;
 	if(qSize > 32)
 	{
 		Bitmap* pbmpIco = NULL;
-		if(!NewGUI_ExtractVistaIcon(hBase, &pbmpIco))
-			pbmpIco = Bitmap::FromHICON(hBase);
+		if(NewGUI_ExtractVistaIcon(hBase, &pbmpIco))
+		{
+			ASSERT(pbmpIco != NULL);
+			pg->DrawImage(pbmpIco, 0, 0, bmp.GetWidth(), bmp.GetHeight());
+			delete pbmpIco;
 
-		ASSERT(pbmpIco != NULL);
-		pg->DrawImage(pbmpIco, 0, 0, bmp.GetWidth(), bmp.GetHeight());
-		delete pbmpIco;
+			bDrawDefault = false;
+		}
 	}
-	else
+
+	if(bDrawDefault)
 	{
-		Bitmap* pbmpIco = Bitmap::FromHICON(hBase);
-		ASSERT(pbmpIco != NULL);
-		pg->DrawImage(pbmpIco, 0, 0, bmp.GetWidth(), bmp.GetHeight());
-		delete pbmpIco;
+		// Bitmap* pbmpIco = Bitmap::FromHICON(hBase);
+		// ASSERT(pbmpIco != NULL);
+		// pg->DrawImage(pbmpIco, 0, 0, bmp.GetWidth(), bmp.GetHeight());
+		// delete pbmpIco;
+
+		HDC hDC = pg->GetHDC();
+		VERIFY(DrawIconEx(hDC, 0, 0, hBase, static_cast<int>(bmp.GetWidth()),
+			static_cast<int>(bmp.GetHeight()), 0, NULL, DI_NORMAL) != FALSE);
+		pg->ReleaseHDC(hDC);
 	}
+
+	// CLSID clsidPNG = { 0x557CF406, 0x1A04, 0x11D3,
+	//	{ 0x9A, 0x73, 0x00, 0x00, 0xF8, 0x1E, 0xF3, 0x2E } };
+	// bmp.Save(L"D:\\Temp_KeePass\\ColorizedIcon.png", &clsidPNG);
 
 	if(clr != DWORD_MAX)
 	{

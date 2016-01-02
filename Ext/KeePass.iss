@@ -11,11 +11,11 @@
 #define MyAppUrlName "KeePass.url"
 #define MyAppHelpName "KeePass.chm"
 
-#define KeeVersionStr "1.29"
-#define KeeVersionWin "1.29.0.0"
-#define KeeVersionWinShort "1.29"
+#define KeeVersionStr "1.30"
+#define KeeVersionWin "1.30.0.0"
+#define KeeVersionWinShort "1.30"
 
-#define KeeDevPeriod "2003-2015"
+#define KeeDevPeriod "2003-2016"
 
 [Setup]
 AppName={#MyAppFullName}
@@ -38,6 +38,7 @@ SolidCompression=yes
 InternalCompressLevel=ultra
 UninstallDisplayIcon={app}\{#MyAppExeName}
 AppMutex=KeePassApplicationMutex,Global\KeePassAppMutexExI
+SetupMutex=KeePassSetupMutex1
 ChangesAssociations=yes
 VersionInfoVersion={#KeeVersionWin}
 VersionInfoCompany={#MyAppPublisher}

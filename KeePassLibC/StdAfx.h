@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -30,10 +30,10 @@
 #endif
 
 #ifndef WINVER
-#define WINVER 0x0501
+#define WINVER 0x0600
 #endif
 #ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
+#define _WIN32_WINNT 0x0600
 #endif						
 #ifndef _WIN32_WINDOWS
 #define _WIN32_WINDOWS 0x0410

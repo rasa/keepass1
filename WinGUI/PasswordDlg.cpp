@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -904,7 +904,10 @@ std::basic_string<TCHAR> CPasswordDlg::GetKeyFromProvider(LPCTSTR lpDisplayName)
 		_CallPlugins(KPM_KEYPROV_QUERY_KEY_EX, (LPARAM)&ctx, (LPARAM)&kpKey);
 	}
 
-	if((kpKey.lpData == NULL) || (kpKey.dwDataSize == 0))
+	const BYTE* pData = (const BYTE*)kpKey.lpData;
+	DWORD cbData = kpKey.dwDataSize;
+
+	if((pData == NULL) || (cbData == 0))
 	{
 		CString strMsg = TRL("The key provider plugin did not supply a valid key");
 		strMsg += _T(".");
@@ -912,12 +915,23 @@ std::basic_string<TCHAR> CPasswordDlg::GetKeyFromProvider(LPCTSTR lpDisplayName)
 		return str;
 	}
 
-	const DWORD dwBufSizeM = (kpKey.dwDataSize * 3) + 12;
+	const DWORD cbAnnotatedBuf = cbData + 16;
+	BYTE* pAnnotatedBuf = new BYTE[cbAnnotatedBuf];
+	if((kpKey.dwType & KPKTF_DIRECT) != 0)
+	{
+		*(UINT64*)(&pAnnotatedBuf[0]) = PWKI_DIRECT_1;
+		*(UINT64*)(&pAnnotatedBuf[8]) = PWKI_DIRECT_2;
+		memcpy(&pAnnotatedBuf[16], pData, cbData);
+
+		pData = pAnnotatedBuf;
+		cbData = cbAnnotatedBuf;
+	}
+
+	const DWORD dwBufSizeM = (cbData * 3) + 12;
 	BYTE* pBase = new BYTE[dwBufSizeM];
 	ZeroMemory(pBase, dwBufSizeM);
 	DWORD dwBufSize = dwBufSizeM;
-	VERIFY(CBase64Codec::Encode((const BYTE *)kpKey.lpData, kpKey.dwDataSize,
-		pBase, &dwBufSize));
+	VERIFY(CBase64Codec::Encode(pData, cbData, pBase, &dwBufSize));
 
 	str = _T(CB64_PROTOCOL);
 
@@ -931,6 +945,8 @@ std::basic_string<TCHAR> CPasswordDlg::GetKeyFromProvider(LPCTSTR lpDisplayName)
 
 	mem_erase(pBase, dwBufSizeM);
 	SAFE_DELETE_ARRAY(pBase);
+	mem_erase(pAnnotatedBuf, cbAnnotatedBuf);
+	SAFE_DELETE_ARRAY(pAnnotatedBuf);
 	return str;
 }
 

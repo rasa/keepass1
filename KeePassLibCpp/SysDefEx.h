@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2015 Dominik Reichl
+  Copyright (C) 2008-2016 Dominik Reichl
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -66,16 +66,19 @@
 #define UNREFERENCED_PARAMETER(p) (void)0
 #endif
 
-#ifndef DWORD_MAX
-#define DWORD_MAX 0xFFFFFFFF
-#endif
-
+#if (_MSC_VER >= 1600)
+#include <stdint.h>
+#else
 #ifndef UINT32_MAX
 #define UINT32_MAX 0xFFFFFFFF
 #endif
-
 #ifndef UINT64_MAX
 #define UINT64_MAX 0xFFFFFFFFFFFFFFFFui64
+#endif
+#endif
+
+#ifndef DWORD_MAX
+#define DWORD_MAX 0xFFFFFFFF
 #endif
 
 #ifndef UTF8_BYTE

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2015 Dominik Reichl
+  Copyright (C) 2008-2016 Dominik Reichl
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -374,5 +374,11 @@ typedef HRESULT(KP_API *LPKPLIBFUNC)(IKpUnknown* pAPI);
 #define KPFPN_INVALID_PATH      2
 #define KPFPN_PATH_ONLY         4
 #define KPFPN_PATH_AND_FILENAME 8
+
+/////////////////////////////////////////////////////////////////////////////
+// Key provider definitions
+
+// For dwType in KP_KEYPROV_KEY:
+#define KPKTF_DIRECT 1
 
 #endif // ___KP_DEFS_H___

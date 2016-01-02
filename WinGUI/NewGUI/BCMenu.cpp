@@ -1,6 +1,6 @@
-// This is a modified version of Brent Corkums BCMenu class.
+// This is a modified version of Brent Corkum's BCMenu class.
 // It has been optimized for the menus in KeePass; the class doesn't
-// have all the functionality of the original class any more!
+// have all the functionality of the original class anymore!
 // I recommend getting the original version of the menu if you want
 // to use it in your project.
 
@@ -32,9 +32,10 @@
 // like to play with new stuff.
 //*************************************************************************
 
-#include "stdafx.h"        // Standard windows header file
+#include "StdAfx.h"        // Standard windows header file
 #include "BCMenu.h"        // BCMenu class declaration
 #include <afxpriv.h>       //SK: makes A2W and other spiffy AFX macros work
+#include "NewGUICommon.h"  //DR: for getting non-client metrics, ...
 #include "GradientUtil.h"  //DR: support for drawing gradients
 
 #ifdef _DEBUG
@@ -648,8 +649,7 @@ void BCMenu::DrawItem_WinXP (LPDRAWITEMSTRUCT lpDIS)
 		pDC = pMemDC;
 		ZeroMemory ((PVOID) &m_lf,sizeof (LOGFONT));
 		NONCLIENTMETRICS nm;
-		nm.cbSize = sizeof (NONCLIENTMETRICS);
-		VERIFY (SystemParametersInfo(SPI_GETNONCLIENTMETRICS,nm.cbSize,&nm,0));
+		VERIFY(NewGUI_GetNonClientMetrics(&nm));
 		m_lf =  nm.lfMenuFont;
 		m_fontMenu.CreateFontIndirect (&m_lf);
 		pFont = pDC->SelectObject (&m_fontMenu);
@@ -976,9 +976,7 @@ void BCMenu::MeasureItem( LPMEASUREITEMSTRUCT lpMIS )
 		LOGFONT m_lf;
 		ZeroMemory ((PVOID) &m_lf,sizeof (LOGFONT));
 		NONCLIENTMETRICS nm;
-		nm.cbSize = sizeof (NONCLIENTMETRICS);
-		VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-			nm.cbSize,&nm,0));
+		VERIFY(NewGUI_GetNonClientMetrics(&nm));
 		m_lf =  nm.lfMenuFont;
 		m_fontMenu.CreateFontIndirect (&m_lf);
 
@@ -1875,8 +1873,7 @@ void BCMenu::InsertSpaces(void)
 
 	ZeroMemory ((PVOID) &m_lf,sizeof (LOGFONT));
 	NONCLIENTMETRICS nm;
-	nm.cbSize = sizeof (NONCLIENTMETRICS);
-	VERIFY (SystemParametersInfo (SPI_GETNONCLIENTMETRICS,nm.cbSize,&nm,0));
+	VERIFY(NewGUI_GetNonClientMetrics(&nm));
 	m_lf =  nm.lfMenuFont;
 	m_fontMenu.CreateFontIndirect (&m_lf);
 
