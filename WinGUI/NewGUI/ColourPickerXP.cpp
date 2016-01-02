@@ -17,7 +17,7 @@
 //   http://www.codeproject.com/miscctrl/colorbutton.asp
 //   http://www.codeproject.com/wtl/wtlcolorbutton.asp
 //
-// Thanks to Keith Rule for his CMemDC class (see MemDC.h).
+// Thanks to Keith Rule for his CMemDC class (see MemDCEx.h).
 // Thanks to Pål Kristian Tønder for his CXPTheme class, which is based on
 // the CVisualStyleXP class of David Yuheng Zhao (see XPTheme.cpp).
 //
@@ -127,8 +127,9 @@
 
 #include "stdafx.h"
 #include "ColourPickerXP.h"
+#include "NewGUICommon.h" // DR: for getting non-client metrics, ...
 
-#include "MemDC.h"
+#include "MemDCEx.h"
 
 #include <math.h>
 
@@ -774,7 +775,7 @@ void CColourPickerXP::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	ASSERT(lpDrawItemStruct);
 
 	CDC*    pDC      = CDC::FromHandle(lpDrawItemStruct->hDC);
-	CMemDC  dcMem(pDC);
+	CMemDCEx dcMem(pDC);
 	UINT    state    = lpDrawItemStruct->itemState;
     CRect   rDraw    = lpDrawItemStruct->rcItem;
 	CRect	rArrow;
@@ -1215,8 +1216,7 @@ void CColourPopupXP::Initialise()
 
     // Create the font
     NONCLIENTMETRICS ncm;
-    ncm.cbSize = sizeof(NONCLIENTMETRICS);
-    VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0));
+    VERIFY(NewGUI_GetNonClientMetrics(&ncm)); // DR: Changed to work with XP
     m_Font.CreateFontIndirect(&(ncm.lfMessageFont));
 
     // Create the palette

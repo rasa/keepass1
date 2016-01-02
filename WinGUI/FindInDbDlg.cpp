@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ CFindInDbDlg::CFindInDbDlg(CWnd* pParent /*=NULL*/)
 	m_bTitle = TRUE;
 	m_bURL = TRUE;
 	m_bUserName = TRUE;
+	m_bUUID = TRUE;
 	m_strFind = _T("");
 	m_bCaseSensitive = FALSE;
 	m_bGroupName = FALSE;
@@ -63,6 +64,7 @@ void CFindInDbDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_TITLE, m_bTitle);
 	DDX_Check(pDX, IDC_CHECK_URL, m_bURL);
 	DDX_Check(pDX, IDC_CHECK_USERNAME, m_bUserName);
+	DDX_Check(pDX, IDC_CHECK_UUID, m_bUUID);
 	DDX_Text(pDX, IDC_EDIT_FINDTEXT, m_strFind);
 	DDX_Check(pDX, IDC_CHECK_CASESENSITIVE, m_bCaseSensitive);
 	DDX_Check(pDX, IDC_CHECK_GROUPNAME, m_bGroupName);
@@ -95,8 +97,6 @@ BOOL CFindInDbDlg::OnInitDialog()
 	m_banner.SetTitle(TRL("Find"));
 	m_banner.SetCaption(TRL("Find a string in the password list."));
 
-	GetDlgItem(IDC_EDIT_FINDTEXT)->SetFocus();
-
 	if(m_lpGroupName != NULL)
 	{
 		CString str;
@@ -109,6 +109,7 @@ BOOL CFindInDbDlg::OnInitDialog()
 		GetDlgItem(IDC_CHECK_EXCLUDEBACKUPS)->EnableWindow(FALSE);
 	}
 
+	GetDlgItem(IDC_EDIT_FINDTEXT)->SetFocus();
 	return FALSE; // Return TRUE unless you set the focus to a control
 }
 

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -34,9 +34,13 @@
 #include "SprEngine/SprEngine.h"
 #include "PrivateConfigEx.h"
 #include "AppLocator.h"
+#include "../Resource.h"
+#include "../PwSafeDlg.h"
+#include "../Plugins/KpApiImpl.h"
 #include "../Plugins/PluginMgr.h"
 #include "../NewGUI/NewGUICommon.h"
 #include "../../KeePassLibCpp/Util/AppUtil.h"
+#include "../../KeePassLibCpp/Util/EntryUtil.h"
 #include "../../KeePassLibCpp/Util/MemUtil.h"
 #include "../../KeePassLibCpp/Util/StrUtil.h"
 #include "../../KeePassLibCpp/Util/TranslateEx.h"
@@ -81,28 +85,29 @@ void CopyStringToClipboard(const TCHAR *lptString, PW_ENTRY *pEntryContext,
 	CString strData = lptString;
 	strData = SprCompile(strData, false, pEntryContext, pDatabaseContext, false, false);
 
-	size_t uDataSize = static_cast<size_t>(strData.GetLength()) * sizeof(TCHAR);
-	if(uDataSize == 0) // No string to copy => empty clipboard only
+	size_t cbDataSize = static_cast<size_t>(strData.GetLength()) * sizeof(TCHAR);
+	if(cbDataSize == 0) // No string to copy => empty clipboard only
 	{
 		CloseClipboard();
 		return;
 	}
-	uDataSize += sizeof(TCHAR); // Plus NULL-terminator of string
+	cbDataSize += sizeof(TCHAR); // Plus null terminator of string
 
 	SetClipboardIgnoreFormat();
 
-	HGLOBAL globalHandle = GlobalAlloc(GHND | GMEM_DDESHARE, uDataSize);
+	HGLOBAL globalHandle = GlobalAlloc(GHND | GMEM_DDESHARE, cbDataSize);
 	if(globalHandle == NULL) { ASSERT(FALSE); CloseClipboard(); return; }
 	LPVOID globalData = GlobalLock(globalHandle);
 	if(globalData == NULL) { ASSERT(FALSE); CloseClipboard(); return; }
-	_tcscpy_s((TCHAR *)globalData, uDataSize, (LPCTSTR)strData); // Copy string plus NULL-byte to global memory
+	_tcscpy_s((TCHAR *)globalData, cbDataSize / sizeof(TCHAR),
+		(LPCTSTR)strData); // Copy string plus null byte to global memory
 	GlobalUnlock(globalHandle); // Unlock before SetClipboardData!
 
 	VERIFY(SetClipboardData(CF_TTEXTEX, globalHandle) != NULL);
 	VERIFY(CloseClipboard());
 
 	RegisterOwnClipboardData((unsigned char *)(LPCTSTR)strData,
-		static_cast<unsigned long>(uDataSize - sizeof(TCHAR)));
+		static_cast<unsigned long>(cbDataSize - sizeof(TCHAR)));
 }
 
 void RegisterOwnClipboardData(unsigned char* pData, unsigned long dwDataSize)
@@ -1239,24 +1244,55 @@ std::basic_string<TCHAR> WU_FreeDriveIfCurrent(TCHAR tchDriveLetter)
 }
 
 PWG_ERROR PwgGenerateWithExtVerify(std::vector<TCHAR>& vOutPassword,
-	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource)
+	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource, HWND hWndCtx)
 {
-	PWG_ERROR e;
-	const TCHAR tchNull = 0;
+	CPwManager* pmCtx = NULL;
+	CPwSafeDlg* pDlg = (CPwSafeDlg*)KPMI_GetMainDialog();
+	if(pDlg != NULL) pmCtx = &pDlg->m_mgr;
+	else { ASSERT(FALSE); }
 
+	PW_ENTRY peDummy;
+	CEntryUtil::GetDummyEntry(&peDummy, pmCtx);
+
+	PWG_ERROR e;
 	while(true)
 	{
 		e = PwgGenerateEx(vOutPassword, pSettings, pRandomSource);
 		if(e != PWGE_SUCCESS) break;
 
+		TCHAR tchNull = 0;
+		CString str = ((vOutPassword.size() > 0) ? &vOutPassword[0] : &tchNull);
+		CString strCmp = SprCompile(str, false, &peDummy, pmCtx, false, false);
+		if(str != strCmp)
+		{
+			BYTE btGen = ((pSettings != NULL) ? pSettings->btGeneratorType : PWGT_NULL);
+			if(btGen == PWGT_CHARSET) continue; // Silently try again
+			else
+			{
+				ASSERT(btGen == PWGT_PATTERN);
+
+				CString strText = str;
+				strText += _T("\r\n\r\n");
+				strText += TRL("The generated password contains a placeholder. When using this password (e.g. by copying it to the clipboard or auto-typing it), the placeholder will be replaced, i.e. effectively a different password might be used.");
+				strText += _T("\r\n\r\n");
+				strText += TRL("Accept this password?");
+
+				int iRes = MessageBox(hWndCtx, strText, PWM_PRODUCT_NAME_SHORT,
+					(MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2));
+				if((iRes != IDYES) && (iRes != IDOK)) continue;
+			}
+		}
+
 		KP_GENERATED_PASSWORD gp;
 		ZeroMemory(&gp, sizeof(KP_GENERATED_PASSWORD));
-		gp.lpPassword = ((vOutPassword.size() > 0) ? &vOutPassword[0] : &tchNull);
+		gp.lpPassword = str;
 		gp.lpSettings = pSettings;
 
 		LPCTSTR lpObjection = NULL;
 		_CallPlugins(KPM_VALIDATE_GENPASSWORD, (LPARAM)&gp, (LPARAM)&lpObjection);
-		if(lpObjection == NULL) break;
+		if(lpObjection != NULL) continue;
+
+		break;
 	}
 
 	return e;

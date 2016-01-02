@@ -17,7 +17,7 @@
 //   http://www.codeproject.com/miscctrl/colorbutton.asp
 //   http://www.codeproject.com/wtl/wtlcolorbutton.asp
 //
-// Thanks to Keith Rule for his CMemDC class (see MemDC.h).
+// Thanks to Keith Rule for his CMemDC class (see MemDCEx.h).
 // Thanks to Pål Kristian Tønder for his CXPTheme class, which is based on
 // the CVisualStyleXP class of David Yuheng Zhao (see XPTheme.cpp).
 //
@@ -130,7 +130,7 @@
 // Instructions on how to add CColourPickerXP to your application:
 //
 //   1. Copy ColourPickerXP.h, ColourPickerXP.cpp, XPTheme.h, XPTheme.cpp and
-//		MemDC.h into your application directory.
+//		MemDCEx.h into your application directory.
 //
 //   2. Add the five files into your project.
 //

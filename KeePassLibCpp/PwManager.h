@@ -1,6 +1,6 @@
 ﻿/*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,12 +38,12 @@
 
 // When making a Windows build, don't forget to update the verinfo resource
 #ifndef _UNICODE
-#define PWM_VERSION_STR  _T("1.29")
+#define PWM_VERSION_STR  _T("1.30")
 #else
-#define PWM_VERSION_STR  _T("1.29 Unicode")
+#define PWM_VERSION_STR  _T("1.30 Unicode")
 #endif
-#define PWM_VERSION_DW   0x011D0000
-#define PWM_VERSION_QW   0x0001001D00000000ULL
+#define PWM_VERSION_DW   0x011E0000
+#define PWM_VERSION_QW   0x0001001E00000000ULL
 // #define PWM_DEVSNAPSHOT
 
 // Database file signature bytes
@@ -337,6 +337,10 @@
 #else
 #define VPA_MODIFY
 #endif
+
+// Internal, do not use in plugins
+#define PWKI_DIRECT_1 0x44A7E4BC337F4149ULL
+#define PWKI_DIRECT_2 0xA67F3A5282107004ULL
 
 #pragma pack(1)
 
