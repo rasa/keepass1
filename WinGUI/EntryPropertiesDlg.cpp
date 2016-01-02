@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ CEntryPropertiesDlg::CEntryPropertiesDlg(CWnd* pParent /*=NULL*/)
 	m_bModExpire = FALSE;
 	m_bModGroup = FALSE;
 	m_bModIcon = FALSE;
+	m_bDelAttach = FALSE;
 	//}}AFX_DATA_INIT
 
 	m_pMgr = NULL;
@@ -65,6 +66,7 @@ void CEntryPropertiesDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_MODGROUP, m_bModGroup);
 	DDX_Check(pDX, IDC_CHECK_MODICON, m_bModIcon);
 	DDX_Control(pDX, IDC_RADIO_NOEXPIRE, m_btRadioNoExpire);
+	DDX_Check(pDX, IDC_CHECK_DELATTACH, m_bDelAttach);
 	//}}AFX_DATA_MAP
 }
 

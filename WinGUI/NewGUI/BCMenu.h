@@ -1,6 +1,6 @@
-// This is a modified version of Brent Corkums BCMenu class.
+// This is a modified version of Brent Corkum's BCMenu class.
 // It has been optimized for the menus in KeePass; the class doesn't
-// have all the functionality of the original class any more!
+// have all the functionality of the original class anymore!
 // I recommend getting the original version of the menu if you want
 // to use it in your project.
 

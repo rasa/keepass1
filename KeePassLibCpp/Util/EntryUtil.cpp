@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,11 +19,28 @@
 
 #include "StdAfx.h"
 #include "EntryUtil.h"
+#include "MemUtil.h"
 #include "PwUtil.h"
 #include "TranslateEx.h"
-#include <boost/lexical_cast.hpp>
 // #include "Base64.h"
 // #include "../SDK/Details/KpDefs.h"
+
+#include <WinCrypt.h>
+#include <boost/lexical_cast.hpp>
+
+static LPCTSTR g_vDummyData[8] = {
+	_T("34DEB74E43734E498ABD19E5B25F2683"),
+	_T("8C6DA7954A5B4934B06A26E1FEF23CF6"),
+	_T("4045EEE7857C44B09AD0B59822168341"),
+	_T("4194AF3BBE1F46379D3AC326F9191E60"),
+	_T("24D6A17D52B2408F8AEBF6A3DDB7EA14"),
+	_T("A5FBD3E9C16A4CA682539C6221FB5EF5"),
+	_T("965407128FA14C7F9DE1A0519A546654"),
+	_T("5E499DFB61544A0783E753EF2D4A859A")
+};
+
+const DWORD g_cbDummyData = CRYPTPROTECTMEMORY_BLOCK_SIZE * 4;
+static BYTE g_pbDummyData[CRYPTPROTECTMEMORY_BLOCK_SIZE * 4];
 
 /*
 // The entry must be unlocked already!
@@ -416,4 +433,40 @@ std::basic_string<TCHAR> CEntryUtil::CreateSummaryList(CPwManager* pMgr,
 	}
 
 	return sb.ToString();
+}
+
+void CEntryUtil::GetDummyEntry(PW_ENTRY* p, CPwManager* pmCtx)
+{
+	if(p == NULL) { ASSERT(FALSE); return; }
+
+	ZeroMemory(p, sizeof(PW_ENTRY));
+
+	memcpy(&p->uuid[0], g_vDummyData[0], 16); // Dummy, no hex conv necessary
+	p->pszTitle = const_cast<TCHAR*>(g_vDummyData[1]);
+	p->pszURL = const_cast<TCHAR*>(g_vDummyData[2]);
+	p->pszUserName = const_cast<TCHAR*>(g_vDummyData[3]);
+
+	// p->pszPassword = const_cast<TCHAR*>(g_vDummyData[4]);
+	// p->uPasswordLen = static_cast<DWORD>(_tcslen(p->pszPassword));
+	ZeroMemory(&g_pbDummyData[0], g_cbDummyData);
+	g_pbDummyData[0] = static_cast<BYTE>('A');
+	p->pszPassword = (TCHAR*)&g_pbDummyData[0];
+	p->uPasswordLen = 1;
+
+	p->pszAdditional = const_cast<TCHAR*>(g_vDummyData[5]);
+	_GetCurrentPwTime(&p->tCreation);
+	memcpy(&p->tLastMod, &p->tCreation, sizeof(PW_TIME));
+	memcpy(&p->tLastAccess, &p->tCreation, sizeof(PW_TIME));
+	memcpy(&p->tExpire, &p->tCreation, sizeof(PW_TIME));
+	p->pszBinaryDesc = const_cast<TCHAR*>(g_vDummyData[6]);
+	p->pBinaryData = (BYTE*)g_vDummyData[7];
+	p->uBinaryDataLen = (_tcslen(g_vDummyData[7]) * sizeof(TCHAR));
+
+	if(pmCtx != NULL)
+	{
+		PW_GROUP* pg = pmCtx->GetGroup(0);
+		if(pg != NULL) p->uGroupId = pg->uGroupId;
+
+		pmCtx->LockEntryPassword(p);
+	}
 }

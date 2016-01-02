@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "../Plugins/KpApiImpl.h"
 #include <algorithm>
 #include <gdiplus.h>
+#include <boost/static_assert.hpp>
 
 #include "../../KeePassLibCpp/Util/PwQualityEst.h"
 #include "../../KeePassLibCpp/Util/StrUtil.h"
@@ -880,3 +881,29 @@ SIZE NewGUI_GetWindowContentSize(HWND hWnd)
 
 	if(bStdSetFocus) pToFocus->SetFocus();
 } */
+
+BOOL NewGUI_GetNonClientMetrics(NONCLIENTMETRICS* p)
+{
+	if(p == NULL) { ASSERT(FALSE); return FALSE; }
+
+	UINT cbSize = sizeof(NONCLIENTMETRICS);
+	ZeroMemory(p, cbSize);
+
+	// See the documentation of the NONCLIENTMETRICS structure:
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/ff729175.aspx
+	// http://www.codeproject.com/Messages/3989684/Compile-with-dev-studio-running-on-Windows-XP.aspx
+#if (WINVER == 0x0600)
+	if(AU_IsAtLeastWinVistaSystem() == FALSE)
+	{
+		BOOST_STATIC_ASSERT(sizeof(p->iPaddedBorderWidth) == sizeof(int));
+		cbSize -= sizeof(int);
+	}
+#else
+	// Verify that the size computation above is still correct with the
+	// latest NONCLIENTMETRICS definition, then update the WINVER comparison
+	BOOST_STATIC_ASSERT(false);
+#endif
+
+	p->cbSize = cbSize;
+	return SystemParametersInfo(SPI_GETNONCLIENTMETRICS, cbSize, p, 0);
+}

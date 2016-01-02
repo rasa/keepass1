@@ -9,7 +9,7 @@
 
 //#if(WINVER >= 0x0501)
 #ifdef	THEMEAPI
-#include <tmschema.h>
+#include <vssym32.h> // DR: tmschema.h is obsolete, use vssym32.h instead
 #else
 #define	NO_THEMEAPI_FOUND
 

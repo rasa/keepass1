@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -34,11 +34,13 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
+// Using the Windows Headers:
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa383745.aspx
 #ifndef WINVER
-#define WINVER 0x0501
+#define WINVER 0x0600
 #endif
 #ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
+#define _WIN32_WINNT 0x0600
 #endif						
 #ifndef _WIN32_WINDOWS
 #define _WIN32_WINDOWS 0x0410
@@ -94,10 +96,13 @@
 #include <afxdisp.h>
 #include <afxole.h>
 
-#ifdef _WIN32_WINNT
-#undef _WIN32_WINNT
+// #ifdef _WIN32_WINNT
+// #undef _WIN32_WINNT
+// #endif
+// #define _WIN32_WINNT 0x0600
+#if (_WIN32_WINNT != 0x0600)
+#error _WIN32_WINNT has been redefined by MFC headers!
 #endif
-#define _WIN32_WINNT 0x0500
 
 // Redefine the buggy version of AFXASSUME if we are being compiled on
 // VC 2005 which generates the compiler warning "C4189: '__afx_condVal' :

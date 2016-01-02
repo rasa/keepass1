@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -52,10 +52,13 @@ bool CKeySourcesPool::Load(const CPrivateConfigEx* pSource)
 
 	for(size_t i = 0; i < vKeys.size(); ++i)
 	{
-		ASSERT(vKeys[i].size() > 0);
-		ASSERT(vValues[i].size() > 0);
+		std_string strKey = vKeys[i];
+		std_string strValue = vValues[i];
 
-		KspKvp kvp = std::make_pair<std_string, std_string>(vKeys[i], vValues[i]);
+		ASSERT(strKey.size() > 0);
+		ASSERT(strValue.size() > 0);
+
+		KspKvp kvp = std::make_pair(strKey, strValue);
 		m_vec.push_back(kvp);
 	}
 
@@ -163,7 +166,7 @@ void CKeySourcesPool::Set(LPCTSTR lpDatabasePath, LPCTSTR lpKeyFilePath)
 
 	std_string strKey = lpDatabasePath;
 	std_string strValue = lpKeyFilePath;
-	KspKvp kvpNew = std::make_pair<std_string, std_string>(strKey, strValue);
+	KspKvp kvpNew = std::make_pair(strKey, strValue);
 
 	for(size_t i = 0; i < m_vec.size(); ++i)
 	{
@@ -226,6 +229,6 @@ void CKeySourcesPool::_UpdateItem(KspVec::iterator& it)
 
 	m_vec.erase(it);
 
-	KspKvp kvp = std::make_pair<std_string, std_string>(strKey, strValue);
+	KspKvp kvp = std::make_pair(strKey, strValue);
 	m_vec.push_back(kvp);
 }

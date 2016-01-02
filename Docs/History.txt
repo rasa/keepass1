@@ -1,3 +1,35 @@
+16/01/02 - 1.30
+- Refined application icons (thanks to Victor Andreyenkov)
+- Added option 'UUID' in the 'Find' dialog (to search in UUIDs
+  of entries)
+- Added option 'Delete attachments' in the 'Mass Modify' dialog
+- Key provider plugin API: added support for a direct key flag
+  that instructs KeePass to use a key provided by the plugin
+  as-is, i.e. without hashing it using SHA-256
+- Added workaround for Windows XP non-client metrics bug
+- The installer now prevents running the installer while it is
+  already running
+- All KeePass program binaries are now dual signed using SHA-1
+  and SHA-256
+
+- Quick searches (toolbar) now also search in UUIDs of entries
+- Improved icon recoloring
+- The password generator based on a character set now ensures
+  that the generated password is Spr-invariant
+- Password generator based on a pattern: when a Spr-variant
+  password is generated, a confirmation dialog for accepting
+  this password is displayed
+- KeePass is now compiled with Windows Vista definitions (but
+  still also runs on older Windows systems)
+- Added support for compiling KeePass with Visual Studio 2015
+- Upgraded to Boost libraries version 1.60.0
+- Upgraded installer
+- Various code optimizations
+- Minor other improvements
+
+- The main window is now updated immediately after closing the
+  'Mass Modify' dialog
+
 15/04/03 - 1.29
 - The font used in password text boxes can now be changed
   ('Tools' -> 'Options' -> tab 'Interface' -> button 'Select

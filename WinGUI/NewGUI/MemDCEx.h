@@ -1,13 +1,13 @@
 // Modified version of Keith Rule's CMemDC.
 // Editor: Dominik Reichl
 
-#if !defined(AFX_MEMDC_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_)
-#define AFX_MEMDC_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_
+#if !defined(AFX_MEMDCEX_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_)
+#define AFX_MEMDCEX_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
-// MemDC.h : header file
+// MemDCEx.h : header file
 //
 
 //////////////////////////////////////////////////
@@ -26,12 +26,12 @@
 //
 // This class implements a memory Device Context
 
-class CMemDC : public CDC
+class CMemDCEx : public CDC
 {
 public:
 
 	// constructor sets up the memory DC
-	CMemDC(CDC* pDC, int nOffset = 0) : CDC()
+	CMemDCEx(CDC* pDC, int nOffset = 0) : CDC()
     {
 		ASSERT(pDC != NULL);
 		
@@ -58,7 +58,7 @@ public:
 	}
 	
 	// Destructor copies the contents of the mem DC to the original DC
-	~CMemDC()
+	~CMemDCEx()
     {
 		if (m_bMemDC) {	
 			// Copy the offscreen bitmap onto the screen.
@@ -76,14 +76,14 @@ public:
 	}
 	
 	// Allow usage as a pointer
-    CMemDC* operator->() {return this;}
+    CMemDCEx* operator->() {return this;}
 	
     // Allow usage as a pointer
-    operator CMemDC*() {return this;}
+    operator CMemDCEx*() {return this;}
 
 private:
 	CBitmap  m_bitmap;		// Offscreen bitmap
-    CBitmap* m_pOldBitmap;	// bitmap originally found in CMemDC
+    CBitmap* m_pOldBitmap;	// bitmap originally found in CMemDCEx
     CDC*     m_pDC;			// Saves CDC passed in constructor
     CRect    m_rect;		// Rectangle of drawing area.
     BOOL     m_bMemDC;		// TRUE if CDC really is a Memory DC.
@@ -94,4 +94,4 @@ private:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_MEMDC_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_)
+#endif // !defined(AFX_MEMDCEX_H__CA1D3541_7235_11D1_ABBA_00A0243D1382__INCLUDED_)

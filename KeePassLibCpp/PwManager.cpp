@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -184,9 +184,26 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 		const bool bDec64 = CBase64Codec::DecodeUrlT(pszMasterKey, vExtKey);
 		if(bDec64 && (vExtKey.size() > 0))
 		{
-			sha256_begin(&sha32);
-			sha256_hash(&vExtKey[0], static_cast<unsigned long>(vExtKey.size()), &sha32);
-			sha256_end((unsigned char *)aFileKey, &sha32);
+			bool bRegular = true;
+
+			if(vExtKey.size() == (8 + 8 + 32))
+			{
+				const UINT64* pID1 = (const UINT64*)(&vExtKey[0]);
+				const UINT64* pID2 = (const UINT64*)(&vExtKey[8]);
+
+				if((*pID1 == PWKI_DIRECT_1) && (*pID2 == PWKI_DIRECT_2))
+				{
+					memcpy(aFileKey, &vExtKey[16], 32);
+					bRegular = false;
+				}
+			}
+
+			if(bRegular)
+			{
+				sha256_begin(&sha32);
+				sha256_hash(&vExtKey[0], static_cast<unsigned long>(vExtKey.size()), &sha32);
+				sha256_end((unsigned char *)aFileKey, &sha32);
+			}
 		}
 		else return PWE_KEYPROV_INVALID_KEY;
 		mem_erase(&vExtKey[0], vExtKey.size());

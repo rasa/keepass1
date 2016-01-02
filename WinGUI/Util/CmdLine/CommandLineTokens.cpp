@@ -29,7 +29,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ==========================================================================*/
 
-// DR 2009-01-03: Added main window NULL check
+// DR 2009-01-03: Added main window NULL check.
+// DR 2015-08-06: Added #include <iterator>.
 
 #include "StdAfx.h"
 #include "CommandLineTokens.h"
@@ -37,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <cassert>
 #include <cctype>
 #include <sstream>
+#include <iterator>
 
 namespace {
 

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "StdAfx.h"
 #include "QualityProgressCtrl.h"
 #include "NewGUICommon.h"
-#include "MemDC.h"
+#include "MemDCEx.h"
 
 using namespace Gdiplus;
 
@@ -44,7 +44,7 @@ void CQualityProgressCtrl::OnPaint()
 	CPaintDC dcPaint(this);
 	// Do not call CProgressCtrl::OnPaint() for painting messages
 
-	CMemDC dc(&dcPaint);
+	CMemDCEx dc(&dcPaint);
 	HDC hDC = dc.m_hDC;
 
 	Graphics* pg = Graphics::FromHDC(hDC);

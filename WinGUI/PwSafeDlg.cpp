@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2015 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2016 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -225,6 +225,9 @@ CPwSafeDlg::CPwSafeDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CPwSafeDlg)
 	//}}AFX_DATA_INIT
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon48 = (HICON)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(
+		IDR_MAINFRAME), IMAGE_ICON, 48, 48, 0);
+	ASSERT((m_hIcon != NULL) && (m_hIcon48 != NULL));
 
 	m_pThemeHelper = NULL;
 
@@ -720,7 +723,8 @@ BOOL CPwSafeDlg::OnInitDialog()
 	CString str;
 
 	// pDest->AppendMenu(MF_SEPARATOR);
-	for(i = 0; i < pSrc->GetMenuItemCount(); ++i)
+	UINT cItems = static_cast<UINT>(pSrc->GetMenuItemCount());
+	for(i = 0; i < cItems; ++i)
 	{
 		uID = pSrc->GetMenuItemID(i);
 		uState = pSrc->GetMenuState(i, MF_BYPOSITION);
@@ -748,7 +752,8 @@ BOOL CPwSafeDlg::OnInitDialog()
 	ASSERT(pSrc != NULL); if(pSrc == NULL) pSrc = &m_popmenu;
 
 	// pDest->AppendMenu(MF_SEPARATOR);
-	for(i = 0; i < pSrc->GetMenuItemCount() - 2; ++i)
+	cItems = static_cast<UINT>(pSrc->GetMenuItemCount());
+	for(i = 0; i < (cItems - 2); ++i)
 	{
 		uID = pSrc->GetMenuItemID(i);
 		uState = pSrc->GetMenuState(i, MF_BYPOSITION);
@@ -1203,8 +1208,15 @@ BOOL CPwSafeDlg::OnInitDialog()
 	ListView_SetBkImage(m_cList.m_hWnd, &lvbk);
 	strImagePath.UnlockBuffer(); */
 
-	m_hTrayIconNormal = AfxGetApp()->LoadIcon(IDI_UNLOCKED);
-	m_hTrayIconLocked = AfxGetApp()->LoadIcon(IDI_LOCKED);
+	// m_hTrayIconNormal = AfxGetApp()->LoadIcon(IDI_UNLOCKED);
+	// m_hTrayIconLocked = AfxGetApp()->LoadIcon(IDI_LOCKED);
+	const int dxSmall = GetSystemMetrics(SM_CXSMICON);
+	const int dySmall = GetSystemMetrics(SM_CYSMICON);
+	m_hTrayIconNormal = (HICON)LoadImage(AfxGetInstanceHandle(),
+		MAKEINTRESOURCE(IDI_UNLOCKED), IMAGE_ICON, dxSmall, dySmall, 0);
+	m_hTrayIconLocked = (HICON)LoadImage(AfxGetInstanceHandle(),
+		MAKEINTRESOURCE(IDI_LOCKED), IMAGE_ICON, dxSmall, dySmall, 0);
+
 	m_hLockOverlayIcon = AfxGetApp()->LoadIcon(IDI_LOCK_OVERLAY);
 
 	CMsgRelayWnd::SetRelayTarget(this->m_hWnd);
@@ -2246,7 +2258,6 @@ void CPwSafeDlg::SaveOptions()
 {
 	CPrivateConfigEx pcfg(TRUE);
 	TCHAR szTemp[SI_REGSIZE];
-	CString strTemp;
 
 	// Save clipboard auto-clear time
 	_ultot_s(m_dwClipboardSecs, szTemp, _countof(szTemp), 10);
@@ -2285,8 +2296,8 @@ void CPwSafeDlg::SaveOptions()
 
 		// TCHAR tszTemp[SI_REGSIZE];
 		// GetModuleFileName(NULL, tszTemp, SI_REGSIZE - 2);
-		const std_string strTemp = Executable::instance().getFullPathName();
-		pcfg.Set(PWMKEY_LASTDB, MakeRelativePathEx(strTemp.c_str(), m_strLastDb));
+		const std_string strExe = Executable::instance().getFullPathName();
+		pcfg.Set(PWMKEY_LASTDB, MakeRelativePathEx(strExe.c_str(), m_strLastDb));
 	}
 	else
 	{
@@ -2421,7 +2432,7 @@ void CPwSafeDlg::SaveOptions()
 	pcfg.Set(PWMKEY_DEFAULTEXPIRE, szTemp);
 
 	// int j = 0;
-	// CString strT;
+	// CString strTemp, strT;
 	// for(int i = 0; i < (int)CPluginManager::Instance().m_plugins.size(); ++i)
 	// {
 	//	if(CPluginManager::Instance().m_plugins[i].bEnabled == FALSE) continue;
@@ -6174,6 +6185,7 @@ void CPwSafeDlg::_Find(DWORD dwFindGroupId)
 		if(dlg.m_bURL != FALSE)        dwFlags |= PWMF_URL;
 		if(dlg.m_bPassword != FALSE)   dwFlags |= PWMF_PASSWORD;
 		if(dlg.m_bAdditional != FALSE) dwFlags |= PWMF_ADDITIONAL;
+		if(dlg.m_bUUID != FALSE)       dwFlags |= PWMF_UUID;
 		if(dlg.m_bGroupName != FALSE)  dwFlags |= PWMF_GROUPNAME;
 		if(dlg.m_bRegex != FALSE)      dwFlags |= PWMS_REGEX;
 
@@ -7850,7 +7862,7 @@ void CPwSafeDlg::OnPwlistMassModify()
 
 	if(NewGUI_DoModal(&dlg) == IDOK)
 	{
-		const DWORD dwGroupId = m_mgr.GetGroupIdByIndex((DWORD)dlg.m_nGroupInx);
+		const DWORD dwGroupId = m_mgr.GetGroupIdByIndex(static_cast<DWORD>(dlg.m_nGroupInx));
 		ASSERT(dwGroupId != DWORD_MAX);
 
 		for(DWORD i = 0; i < static_cast<DWORD>(m_cList.GetItemCount()); ++i)
@@ -7864,9 +7876,10 @@ void CPwSafeDlg::OnPwlistMassModify()
 				PW_ENTRY *p = m_mgr.GetEntry(dwIndex);
 				ASSERT(p != NULL); if(p == NULL) continue;
 
-				if(dlg.m_bModGroup == TRUE) p->uGroupId = dwGroupId;
-				if(dlg.m_bModIcon == TRUE) p->uImageId = (DWORD)dlg.m_nIconId;
-				if(dlg.m_bModExpire == TRUE) p->tExpire = dlg.m_tExpire;
+				if(dlg.m_bModGroup != FALSE) p->uGroupId = dwGroupId;
+				if(dlg.m_bModIcon != FALSE) p->uImageId = (DWORD)dlg.m_nIconId;
+				if(dlg.m_bModExpire != FALSE) p->tExpire = dlg.m_tExpire;
+				if(dlg.m_bDelAttach != FALSE) CPwUtil::RemoveBinaryData(p);
 
 				_TouchEntry(i, TRUE); // Doesn't change the entry except the time fields
 			}
@@ -7886,6 +7899,7 @@ void CPwSafeDlg::OnPwlistMassModify()
 		}
 
 		m_bModified = TRUE;
+		_UpdateToolBar(TRUE);
 	}
 }
 
@@ -9663,8 +9677,8 @@ void CPwSafeDlg::SetStatusTextEx(LPCTSTR lpStatusText, int nPane)
 
 void CPwSafeDlg::_DoQuickFind(LPCTSTR lpText)
 {
-	const DWORD dwFlags = PWMF_TITLE | PWMF_USER | PWMF_URL | PWMF_PASSWORD |
-		PWMF_ADDITIONAL | PWMF_GROUPNAME;
+	const DWORD dwFlags = (PWMF_TITLE | PWMF_USER | PWMF_URL | PWMF_PASSWORD |
+		PWMF_ADDITIONAL | PWMF_UUID | PWMF_GROUPNAME);
 
 	LPCTSTR lpSearch = lpText;
 	if(lpSearch == NULL)
@@ -11229,15 +11243,16 @@ void CPwSafeDlg::_UpdateTrayIcon(bool bUpdateOnlyVisibility)
 	if(bUpdateOnlyVisibility) return;
 
 	HICON hAssign = NULL, hDestroy = NULL;
-	NewGUI_UpdateColorizedIcon(AfxGetApp()->LoadIcon(IDR_MAINFRAME), NULL, m_mgr.GetColor(),
-		0, &m_hIcoStoreMain, &m_clrIcoStoreMain, &hAssign, &hDestroy);
+	NewGUI_UpdateColorizedIcon(m_hIcon48, NULL, m_mgr.GetColor(), 0,
+		&m_hIcoStoreMain, &m_clrIcoStoreMain, &hAssign, &hDestroy);
 	SetIcon(hAssign, FALSE);
 	SetIcon(hAssign, TRUE);
 	if(hDestroy != NULL) { VERIFY(DestroyIcon(hDestroy)); }
 
 	if(m_bLocked == FALSE)
 	{
-		NewGUI_UpdateColorizedIcon(m_hTrayIconNormal, NULL, m_mgr.GetColor(), 16,
+		const int qSmall = GetSystemMetrics(SM_CXSMICON);
+		NewGUI_UpdateColorizedIcon(m_hTrayIconNormal, NULL, m_mgr.GetColor(), qSmall,
 			&m_hIcoStoreTrayNormal, &m_clrIcoStoreTrayNormal, &hAssign, &hDestroy);
 
 		m_systray.SetIcon(hAssign);
@@ -11248,7 +11263,7 @@ void CPwSafeDlg::_UpdateTrayIcon(bool bUpdateOnlyVisibility)
 	else
 	{
 		// NewGUI_UpdateColorizedIcon(m_hTrayIconNormal, m_hLockOverlayIcon, m_mgr.GetColor(),
-		//	16, &m_hIcoStoreTrayLocked, &m_clrIcoStoreTrayLocked, &hAssign, &hDestroy);
+		//	qSmall, &m_hIcoStoreTrayLocked, &m_clrIcoStoreTrayLocked, &hAssign, &hDestroy);
 
 		// m_systray.SetIcon(hAssign);
 		// if(hDestroy != NULL) { VERIFY(DestroyIcon(hDestroy)); }
