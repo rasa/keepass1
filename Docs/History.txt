@@ -1,3 +1,33 @@
+16/03/02 - 1.31
+- The quick search box (in the toolbar of the main window) now
+  supports searching using a regular expression; in order to
+  indicate that the search text is a regular expression,
+  enclose it in '//'; for example, performing a quick search
+  for '//Michael|Adam//' shows all entries containing 'Michael'
+  or 'Adam'
+- Added per-user Start Menu Internet Application detection
+- HTML export/printing: long field names are hyphenated now,
+  long field data now breaks and wraps onto the next line, and
+  passwords are rendered using a monospace font
+
+- When searching using a regular expression, for a match the
+  expression now must occur somewhere in the entry data; in
+  order to enforce that a match occurs only at the start or at
+  the end of the data, use '^' or '$'
+- Simple text boxes now convert rich text immediately
+- When minimizing the main window to tray, the active control
+  now loses the focus, and the focus is restored when restoring
+  the window
+- Added time limit for finding repetitions during a password
+  quality estimation
+- The 'About' dialog now indicates whether the current build is
+  a development snapshot
+- Changed code signing certificate
+- Upgraded installer
+- Various UI text improvements
+- Various code optimizations
+- Minor other improvements
+
 16/01/02 - 1.30
 - Refined application icons (thanks to Victor Andreyenkov)
 - Added option 'UUID' in the 'Find' dialog (to search in UUIDs

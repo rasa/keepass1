@@ -49,12 +49,14 @@ public:
 	//{{AFX_VIRTUAL(CAutoRichEditCtrlFx)
 	//}}AFX_VIRTUAL
 
-	void InitEx();
+	void InitEx(bool bPlainTextOnly);
 
-	void SetRTF(CString sRTF, int nStreamType);
+	void SetRTF(LPCTSTR lpRTF, int nStreamType);
 	CString GetRTF();
 
 	CString GetTXT();
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 protected:
 	//{{AFX_MSG(CAutoRichEditCtrlFx)
@@ -72,6 +74,9 @@ private:
 
 	CString _StreamOutEx(int nFormat);
 
+	bool _HandleKey(int vk, bool bDown);
+
+	bool m_bPlainTextOnly;
 	CString m_strStreamInCache;
 };
 
