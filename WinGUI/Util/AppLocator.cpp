@@ -93,21 +93,26 @@ void AppLocator::GetPaths()
 
 void AppLocator::FindInternetExplorer()
 {
-	for(int i = 0; i < 4; ++i)
+	LPCTSTR lpIEDef = _T("SOFTWARE\\Clients\\StartMenuInternet\\IEXPLORE.EXE\\shell\\open\\command");
+	LPCTSTR lpIEWow = _T("SOFTWARE\\Wow6432Node\\Clients\\StartMenuInternet\\IEXPLORE.EXE\\shell\\open\\command");
+
+	for(int i = 0; i < 6; ++i)
 	{
 		std::basic_string<TCHAR> str;
+
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd203067.aspx
 		if(i == 0)
-			str = GetRegStrEx(HKEY_LOCAL_MACHINE,
-				_T("SOFTWARE\\Clients\\StartMenuInternet\\IEXPLORE.EXE\\shell\\open\\command"),
-				_T(""), 0);
+			str = GetRegStrEx(HKEY_CURRENT_USER, lpIEDef, _T(""), 0);
 		else if(i == 1)
-			str = GetRegStrEx(HKEY_LOCAL_MACHINE,
-				_T("SOFTWARE\\Wow6432Node\\Clients\\StartMenuInternet\\IEXPLORE.EXE\\shell\\open\\command"),
-				_T(""), 0);
+			str = GetRegStrEx(HKEY_CURRENT_USER, lpIEWow, _T(""), 0);
 		else if(i == 2)
+			str = GetRegStrEx(HKEY_LOCAL_MACHINE, lpIEDef, _T(""), 0);
+		else if(i == 3)
+			str = GetRegStrEx(HKEY_LOCAL_MACHINE, lpIEWow, _T(""), 0);
+		else if(i == 4)
 			str = GetRegStrEx(HKEY_CLASSES_ROOT,
 				_T("IE.AssocFile.HTM\\shell\\open\\command"), _T(""), 0);
-		else if(i == 3)
+		else
 			str = GetRegStrEx(HKEY_CLASSES_ROOT,
 				_T("Applications\\iexplore.exe\\shell\\open\\command"), _T(""), 0);
 
@@ -167,17 +172,24 @@ void AppLocator::FindFirefox()
 
 void AppLocator::FindOpera()
 {
-	for(int i = 0; i < 2; ++i)
+	// Old Opera versions
+	LPCTSTR lpOp12 = _T("SOFTWARE\\Clients\\StartMenuInternet\\Opera\\shell\\open\\command");
+	// Opera >= 20.0.1387.77
+	LPCTSTR lpOp20 = _T("SOFTWARE\\Clients\\StartMenuInternet\\OperaStable\\shell\\open\\command");
+
+	for(int i = 0; i < 4; ++i)
 	{
 		std::basic_string<TCHAR> str;
-		if(i == 0) // Opera 20.0.1387.77
-			str = GetRegStrEx(HKEY_LOCAL_MACHINE,
-				_T("SOFTWARE\\Clients\\StartMenuInternet\\OperaStable\\shell\\open\\command"),
-				_T(""), 0);
-		else if(i == 1) // Old
-			str = GetRegStrEx(HKEY_LOCAL_MACHINE,
-				_T("SOFTWARE\\Clients\\StartMenuInternet\\Opera\\shell\\open\\command"),
-				_T(""), 0);
+
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd203067.aspx
+		if(i == 0)
+			str = GetRegStrEx(HKEY_CURRENT_USER, lpOp20, _T(""), 0);
+		else if(i == 1)
+			str = GetRegStrEx(HKEY_CURRENT_USER, lpOp12, _T(""), 0);
+		else if(i == 2)
+			str = GetRegStrEx(HKEY_LOCAL_MACHINE, lpOp20, _T(""), 0);
+		else
+			str = GetRegStrEx(HKEY_LOCAL_MACHINE, lpOp12, _T(""), 0);
 
 		str = AppLocator::Fix(str);
 		if(str.size() == 0) continue;

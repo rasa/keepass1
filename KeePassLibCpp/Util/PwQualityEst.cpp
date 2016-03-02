@@ -537,6 +537,8 @@ void QeFindRepetitions(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPattern
 
 	WCHAR chErased = WCHAR_MAX;
 	ASSERT(chErased == L'\xFFFF');
+
+	const DWORD tStart = GetTickCount();
 	for(size_t m = (n / 2); m >= 3; --m)
 	{
 		for(size_t x1 = 0; x1 <= (n - (2 * m)); ++x1)
@@ -559,6 +561,9 @@ void QeFindRepetitions(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPattern
 
 			if(bFoundRep) QeErasePart(v, x1, m, chErased);
 		}
+
+		const DWORD tDiff = GetTickCount() - tStart;
+		if(tDiff > 500) return;
 	}
 }
 

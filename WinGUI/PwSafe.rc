@@ -322,7 +322,7 @@ BEGIN
     CONTROL         "By default, new entries expire in the following number of days:",IDC_CHECK_DEFAULTEXPIRE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,82,358,10
     CONTROL         "Display images on buttons",IDC_CHECK_IMGBUTTONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,99,337,10
-    CONTROL         "Show grid lines in password entry list",IDC_CHECK_ENTRYGRID,
+    CONTROL         "Show grid lines in the entry list",IDC_CHECK_ENTRYGRID,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,111,339,10
     CONTROL         "Automatically resize table columns when resizing the main window",IDC_CHECK_COLAUTOSIZE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,185,341,10
@@ -340,7 +340,7 @@ BEGIN
     CONTROL         "Windows newline sequence (\\r\\n)",IDC_RADIO_NEWLINE_0,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP,18,68,337,10
     CONTROL         "Unix newline sequence (\\n)",IDC_RADIO_NEWLINE_1,"Button",BS_AUTORADIOBUTTON,18,77,337,10
-    CONTROL         "Mark database as modified on last-access time change",IDC_CHECK_SAVEONLATMOD,
+    CONTROL         "Mark database as modified on last access time change",IDC_CHECK_SAVEONLATMOD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,183,342,10
     LTEXT           "Clipboard behavior:",IDC_STATIC_CLIPBOARDMETHOD,65,52,328,8
     CONTROL         "Timed: copy data to the clipboard and clear it automatically after some seconds",IDC_RADIO_CLIPMETHOD_TIMED,
@@ -847,8 +847,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,30,0,0
- PRODUCTVERSION 1,30,0,0
+ FILEVERSION 1,31,0,0
+ PRODUCTVERSION 1,31,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -865,13 +865,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "http://keepass.info/"
             VALUE "CompanyName", "Dominik Reichl"
-            VALUE "FileDescription", "KeePass Password Safe 1.30"
-            VALUE "FileVersion", "1.30.0.0"
+            VALUE "FileDescription", "KeePass Password Safe 1.31"
+            VALUE "FileVersion", "1.31.0.0"
             VALUE "InternalName", "PwSafe"
             VALUE "LegalCopyright", "Copyright (C) 2003-2016 Dominik Reichl"
             VALUE "OriginalFilename", "KeePass.exe"
-            VALUE "ProductName", "KeePass Password Safe 1.30"
-            VALUE "ProductVersion", "1.30.0.0"
+            VALUE "ProductName", "KeePass Password Safe 1.31"
+            VALUE "ProductVersion", "1.31.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -948,7 +948,7 @@ BEGIN
             MENUITEM "Use &Simple List View for TAN-Only Groups", ID_VIEW_SIMPLETANVIEW
             MENUITEM "Show TAN &Indices in Entry Titles", ID_VIEW_SHOWTANINDICES
         END
-        POPUP "Auto-&Sort Password List"
+        POPUP "Auto-&Sort Entry List"
         BEGIN
             MENUITEM "N&o Auto-Sort",               ID_VIEW_AUTOSORT_NOSORT
             MENUITEM SEPARATOR

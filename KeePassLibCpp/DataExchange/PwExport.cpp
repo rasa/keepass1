@@ -20,6 +20,7 @@
 #include "StdAfx.h"
 #include "PwExport.h"
 #include <vector>
+#include <boost/lexical_cast.hpp>
 
 #include "../Util/MemUtil.h"
 #include "../Util/StrUtil.h"
@@ -119,7 +120,7 @@ void CPwExport::SetNewLineSeq(BOOL bWindows)
 
 void CPwExport::_ExpStr(LPCTSTR lpString)
 {
-	if(_tcslen(lpString) > 0)
+	if((lpString != NULL) && (_tcslen(lpString) > 0))
 	{
 		UTF8_BYTE *pUtf8String = _StringToUTF8(lpString);
 
@@ -132,9 +133,15 @@ void CPwExport::_ExpStr(LPCTSTR lpString)
 	}
 }
 
+void CPwExport::_ExpLine(LPCTSTR lpString)
+{
+	_ExpStr(lpString);
+	_ExpStr(m_pszNewLine);
+}
+
 void CPwExport::_ExpXmlStr(LPCTSTR lpString)
 {
-	if(_tcslen(lpString) > 0)
+	if((lpString != NULL) && (_tcslen(lpString) > 0))
 	{
 		TCHAR *pXmlString = MakeSafeXmlString(lpString);
 		
@@ -374,23 +381,149 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 	}
 	else if(m_nFormat == PWEXP_HTML)
 	{
-		_ExpStr(_T("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"));
-		_ExpStr(m_pszNewLine);
-		_ExpStr(_T("<html><head>"));
-		_ExpStr(_T("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"));
-		_ExpStr(_T("<title>"));
-		_ExpXmlStr(TRL("Password List"));
-		_ExpStr(_T("</title></head><body>"));
-		_ExpStr(m_pszNewLine);
-		_ExpStr(_T("<h1>"));
-		_ExpXmlStr(TRL("Password List"));
-		_ExpStr(_T("</h1>"));
-		_ExpStr(m_pszNewLine);
-		_ExpStr(_T("<table width=\"100%\" border=\"1px\" cellspacing=\"0\" cellpadding=\"1\"><tr><th>"));
+		_ExpLine(_T("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\""));
+		_ExpLine(_T("\t\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"));
 
-		_ExpSetSep(_T("</th><th>"));
+		LPCTSTR lpLang = TRL("~LANGISO6391CODE");
+		if((lpLang == NULL) || (lpLang[0] == 0) || (_tcslen(lpLang) > 4))
+			lpLang = _T("en");
+		_ExpStr(_T("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""));
+		_ExpXmlStr(lpLang);
+		_ExpStr(_T("\" xml:lang=\""));
+		_ExpXmlStr(lpLang);
+		_ExpLine(_T("\">"));
+
+		_ExpLine(_T("<head>"));
+		_ExpLine(_T("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />"));
+		_ExpStr(_T("<title>"));
+		_ExpXmlStr(TRL("Entry List"));
+		_ExpStr(_T(" - "));
+		_ExpXmlStr(PWM_PRODUCT_NAME_SHORT);
+		_ExpLine(_T("</title>"));
+		_ExpLine(_T("<meta http-equiv=\"expires\" content=\"0\" />"));
+		_ExpLine(_T("<meta http-equiv=\"cache-control\" content=\"no-cache\" />"));
+		_ExpLine(_T("<meta http-equiv=\"pragma\" content=\"no-cache\" />"));
+
+		_ExpLine(_T("<style type=\"text/css\"><!--"));
+
+		_ExpLine(_T("body, p, div, h1, h2, h3, h4, h5, h6, ol, ul, li, td, th, dd, dt, a {"));
+		_ExpLine(_T("\tfont-family: \"Tahoma\", \"MS Sans Serif\", \"Sans Serif\", \"Verdana\", sans-serif;"));
+		_ExpLine(_T("\tfont-size: 10pt;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("span.fserif {"));
+		_ExpLine(_T("\tfont-family: \"Times New Roman\", serif;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("h1 { font-size: 2em; }"));
+		_ExpLine(_T("h2 {"));
+		_ExpLine(_T("\tfont-size: 1.5em;"));
+		_ExpLine(_T("\tcolor: #000000;"));
+		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
+		_ExpLine(_T("\tpadding-left: 2pt;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("h3 {"));
+		_ExpLine(_T("\tfont-size: 1.2em;"));
+		_ExpLine(_T("\tcolor: #000000;"));
+		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
+		_ExpLine(_T("\tpadding-left: 2pt;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("h4 { font-size: 1em; }"));
+		_ExpLine(_T("h5 { font-size: 0.89em; }"));
+		_ExpLine(_T("h6 { font-size: 0.6em; }"));
+
+		_ExpLine(_T("table {"));
+		_ExpLine(_T("\twidth: 100%;"));
+		_ExpLine(_T("\ttable-layout: fixed;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("th {"));
+		_ExpLine(_T("\ttext-align: left;"));
+		_ExpLine(_T("\tvertical-align: top;"));
+		_ExpLine(_T("\tfont-weight: bold;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("td {"));
+		_ExpLine(_T("\ttext-align: left;"));
+		_ExpLine(_T("\tvertical-align: top;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("a:visited {"));
+		_ExpLine(_T("\ttext-decoration: none;"));
+		_ExpLine(_T("\tcolor: #0000DD;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("a:active {"));
+		_ExpLine(_T("\ttext-decoration: none;"));
+		_ExpLine(_T("\tcolor: #6699FF;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("a:link {"));
+		_ExpLine(_T("\ttext-decoration: none;"));
+		_ExpLine(_T("\tcolor: #0000DD;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("a:hover {"));
+		_ExpLine(_T("\ttext-decoration: underline;"));
+		_ExpLine(_T("\tcolor: #6699FF;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T(".field_name {"));
+		_ExpLine(_T("\t-webkit-hyphens: auto;"));
+		_ExpLine(_T("\t-moz-hyphens: auto;"));
+		_ExpLine(_T("\t-ms-hyphens: auto;"));
+		_ExpLine(_T("\thyphens: auto;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T(".field_data {"));
+		// _ExpLine(_T("\tword-break: break-all;"));
+		_ExpLine(_T("\toverflow-wrap: break-word;"));
+		_ExpLine(_T("\tword-wrap: break-word;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("--></style>"));
+
+		_ExpLine(_T("</head>"));
+		_ExpLine(_T("<body>"));
+		_ExpStr(_T("<h2>"));
+		_ExpXmlStr(TRL("Entry List"));
+		_ExpStr(_T(" &#8211; "));
+		_ExpXmlStr(PWM_PRODUCT_NAME_SHORT);
+		_ExpLine(_T("</h2>"));
+		_ExpLine(_T("<table><tr>"));
+
+		DWORD dwCols = 0;
+		if(pOptions->bGroup != FALSE) ++dwCols;
+		if(pOptions->bGroupTree != FALSE) ++dwCols;
+		if(pOptions->bTitle != FALSE) ++dwCols;
+		if(pOptions->bUserName != FALSE) ++dwCols;
+		if(pOptions->bURL != FALSE) ++dwCols;
+		if(pOptions->bPassword != FALSE) ++dwCols;
+		if(pOptions->bNotes != FALSE) ++dwCols;
+		if(pOptions->bUUID != FALSE) ++dwCols;
+		if(pOptions->bImage != FALSE) ++dwCols;
+		if(pOptions->bCreationTime != FALSE) ++dwCols;
+		if(pOptions->bLastAccTime != FALSE) ++dwCols;
+		if(pOptions->bLastModTime != FALSE) ++dwCols;
+		if(pOptions->bExpireTime != FALSE) ++dwCols;
+		if(pOptions->bAttachment != FALSE) ++dwCols; // Description
+		if(pOptions->bAttachment != FALSE) ++dwCols; // Data
+
+		if(dwCols == 0) dwCols = 1;
+		int nWidth = 10000 / static_cast<int>(dwCols);
+		std::basic_string<TCHAR> strWidth =
+			boost::lexical_cast<std::basic_string<TCHAR> >(nWidth / 100);
+		strWidth += _T(".");
+		strWidth += boost::lexical_cast<std::basic_string<TCHAR> >(nWidth % 100);
+
+		std::basic_string<TCHAR> strTH = _T("<th class=\"field_name\" style=\"width: ");
+		strTH += strWidth;
+		strTH += _T("%;\">");
+
+		std::basic_string<TCHAR> strClTH = _T("</th>");
+		strClTH += m_pszNewLine;
+		strClTH += strTH;
+
+		_ExpStr(strTH.c_str());
+		_ExpSetSep(strClTH.c_str());
 		_ExpResetSkip();
-		_ExpXmlStrIf(pOptions->bGroup, TRL("Password Groups"));
+		_ExpXmlStrIf(pOptions->bGroup, TRL("Group"));
 		_ExpXmlStrIf(pOptions->bGroupTree, TRL("Group Tree"));
 		_ExpXmlStrIf(pOptions->bTitle, TRL("Title"));
 		_ExpXmlStrIf(pOptions->bUserName, TRL("User Name"));
@@ -406,8 +539,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpXmlStrIf(pOptions->bAttachment, TRL("Attachment Description"));
 		_ExpXmlStrIf(pOptions->bAttachment, TRL("Attachment"));
 
-		_ExpStr(_T("</th></tr>"));
-		_ExpStr(m_pszNewLine);
+		_ExpLine(_T("</th></tr>"));
+		_ExpSetSep(NULL); // Release strClTH
 	}
 	else if(m_nFormat == PWEXP_XML)
 	{
@@ -422,7 +555,7 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 
 		_ExpSetSep(_T("\",\""));
 		_ExpResetSkip();
-		_ExpStrIf(pOptions->bGroup, _T("Password Groups"));
+		_ExpStrIf(pOptions->bGroup, _T("Group"));
 		_ExpStrIf(pOptions->bGroupTree, _T("Group Tree"));
 		_ExpStrIf(pOptions->bTitle, _T("Account"));
 		_ExpStrIf(pOptions->bUserName, _T("Login Name"));
@@ -611,9 +744,13 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 			}
 			else if(m_nFormat == PWEXP_HTML)
 			{
-				_ExpStr(_T("<tr><td>"));
+				_ExpStr(_T("<tr><td class=\"field_data\">"));
 
-				_ExpSetSep(_T("</td><td>"));
+				std::basic_string<TCHAR> strClTD = _T("</td>");
+				strClTD += m_pszNewLine;
+				strClTD += _T("<td class=\"field_data\">");
+
+				_ExpSetSep(strClTD.c_str());
 				_ExpResetSkip();
 
 				_ExpHtmlStrIf(pOptions->bGroup, pg->pszGroupName);
@@ -621,7 +758,7 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				_ExpHtmlStrIf(pOptions->bTitle, p->pszTitle);
 				_ExpHtmlStrIf(pOptions->bUserName, p->pszUserName);
 
-				if((pOptions->bURL == TRUE) && (_tcslen(p->pszURL) != 0))
+				if((pOptions->bURL != FALSE) && (_tcslen(p->pszURL) != 0))
 				{
 					_ExpStrIf(pOptions->bURL, _T("<a href=\""));
 					_ExpXmlStr(p->pszURL); // Use XML encoding, no &nbsp; when empty
@@ -631,7 +768,13 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				}
 				else _ExpHtmlStrIf(pOptions->bURL, _T(""));
 
-				_ExpHtmlStrIf(pOptions->bPassword, p->pszPassword);
+				if(pOptions->bPassword != FALSE)
+				{
+					_ExpStrIf(pOptions->bPassword, _T("<code>"));
+					_ExpHtmlStr(p->pszPassword);
+					_ExpStr(_T("</code>"));
+				}
+
 				CString strNotesConv = SU_ConvertNewLines(p->pszAdditional, m_pszNewLine);
 				_ExpHtmlStrIf(pOptions->bNotes, strNotesConv);
 				_ExpHtmlStrIf(pOptions->bUUID, strUUID);
@@ -651,8 +794,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				else
 					_ExpHtmlStrIf(pOptions->bAttachment, _T(""));
 
-				_ExpStr(_T("</td></tr>"));
-				_ExpStr(m_pszNewLine);
+				_ExpLine(_T("</td></tr>"));
+				_ExpSetSep(NULL); // Release strClTD
 			}
 			else if(m_nFormat == PWEXP_XML)
 			{

@@ -79,7 +79,7 @@ BOOL CFieldRefDlg::OnInitDialog()
 	m_lvEntries.GetClientRect(&rectClient);
 	const int nColWidth = (rectClient.right - rectClient.left -
 		GetSystemMetrics(SM_CXVSCROLL) - 6) / 5;
-	m_lvEntries.InsertColumn(0, TRL("Password Groups"), LVCFMT_LEFT, nColWidth + 2, 0);
+	m_lvEntries.InsertColumn(0, TRL("Group"), LVCFMT_LEFT, nColWidth + 2, 0);
 	m_lvEntries.InsertColumn(1, TRL("Title"), LVCFMT_LEFT, nColWidth, 1);
 	m_lvEntries.InsertColumn(2, TRL("User Name"), LVCFMT_LEFT, nColWidth, 2);
 	m_lvEntries.InsertColumn(3, TRL("URL"), LVCFMT_LEFT, nColWidth, 3);

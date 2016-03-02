@@ -1038,7 +1038,7 @@ void SafeActivateNextWindow(HWND hWndBase)
 	WINDOWPLACEMENT wp;
 	wp.length = sizeof(WINDOWPLACEMENT);
 
-	while(1)
+	while(true)
 	{
 		if(hWnd != hWndBase)
 		{
@@ -1062,7 +1062,7 @@ void SafeActivateNextWindow(HWND hWndBase)
 		SetForegroundWindow(hWnd);
 
 		const DWORD dwStartTime = timeGetTime();
-		while(1)
+		while(true)
 		{
 			if(GetForegroundWindow() == hWnd) break;
 

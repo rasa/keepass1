@@ -31,6 +31,7 @@ static char THIS_FILE[] = __FILE__;
 
 CAutoRichEditCtrlFx::CAutoRichEditCtrlFx()
 {
+	m_bPlainTextOnly = false;
 }
 
 CAutoRichEditCtrlFx::~CAutoRichEditCtrlFx()
@@ -44,8 +45,22 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 
-void CAutoRichEditCtrlFx::InitEx()
+void CAutoRichEditCtrlFx::InitEx(bool bPlainTextOnly)
 {
+	m_bPlainTextOnly = bPlainTextOnly;
+	if(bPlainTextOnly)
+	{
+		// SendMessage(EM_SETEDITSTYLE, SES_EMULATESYSEDIT, SES_EMULATESYSEDIT);
+
+		// For EM_SETTEXTMODE the rich edit control must be empty
+		// if(GetTextLength() > 0) { ASSERT(FALSE); SetRTF(_T(""), SF_TEXT); }
+		// SendMessage(WM_SETTEXT, 0, (LPARAM)_T(""));
+
+		// SetTextMode(TM_PLAINTEXT);
+		// VERIFY(SendMessage(EM_SETTEXTMODE, TM_PLAINTEXT, 0) == 0);
+		// ASSERT((GetTextMode() & TM_PLAINTEXT) != 0);
+	}
+
 	LimitText(0x7FFFFFF0);
 }
 
@@ -73,7 +88,7 @@ CString CAutoRichEditCtrlFx::GetTXT()
 	return this->_StreamOutEx(SF_TEXT);
 }
 
-void CAutoRichEditCtrlFx::SetRTF(CString sRTF, int nStreamType)
+void CAutoRichEditCtrlFx::SetRTF(LPCTSTR lpRTF, int nStreamType)
 {
 	EDITSTREAM es;
 	ZeroMemory(&es, sizeof(EDITSTREAM));
@@ -84,7 +99,8 @@ void CAutoRichEditCtrlFx::SetRTF(CString sRTF, int nStreamType)
 #endif
 	es.pfnCallback = CBStreamIn;
 
-	m_strStreamInCache = sRTF;
+	LPCTSTR lpData = ((lpRTF != NULL) ? lpRTF : _T(""));
+	m_strStreamInCache = lpData;
 	es.dwCookie = (DWORD_PTR)&m_strStreamInCache;
 
 	this->StreamIn(nStreamType, es);
@@ -184,3 +200,37 @@ BOOL PASCAL AfxInitRichEditEx()
 	return (l_pState->m_hInstRichEdit20 != NULL);
 }
 #endif
+
+BOOL CAutoRichEditCtrlFx::PreTranslateMessage(MSG* pMsg)
+{
+	if(pMsg->message == WM_KEYDOWN)
+	{
+		if(_HandleKey(static_cast<int>(pMsg->wParam), true)) return TRUE;
+	}
+	else if(pMsg->message == WM_KEYUP)
+	{
+		if(_HandleKey(static_cast<int>(pMsg->wParam), false)) return TRUE;
+	}
+
+	return CRichEditCtrl::PreTranslateMessage(pMsg);
+}
+
+bool CAutoRichEditCtrlFx::_HandleKey(int vk, bool bDown)
+{
+	if(::GetFocus() != m_hWnd) { ASSERT(FALSE); return false; }
+
+	bool bCtrl = ((GetKeyState(VK_CONTROL) & 0x8000) != 0);
+	bool bShift = ((GetKeyState(VK_SHIFT) & 0x8000) != 0);
+	bool bAlt = ((GetKeyState(VK_MENU) & 0x8000) != 0);
+	// bool bNumLock = ((GetKeyState(VK_NUMLOCK) & 1) != 0);
+
+	if(m_bPlainTextOnly && ((bCtrl && !bAlt && (vk == 'V')) ||
+		(bShift && !bAlt && (vk == VK_INSERT)))) // Ctrl may be pressed
+		// (!bCtrl && bShift && !bAlt && !bNumLock && (vk == VK_NUMPAD0))))
+	{
+		if(bDown) PasteSpecial(CF_TEXT);
+		return true;
+	}
+
+	return false;
+}

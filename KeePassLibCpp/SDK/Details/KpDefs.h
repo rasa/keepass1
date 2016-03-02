@@ -212,7 +212,7 @@ typedef HRESULT(KP_API *LPKPLIBFUNC)(IKpUnknown* pAPI);
 #define KPM_TANWIZARD_PRE 44
 #define KPM_INFO_ABOUT_PRE 9
 
-// Password list commands
+// Entry list commands
 
 #define KPM_ADD_ENTRY_PRE 5
 #define KPM_ADD_ENTRY 14

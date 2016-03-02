@@ -76,6 +76,7 @@ public:
 
 private:
 	void _ExpStr(LPCTSTR lpString);
+	void _ExpLine(LPCTSTR lpString);
 	void _ExpXmlStr(LPCTSTR lpString);
 	void _ExpHtmlStr(LPCTSTR lpString);
 
