@@ -730,7 +730,9 @@ bool StrMatchText(LPCTSTR lpEntryData, LPCTSTR lpSearch,
 	{
 		try
 		{
-			return boost::regex_match(lpEntryData, *pUseRegex,
+			// return boost::regex_match(lpEntryData, *pUseRegex,
+			//	boost::regex_constants::match_any);
+			return boost::regex_search(lpEntryData, *pUseRegex,
 				boost::regex_constants::match_any);
 		}
 		catch(...) { return false; }

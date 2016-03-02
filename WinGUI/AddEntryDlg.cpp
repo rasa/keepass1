@@ -351,7 +351,7 @@ BOOL CAddEntryDlg::OnInitDialog()
 	if(_pwtimecmp(&tNever, &m_tExpire) == 0) m_bExpires = FALSE;
 	else m_bExpires = TRUE;
 
-	m_reNotes.InitEx();
+	m_reNotes.InitEx(true);
 	m_reNotes.SetEventMask(ENM_MOUSEEVENTS | ENM_LINK);
 	m_reNotes.SendMessage(EM_AUTOURLDETECT, TRUE, 0);
 
@@ -728,7 +728,8 @@ void CAddEntryDlg::OnUpdateReDelete(CCmdUI* pCmdUI)
 
 void CAddEntryDlg::OnRePaste()
 {
-	m_reNotes.Paste();
+	// m_reNotes.Paste();
+	m_reNotes.PasteSpecial(CF_TEXT);
 }
 
 void CAddEntryDlg::OnUpdateRePaste(CCmdUI* pCmdUI)

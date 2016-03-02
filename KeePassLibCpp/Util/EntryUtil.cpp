@@ -460,7 +460,7 @@ void CEntryUtil::GetDummyEntry(PW_ENTRY* p, CPwManager* pmCtx)
 	memcpy(&p->tExpire, &p->tCreation, sizeof(PW_TIME));
 	p->pszBinaryDesc = const_cast<TCHAR*>(g_vDummyData[6]);
 	p->pBinaryData = (BYTE*)g_vDummyData[7];
-	p->uBinaryDataLen = (_tcslen(g_vDummyData[7]) * sizeof(TCHAR));
+	p->uBinaryDataLen = static_cast<DWORD>(_tcslen(g_vDummyData[7]) * sizeof(TCHAR));
 
 	if(pmCtx != NULL)
 	{

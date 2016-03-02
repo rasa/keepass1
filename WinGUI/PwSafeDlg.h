@@ -185,7 +185,7 @@ public:
 	void _HandleEntryDrop(DWORD dwDropType, HTREEITEM hTreeItem);
 
 	void _List_SaveView() { m_nSaveView = m_cList.GetTopIndex(); }
-	void _List_RestoreView() // Restore the previous password list view
+	void _List_RestoreView() // Restore the previous entry list view
 	{
 		int nItemCount = m_cList.GetItemCount();
 
@@ -361,6 +361,7 @@ private:
 	BOOL m_bMinimized;
 	BOOL m_bTrayed;
 	BOOL m_bRestartApplication;
+	HWND m_hPreTrayFocus;
 
 	volatile int m_iDisplayDialog;
 	volatile int m_iDisplayMenu;
