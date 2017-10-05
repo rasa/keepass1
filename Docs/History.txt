@@ -1,3 +1,20 @@
+17/10/05 - 1.34
+- Printing now works even when the default browser doesn't
+  support the 'Print' shell verb
+- Added workaround for Wine not supporting EM_PASTESPECIAL
+
+- Improved error handling when there is too few memory for
+  saving a database
+- When attaching a file fails, a detailed error message is
+  displayed now
+- KeePass now refuses to attach files that are larger than 512
+  MB (as larger files can result in memory problems)
+- Increased default number of AES-KDF rounds
+- Updated links (to the website, help pages, etc.)
+- Upgraded to Boost libraries version 1.65.1
+- Various code optimizations
+- Minor other improvements
+
 17/06/02 - 1.33
 - Browser path detection: added support for browsers that
   register themselves only in the 64-bit registry view (like
