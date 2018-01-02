@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 { \
 	if(pVirtualFile != NULL) \
 	{ \
-		mem_erase((unsigned char *)pVirtualFile, uAllocated); \
+		mem_erase(pVirtualFile, uAllocated); \
 		SAFE_DELETE_ARRAY(pVirtualFile); \
 	} \
 	m_dwKeyEncRounds = PWM_STD_KEYENCROUNDS; \
@@ -148,7 +148,7 @@ int CPwManager::OpenDatabase(const TCHAR *pszFile, _Out_opt_ PWDB_REPAIR_INFO *p
 		{
 			if(pVirtualFile != NULL)
 			{
-				mem_erase((unsigned char *)pVirtualFile, uAllocated);
+				mem_erase(pVirtualFile, uAllocated);
 				SAFE_DELETE_ARRAY(pVirtualFile);
 			}
 
@@ -159,7 +159,7 @@ int CPwManager::OpenDatabase(const TCHAR *pszFile, _Out_opt_ PWDB_REPAIR_INFO *p
 		{
 			if(pVirtualFile != NULL)
 			{
-				mem_erase((unsigned char *)pVirtualFile, uAllocated);
+				mem_erase(pVirtualFile, uAllocated);
 				SAFE_DELETE_ARRAY(pVirtualFile);
 			}
 			
@@ -360,7 +360,7 @@ int CPwManager::OpenDatabase(const TCHAR *pszFile, _Out_opt_ PWDB_REPAIR_INFO *p
 	memcpy(&m_dbLastHeader, &hdr, sizeof(PW_DBHEADER));
 
 	// Erase and delete memory file
-	mem_erase((unsigned char *)pVirtualFile, uAllocated);
+	mem_erase(pVirtualFile, uAllocated);
 	SAFE_DELETE_ARRAY(pVirtualFile);
 
 	const DWORD dwRemovedStreams = _LoadAndRemoveAllMetaStreams(true);
@@ -611,7 +611,7 @@ int CPwManager::SaveDatabase(const TCHAR *pszFile, BYTE *pWrittenDataHash32)
 		memcpy(&pVirtualFile[pos], &dwFieldSize, 4); pos += 4;
 		ASSERT((pb != NULL) && (szlen((char *)pb) == (dwFieldSize - 1)) && ((pos + dwFieldSize) <= qwAlloc));
 		szcpy(&pVirtualFile[pos], (char *)pb); pos += dwFieldSize;
-		if(pb != NULL) mem_erase((unsigned char *)pb, szlen((char *)pb));
+		if(pb != NULL) mem_erase(pb, szlen((char *)pb));
 		SAFE_DELETE_ARRAY(pb);
 
 		pb = _StringToUTF8(m_pEntries[i].pszAdditional);
@@ -760,7 +760,7 @@ int CPwManager::SaveDatabase(const TCHAR *pszFile, BYTE *pWrittenDataHash32)
 		m_bUseTransactedFileWrites);
 	if(nWriteRes != PWE_SUCCESS)
 	{
-		mem_erase((unsigned char *)pVirtualFile, uAlloc);
+		mem_erase(pVirtualFile, uAlloc);
 		SAFE_DELETE_ARRAY(pVirtualFile);
 		_LoadAndRemoveAllMetaStreams(false);
 		return nWriteRes;
@@ -776,7 +776,7 @@ int CPwManager::SaveDatabase(const TCHAR *pszFile, BYTE *pWrittenDataHash32)
 
 	memcpy(&m_dbLastHeader, &hdr, sizeof(PW_DBHEADER)); // Backup last database header
 
-	mem_erase((unsigned char *)pVirtualFile, uAlloc);
+	mem_erase(pVirtualFile, uAlloc);
 	SAFE_DELETE_ARRAY(pVirtualFile);
 	_LoadAndRemoveAllMetaStreams(false);
 
@@ -890,7 +890,7 @@ bool CPwManager::ReadEntryField(USHORT usFieldType, DWORD dwFieldSize,
 	case 0x0007:
 		ASSERT(dwFieldSize != 0);
 		if(pEntry->pszPassword != NULL)
-			mem_erase((unsigned char *)pEntry->pszPassword, _tcslen(pEntry->pszPassword) * sizeof(TCHAR));
+			mem_erase(pEntry->pszPassword, _tcslen(pEntry->pszPassword) * sizeof(TCHAR));
 		SAFE_DELETE_ARRAY(pEntry->pszPassword);
 		pEntry->pszPassword = _UTF8ToString((UTF8_BYTE *)pData);
 		break;
@@ -940,7 +940,7 @@ bool CPwManager::ReadEntryField(USHORT usFieldType, DWORD dwFieldSize,
 		SAFE_DELETE_ARRAY(pEntry->pszURL);
 		SAFE_DELETE_ARRAY(pEntry->pszUserName);
 		if(pEntry->pszPassword != NULL)
-			mem_erase((unsigned char *)pEntry->pszPassword, _tcslen(pEntry->pszPassword) * sizeof(TCHAR));
+			mem_erase(pEntry->pszPassword, _tcslen(pEntry->pszPassword) * sizeof(TCHAR));
 		SAFE_DELETE_ARRAY(pEntry->pszPassword);
 		SAFE_DELETE_ARRAY(pEntry->pszAdditional);
 		SAFE_DELETE_ARRAY(pEntry->pszBinaryDesc);

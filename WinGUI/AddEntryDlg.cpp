@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -391,7 +391,7 @@ BOOL CAddEntryDlg::OnInitDialog()
 		m_pEditPw.SetPassword(pbStringT);
 		m_pRepeatPw.SetPassword(pbStringT);
 
-		mem_erase((BYTE *)pbStringT, _tcslen(pbStringT) * sizeof(TCHAR));
+		mem_erase(pbStringT, _tcslen(pbStringT) * sizeof(TCHAR));
 		SAFE_DELETE_ARRAY(pbStringT);
 
 		mem_erase(pbRandom, 16); mem_erase(pbString, 32); */
@@ -399,19 +399,18 @@ BOOL CAddEntryDlg::OnInitDialog()
 		m_pEditPw.SetPassword(_T(""));
 		m_pRepeatPw.SetPassword(_T(""));
 
-		std::vector<TCHAR> strPassword;
-		if(PwgGenerateWithExtVerify(strPassword, &CPwSafeDlg::m_pgsAutoProfile,
+		std::vector<TCHAR> vPassword;
+		if(PwgGenerateWithExtVerify(vPassword, &CPwSafeDlg::m_pgsAutoProfile,
 			NULL, m_hWnd) == PWGE_SUCCESS)
 		{
-			if(strPassword.size() > 0)
+			if(vPassword.size() > 0)
 			{
-				m_pEditPw.SetPassword(&strPassword[0]);
-				m_pRepeatPw.SetPassword(&strPassword[0]);
+				m_pEditPw.SetPassword(&vPassword[0]);
+				m_pRepeatPw.SetPassword(&vPassword[0]);
 			}
 		}
 		else { ASSERT(FALSE); }
-
-		EraseTCharVector(strPassword);
+		EraseTCharVector(vPassword, false);
 
 		UpdateData(FALSE);
 	}
@@ -661,19 +660,18 @@ void CAddEntryDlg::OnRandomPwBtn()
 
 	if(CPwSafeDlg::m_bMiniMode == TRUE)
 	{
-		std::vector<TCHAR> genPassword;
-		if(PwgGenerateWithExtVerify(genPassword, &CPwSafeDlg::m_pgsAutoProfile,
+		std::vector<TCHAR> vPassword;
+		if(PwgGenerateWithExtVerify(vPassword, &CPwSafeDlg::m_pgsAutoProfile,
 			NULL, m_hWnd) == PWGE_SUCCESS)
 		{
-			lpPassword = CSecureEditEx::AllocMemory(genPassword.size() + 1);
+			lpPassword = CSecureEditEx::AllocMemory(vPassword.size() + 1);
 
-			for(std::vector<TCHAR>::size_type pos = 0; pos < genPassword.size(); ++pos)
-				lpPassword[pos] = genPassword[pos];
-			lpPassword[genPassword.size()] = 0;
+			for(std::vector<TCHAR>::size_type pos = 0; pos < vPassword.size(); ++pos)
+				lpPassword[pos] = vPassword[pos];
+			lpPassword[vPassword.size()] = 0;
 		}
 		else { ASSERT(FALSE); }
-
-		EraseTCharVector(genPassword);
+		EraseTCharVector(vPassword, false);
 	}
 	else // CPwSafeDlg::m_bMiniMode == FALSE
 	{
@@ -1070,7 +1068,7 @@ KP_ENTRY CAddEntryDlg::_CurrentDataToEntry(bool bUpdateData)
 //	for(size_t i = 0; i < m_vStringsCache.size(); ++i)
 //	{
 //		LPTSTR lp = m_vStringsCache[i];
-//		mem_erase((unsigned char *)lp, _tcslen(lp) * sizeof(TCHAR));
+//		mem_erase(lp, _tcslen(lp) * sizeof(TCHAR));
 //		SAFE_DELETE_ARRAY(lp);
 //	}
 //	m_vStringsCache.clear();

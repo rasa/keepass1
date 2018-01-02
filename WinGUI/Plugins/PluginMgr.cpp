@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -170,19 +170,41 @@ bool CPluginManager::_IsValidPlugin(LPCTSTR lpFile, KP_PLUGIN_INSTANCE* pOutStru
 	return true;
 }
 
+std_string CPluginManager::GetPluginsDir(size_t i)
+{
+	if(i >= 2) return std_string();
+
+	std_string str = SU_DriveLetterToUpper(Executable::instance().getPathOnly());
+	if(i == 1) return str;
+
+	return (str + std_string(PWM_DIR_PLUGINS) + _T("\\"));
+}
+
 std::vector<std_string> CPluginManager::FindPluginCandidates()
 {
 	std::vector<std_string> v;
+	for(size_t i = 0; i < SIZE_MAX; ++i)
+	{
+		std_string str = GetPluginsDir(i);
+		if(str.size() == 0) break;
 
-	const std_string strBaseDir = Executable::instance().getPathOnly();
+		FindPluginCandidatesEx(v, str);
+	}
+
+	return v;
+}
+
+void CPluginManager::FindPluginCandidatesEx(std::vector<std_string>& v,
+	const std_string& strBaseDir)
+{
 	const std_string strSearchPattern = (strBaseDir + _T("*.dll"));
 
 	WIN32_FIND_DATA wfd;
 	ZeroMemory(&wfd, sizeof(WIN32_FIND_DATA));
 	HANDLE hFind = FindFirstFile(strSearchPattern.c_str(), &wfd);
-	if(hFind == INVALID_HANDLE_VALUE) return v; // Valid, but no files
+	if(hFind == INVALID_HANDLE_VALUE) return; // Valid, but no files
 
-	while(1)
+	while(true)
 	{
 		v.push_back(strBaseDir + wfd.cFileName);
 
@@ -190,7 +212,6 @@ std::vector<std_string> CPluginManager::FindPluginCandidates()
 	}
 
 	FindClose(hFind);
-	return v;
 }
 
 BOOL CPluginManager::LoadAllPlugins()

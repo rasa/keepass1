@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -476,7 +476,7 @@ BOOL OpenUrlUsingPutty(LPCTSTR lpURL, LPCTSTR lpUser)
 	if(strURL.Find(_T("ssh:")) == 0)
 	{
 		TCHAR tszKey[MAX_PATH << 1];
-		_tcscpy_s(tszKey, _countof(tszKey), _T("PUTTY.EXE -ssh "));
+		_tcscpy_s(tszKey, _T("PUTTY.EXE -ssh "));
 
 		// Parse out the "http://" and "ssh://"
 		if(strURL.Find(_T("http://")) == 0)
@@ -493,13 +493,13 @@ BOOL OpenUrlUsingPutty(LPCTSTR lpURL, LPCTSTR lpUser)
 		{
 			if(_tcslen(lpUser) > 0)
 			{
-				_tcscat_s(tszKey, _countof(tszKey), lpUser);
-				_tcscat_s(tszKey, _countof(tszKey), _T("@"));
+				_tcscat_s(tszKey, lpUser);
+				_tcscat_s(tszKey, _T("@"));
 			}
 		}
 
 		// Add the URL
-		_tcscat_s(tszKey, _countof(tszKey), (LPCTSTR)strURL);
+		_tcscat_s(tszKey, (LPCTSTR)strURL);
 
 		// Execute the ssh client
 		bResult = ((TWinExec(tszKey, KPSW_SHOWDEFAULT) > 31) ? TRUE : FALSE);
@@ -507,7 +507,7 @@ BOOL OpenUrlUsingPutty(LPCTSTR lpURL, LPCTSTR lpUser)
 	else if(strURL.Find(_T("telnet:")) == 0)
 	{
 		TCHAR tszKey[MAX_PATH << 1];
-		_tcscpy_s(tszKey, _countof(tszKey), _T("PUTTY.EXE "));
+		_tcscpy_s(tszKey, _T("PUTTY.EXE "));
 
 		// Parse out the "http://" and "telnet://"
 		if(strURL.Find(_T("http://")) == 0)
@@ -520,8 +520,8 @@ BOOL OpenUrlUsingPutty(LPCTSTR lpURL, LPCTSTR lpUser)
 			strURL = strURL.Right(strURL.GetLength() - 1);
 
 		// Add the url
-		_tcscat_s(tszKey, _countof(tszKey), _T("telnet://"));
-		_tcscat_s(tszKey, _countof(tszKey), strURL.GetBuffer(0));
+		_tcscat_s(tszKey, _T("telnet://"));
+		_tcscat_s(tszKey, strURL.GetBuffer(0));
 
 		// Execute the ssh client
 		bResult = ((TWinExec(tszKey, KPSW_SHOWDEFAULT) > 31) ? TRUE : FALSE);
@@ -992,7 +992,7 @@ std::basic_string<TCHAR> WU_GetTempDirectory()
 	TCHAR szDir[MAX_PATH * 2];
 	GetTempPath(MAX_PATH * 2 - 2, szDir);
 	if(szDir[_tcslen(szDir) - 1] != _T('\\'))
-		_tcscat_s(szDir, _countof(szDir), _T("\\"));
+		_tcscat_s(szDir, _T("\\"));
 	VERIFY(WU_CreateDirectoryTree(szDir) == S_OK);
 
 	std::basic_string<TCHAR> str = szDir;
@@ -1611,6 +1611,8 @@ void WU_PrintHtmlFile(LPCTSTR lpFile, HWND hParent)
 		_T("htmlfile\\shell\\print\\command"), _T("")).c_str();
 	if(str.GetLength() > 0)
 	{
+		WU_FixPrintCommandLine(str);
+
 		CString strOrg = str;
 		str.Replace(_T("%1"), lpFile);
 		str.Replace(_T("%L"), lpFile);
@@ -1635,4 +1637,39 @@ void WU_PrintHtmlFile(LPCTSTR lpFile, HWND hParent)
 	ASSERT(FALSE);
 	// Not all browsers support the "print" shell verb
 	ShellExecute(hParent, _T("print"), lpFile, NULL, NULL, SW_SHOW);
+}
+
+void WU_FixPrintCommandLine(CString& str)
+{
+	CString strLwr = str;
+	strLwr = strLwr.MakeLower();
+
+	// Workaround for Microsoft Office breaking the 'Print' shell verb;
+	// https://sourceforge.net/p/keepass/bugs/1675/
+	// https://support.microsoft.com/en-us/help/274527/cannot-print-file-with--htm-extension-from-windows-explorer-by-right-c
+	if(strLwr.Find(_T("\\msohtmed.exe")) >= 0)
+	{
+		const UINT ccMax = MAX_PATH;
+		const UINT ccAlloc = ccMax + 2;
+		LPTSTR lpSys = new TCHAR[ccAlloc];
+		ZeroMemory(lpSys, ccAlloc * sizeof(TCHAR));
+
+		size_t cc = GetSystemDirectory(lpSys, ccMax);
+		if((cc > 0) && (cc < ccMax))
+		{
+			cc = _tcslen(lpSys);
+			if(lpSys[cc - 1] != _T('\\')) lpSys[cc] = _T('\\');
+
+			CString strNew = _T("\"");
+			strNew += lpSys;
+			strNew += _T("rundll32.exe\" \"");
+			strNew += lpSys;
+			strNew += _T("mshtml.dll\",PrintHTML \"%1\"");
+
+			str = strNew;
+		}
+		else { ASSERT(FALSE); }
+
+		SAFE_DELETE_ARRAY(lpSys);
+	}
 }

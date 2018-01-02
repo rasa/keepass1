@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -25,26 +25,25 @@
 #include "NewRandom.h"
 #include "../Crypto/SHA2/SHA2.h"
 
-void mem_erase(unsigned char *p, size_t u)
+void mem_erase(void *p, size_t cb)
 {
 	BOOST_STATIC_ASSERT(sizeof(char) == 1); // Used within SecureZeroMemory
 	BOOST_STATIC_ASSERT(sizeof(unsigned char) == 1);
-	ASSERT(p != NULL); if(p == NULL) return;
-
-	if(u == 0) return; // Nothing to erase
+	if(p == NULL) { ASSERT(FALSE); return; }
+	if(cb == 0) return; // Nothing to erase
 
 	// Overwriting is only useful when erasing devices (hard disk files,
 	// etc.), but not RAM. Do not use mem_erase to erase memory-mapped
 	// files. To erase files, use AppUtil.cpp::SecureDeleteFile, which
 	// will overwrite the file a few times before deleting it.
 
-	// for(unsigned long i = 0; i < u; ++i)
+	// for(size_t i = 0; i < cb; ++i)
 	//	p[i] = (unsigned char)(rand() & 0xFF);
 
 #ifdef _WIN32
-	SecureZeroMemory(p, u);
+	SecureZeroMemory(p, cb);
 #else
-	memset(p, 0, u);
+	memset(p, 0, cb);
 #endif
 }
 

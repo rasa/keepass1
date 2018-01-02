@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ public:
 	CXPStyleButtonST	m_btClose;
 	CListCtrl	m_cList;
 	CXPStyleButtonST m_btHelp;
+	CXPStyleButtonST m_btOpenFolder;
 	//}}AFX_DATA
 
 	//{{AFX_VIRTUAL(CPluginsDlg)
@@ -71,6 +72,7 @@ protected:
 	afx_msg void OnPluginConfig();
 	afx_msg void OnPluginAbout();
 	afx_msg void OnBtnClickedPlgHelp();
+	afx_msg void OnBtnClickedOpenFolder();
 	//}}AFX_MSG
 
 	afx_msg LRESULT OnXHyperLinkClicked(WPARAM wParam, LPARAM lParam);

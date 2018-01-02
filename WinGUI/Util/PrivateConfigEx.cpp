@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ void CPrivateConfigEx::GetConfigPaths()
 	TCHAR tszAppDir[MAX_PATH * 3];
 	tszAppDir[0] = 0; tszAppDir[1] = 0;
 
-	ASSERT(SI_REGSIZE >= _countof(tszAppDir));
+	BOOST_STATIC_ASSERT(SI_REGSIZE >= _countof(tszAppDir));
 
 	TCHAR tszTemp[SI_REGSIZE];
 	VERIFY(AU_GetApplicationDirectory(tszTemp, SI_REGSIZE - 1, TRUE, FALSE));
@@ -102,11 +102,11 @@ void CPrivateConfigEx::GetConfigPaths()
 		const DWORD uLen = (DWORD)_tcslen(tszTemp); ASSERT(uLen != 0);
 
 		if(tszTemp[uLen - 1] != _T('\\'))
-			_tcscat_s(tszTemp, _countof(tszTemp), _T("\\"));
+			_tcscat_s(tszTemp, _T("\\"));
 
-		_tcscat_s(tszTemp, _countof(tszTemp), PWM_EXENAME);
+		_tcscat_s(tszTemp, PWM_EXENAME);
 
-		_tcscpy_s(tszAppDir, _countof(tszAppDir), tszTemp);
+		_tcscpy_s(tszAppDir, tszTemp);
 
 		m_strFileUser = tszTemp;
 		m_strUserPath = tszTemp;

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -172,13 +172,13 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 		ProtectMasterKey(true);
 		m_strKeySource.clear();
 
-		mem_erase((unsigned char *)paKey, uKeyLen);
+		mem_erase(paKey, uKeyLen);
 		SAFE_DELETE_ARRAY(paKey);
 		return PWE_SUCCESS;
 	}
 	else if(CBase64Codec::IsBase64UrlStringT(pszMasterKey))
 	{
-		mem_erase((unsigned char *)paKey, uKeyLen);
+		mem_erase(paKey, uKeyLen);
 		SAFE_DELETE_ARRAY(paKey); // Don't need ASCII key any more from on now
 
 		const bool bDec64 = CBase64Codec::DecodeUrlT(pszMasterKey, vExtKey);
@@ -215,7 +215,7 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 		{
 			memcpy(m_pMasterKey, aFileKey, 32);
 			ProtectMasterKey(true);
-			mem_erase((unsigned char *)aFileKey, 32);
+			mem_erase(aFileKey, 32);
 			return PWE_SUCCESS;
 		}
 		else // pszSecondKey != NULL
@@ -225,7 +225,7 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 				static_cast<unsigned long>(uKeyLen2), &sha32);
 			sha256_end((unsigned char *)aPasswordKey, &sha32);
 
-			mem_erase((unsigned char *)paKey2, uKeyLen2);
+			mem_erase(paKey2, uKeyLen2);
 			SAFE_DELETE_ARRAY(paKey);
 
 			sha256_begin(&sha32);
@@ -234,21 +234,21 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 			sha256_end((unsigned char *)m_pMasterKey, &sha32);
 			ProtectMasterKey(true);
 
-			mem_erase((unsigned char *)aPasswordKey, 32);
-			mem_erase((unsigned char *)aFileKey, 32);
+			mem_erase(aPasswordKey, 32);
+			mem_erase(aFileKey, 32);
 			return PWE_SUCCESS;
 		}
 	}
 	else // With key file
 	{
-		mem_erase((unsigned char *)paKey, uKeyLen);
+		mem_erase(paKey, uKeyLen);
 		SAFE_DELETE_ARRAY(paKey); // Don't need ASCII key any more from on now
 
 		if(pszSecondKey == NULL) // Key file only
 		{
-			_tcscpy_s(szFile, _countof(szFile), pszMasterKey);
+			_tcscpy_s(szFile, pszMasterKey);
 			if(szFile[_tcslen(szFile) - 1] == _T('\\'))
-				_tcscat_s(szFile, _countof(szFile), PWS_DEFAULT_KEY_FILENAME);
+				_tcscat_s(szFile, PWS_DEFAULT_KEY_FILENAME);
 			strKeySourceCand = szFile;
 
 			if(pARI == NULL) // If pARI is NULL: load key from disk
@@ -336,9 +336,9 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 		}
 		else // pszSecondKey != NULL
 		{
-			_tcscpy_s(szFile, _countof(szFile), pszMasterKey);
+			_tcscpy_s(szFile, pszMasterKey);
 			if(szFile[_tcslen(szFile) - 1] == _T('\\'))
-				_tcscat_s(szFile, _countof(szFile), PWS_DEFAULT_KEY_FILENAME);
+				_tcscat_s(szFile, PWS_DEFAULT_KEY_FILENAME);
 			strKeySourceCand = szFile;
 
 			if(pARI == NULL) // If pARI is NULL: load key from disk
@@ -390,7 +390,7 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 					static_cast<unsigned long>(uKeyLen2), &sha32);
 				sha256_end((unsigned char *)aPasswordKey, &sha32);
 
-				mem_erase((unsigned char *)paKey2, uKeyLen2);
+				mem_erase(paKey2, uKeyLen2);
 				SAFE_DELETE_ARRAY(paKey);
 
 				sha256_begin(&sha32);
@@ -399,8 +399,8 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 				sha256_end((unsigned char *)m_pMasterKey, &sha32);
 				ProtectMasterKey(true);
 
-				mem_erase((unsigned char *)aPasswordKey, 32);
-				mem_erase((unsigned char *)aFileKey, 32);
+				mem_erase(aPasswordKey, 32);
+				mem_erase(aFileKey, 32);
 				m_strKeySource = strKeySourceCand;
 				return PWE_SUCCESS;
 			}
@@ -434,7 +434,7 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 					static_cast<unsigned long>(uKeyLen2), &sha32);
 				sha256_end((unsigned char *)aPasswordKey, &sha32);
 
-				mem_erase((unsigned char *)paKey2, uKeyLen2);
+				mem_erase(paKey2, uKeyLen2);
 				SAFE_DELETE_ARRAY(paKey);
 
 				sha256_begin(&sha32);
@@ -443,8 +443,8 @@ int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 				sha256_end((unsigned char *)m_pMasterKey, &sha32);
 				ProtectMasterKey(true);
 
-				mem_erase((unsigned char *)aPasswordKey, 32);
-				mem_erase((unsigned char *)aFileKey, 32);
+				mem_erase(aPasswordKey, 32);
+				mem_erase(aFileKey, 32);
 				m_strKeySource = strKeySourceCand;
 				return PWE_SUCCESS;
 			}
@@ -560,7 +560,7 @@ void CPwManager::_DeleteEntryList(BOOL bFreeStrings)
 	}
 
 	if(m_dwNumEntries != 0)
-		mem_erase((unsigned char *)m_pEntries, sizeof(PW_ENTRY) * m_dwNumEntries);
+		mem_erase(m_pEntries, sizeof(PW_ENTRY) * m_dwNumEntries);
 
 	SAFE_DELETE_ARRAY(m_pEntries);
 
@@ -581,7 +581,7 @@ void CPwManager::_DeleteGroupList(BOOL bFreeStrings)
 	}
 
 	if(m_dwNumGroups != 0)
-		mem_erase((unsigned char *)m_pGroups, sizeof(PW_GROUP) * m_dwNumGroups);
+		mem_erase(m_pGroups, sizeof(PW_GROUP) * m_dwNumGroups);
 
 	SAFE_DELETE_ARRAY(m_pGroups);
 
@@ -862,7 +862,7 @@ BOOL CPwManager::DeleteEntry(DWORD dwIndex)
 			m_pEntries[i] = m_pEntries[i + 1];
 	}
 
-	mem_erase((unsigned char *)&m_pEntries[m_dwNumEntries - 1], sizeof(PW_ENTRY));
+	mem_erase(&m_pEntries[m_dwNumEntries - 1], sizeof(PW_ENTRY));
 	--m_dwNumEntries;
 	return TRUE;
 }
@@ -907,7 +907,7 @@ BOOL CPwManager::DeleteGroupById(DWORD uGroupId, BOOL bCreateBackupEntries)
 			m_pGroups[i] = m_pGroups[i + 1];
 	}
 
-	mem_erase((unsigned char *)&m_pGroups[m_dwNumGroups - 1], sizeof(PW_GROUP));
+	mem_erase(&m_pGroups[m_dwNumGroups - 1], sizeof(PW_GROUP));
 	--m_dwNumGroups;
 
 	FixGroupTree();
@@ -1258,7 +1258,7 @@ void CPwManager::SortGroupList()
 		_tcscat_s(pList[i], dwMaxString, pg->pszGroupName);
 		_tcscat_s(pList[i], dwMaxString, _T("\n\n"));
 
-		_ltot_s(static_cast<long>(pg->uGroupId), tszTemp, _countof(tszTemp), 10);
+		_ltot_s(static_cast<long>(pg->uGroupId), tszTemp, 10);
 		_tcscat_s(pList[i], dwMaxString, tszTemp);
 
 		ASSERT(_tcslen(pList[i]) < dwMaxString);

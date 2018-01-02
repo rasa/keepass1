@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #pragma once
 
 #include "../PwManager.h"
-#include "../SysDefEx.h"
+#include "../Util/StrUtil.h"
 #include <stdio.h>
 #include <boost/utility.hpp>
 
@@ -77,8 +77,8 @@ public:
 private:
 	void _ExpStr(LPCTSTR lpString);
 	void _ExpLine(LPCTSTR lpString);
-	void _ExpXmlStr(LPCTSTR lpString);
-	void _ExpHtmlStr(LPCTSTR lpString);
+	void _ExpXmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags = XEF_NONE);
+	void _ExpHtmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags = XEF_NONE);
 
 	void _ExpResetSkip();
 	void _ExpSetSep(LPCTSTR lpSep);

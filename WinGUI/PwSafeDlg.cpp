@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -1094,7 +1094,7 @@ BOOL CPwSafeDlg::OnInitDialog()
 	_SetListParameters();
 
 	cConfig.Get(PWMKEY_LISTFONT, szTemp);
-	if(szTemp[0] == 0) _tcscpy_s(szTemp, _countof(szTemp), _T("MS Shell Dlg;8,0000"));
+	if(szTemp[0] == 0) _tcscpy_s(szTemp, _T("MS Shell Dlg;8,0000"));
 	_ParseSpecAndSetFont(szTemp, false);
 
 	cConfig.Get(PWMKEY_NOTESFONT, szTemp);
@@ -1176,8 +1176,9 @@ BOOL CPwSafeDlg::OnInitDialog()
 	UpdateGroupList();
 	UpdatePasswordList();
 
-	CPopularPasswords::AddResUTF8(MAKEINTRESOURCE(IDR_MOSTPOPULARPWS),
-		_T("KPDATA"));
+	CPopularPasswords::AddResUTF8(MAKEINTRESOURCE(IDR_MOSTPOPULARPWS), _T("KPDATA"));
+	ASSERT(CPopularPasswords::IsPopular(L"abracadabra", NULL));
+	ASSERT(!CPopularPasswords::IsPopular(L"c658ea118c2d4e1da782d79710a99b4b", NULL));
 
 	m_bTimer = TRUE;
 	m_nClipboardCountdown = -1;
@@ -1715,7 +1716,7 @@ void CPwSafeDlg::_ParseSpecAndSetFont(const TCHAR *pszSpec, bool bNotes)
 		lf.lfPitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
 		lf.lfStrikeOut = bStrikeOut; lf.lfUnderline = bUnderlined;
 		lf.lfWeight = nWeight; lf.lfWidth = 0;
-		_tcscpy_s(lf.lfFaceName, _countof(lf.lfFaceName), strFace);
+		_tcscpy_s(lf.lfFaceName, strFace);
 		lf.lfHeight = -MulDiv(nSize, GetDeviceCaps(hDC, LOGPIXELSY), 72);
 
 		fFont.CreateFontIndirect(&lf);
@@ -2264,25 +2265,25 @@ void CPwSafeDlg::SaveOptions()
 	TCHAR szTemp[SI_REGSIZE];
 
 	// Save clipboard auto-clear time
-	_ultot_s(m_dwClipboardSecs, szTemp, _countof(szTemp), 10);
+	_ultot_s(m_dwClipboardSecs, szTemp, 10);
 	pcfg.Set(PWMKEY_CLIPSECS, szTemp);
 
-	// _itot_s(m_nClipboardMethod, szTemp, _countof(szTemp), 10);
+	// _itot_s(m_nClipboardMethod, szTemp, 10);
 	// pcfg.Set(PWMKEY_CLIPBOARDMETHOD, szTemp);
 
-	_ultot_s(m_dwATHotKey, szTemp, _countof(szTemp), 10);
+	_ultot_s(m_dwATHotKey, szTemp, 10);
 	pcfg.Set(PWMKEY_AUTOTYPEHOTKEY, szTemp);
 
 	pcfg.SetBool(PWMKEY_RESTOREHOTKEY, m_bRegisterRestoreHotKey);
 
 	// Save newline sequence
-	if(m_bWindowsNewLine == TRUE) _tcscpy_s(szTemp, _countof(szTemp), _T("Windows"));
-	else _tcscpy_s(szTemp, _countof(szTemp), _T("Unix"));
+	if(m_bWindowsNewLine == TRUE) _tcscpy_s(szTemp, _T("Windows"));
+	else _tcscpy_s(szTemp, _T("Unix"));
 	pcfg.Set(PWMKEY_NEWLINE, szTemp);
 
 	pcfg.SetBool(PWMKEY_USEPUTTYFORURLS, m_bUsePuttyForURLs);
 
-	_itot_s(m_nAutoSort, szTemp, _countof(szTemp), 10);
+	_itot_s(m_nAutoSort, szTemp, 10);
 	pcfg.Set(PWMKEY_AUTOSORT, szTemp);
 
 	pcfg.SetBool(PWMKEY_SAVEONLATMOD, m_bSaveOnLATMod);
@@ -2383,10 +2384,10 @@ void CPwSafeDlg::SaveOptions()
 	CPwGeneratorDlg::GetOptions(&strOptions, &strCharSet, &nChars);
 	pcfg.Set(PWMKEY_PWGEN_OPTIONS, strOptions);
 	pcfg.Set(PWMKEY_PWGEN_CHARS, strCharSet);
-	_itot_s((int)nChars, szTemp, _countof(szTemp), 10);
+	_itot_s((int)nChars, szTemp, 10);
 	pcfg.Set(PWMKEY_PWGEN_NUMCHARS, szTemp); */
 
-	_itot_s(m_nAutoTypeMethod, szTemp, _countof(szTemp), 10);
+	_itot_s(m_nAutoTypeMethod, szTemp, 10);
 	pcfg.Set(PWMKEY_AUTOTYPEMETHOD, szTemp);
 
 	pcfg.Set(PWMKEY_LISTFONT, m_strFontSpec);
@@ -2396,43 +2397,43 @@ void CPwSafeDlg::SaveOptions()
 	_SaveWindowPositionAndSize(&pcfg);
 
 	// Save all column widths
-	_itot_s(m_nColumnWidths[0], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[0], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH0, szTemp);
-	_itot_s(m_nColumnWidths[1], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[1], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH1, szTemp);
-	_itot_s(m_nColumnWidths[2], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[2], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH2, szTemp);
-	_itot_s(m_nColumnWidths[3], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[3], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH3, szTemp);
-	_itot_s(m_nColumnWidths[4], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[4], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH4, szTemp);
-	_itot_s(m_nColumnWidths[5], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[5], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH5, szTemp);
-	_itot_s(m_nColumnWidths[6], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[6], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH6, szTemp);
-	_itot_s(m_nColumnWidths[7], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[7], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH7, szTemp);
-	_itot_s(m_nColumnWidths[8], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[8], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH8, szTemp);
-	_itot_s(m_nColumnWidths[9], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[9], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH9, szTemp);
-	_itot_s(m_nColumnWidths[10], szTemp, _countof(szTemp), 10);
+	_itot_s(m_nColumnWidths[10], szTemp, 10);
 	pcfg.Set(PWMKEY_COLWIDTH10, szTemp);
 
-	_ltot_s(m_lSplitterPosHoriz, szTemp, _countof(szTemp), 10);
+	_ltot_s(m_lSplitterPosHoriz, szTemp, 10);
 	pcfg.Set(PWMKEY_SPLITTERX, szTemp);
-	_ltot_s(m_lSplitterPosVert, szTemp, _countof(szTemp), 10);
+	_ltot_s(m_lSplitterPosVert, szTemp, 10);
 	pcfg.Set(PWMKEY_SPLITTERY, szTemp);
 
 	pcfg.SetBool(PWMKEY_WINSTATE_MAX, m_bWasMaximized);
 
-	_ltot_s((long)m_cList.GetRowColorEx(), szTemp, _countof(szTemp), 10);
+	_ltot_s((long)m_cList.GetRowColorEx(), szTemp, 10);
 	pcfg.Set(PWMKEY_ROWCOLOR, szTemp);
 
-	_ltot_s(m_nLockTimeDef, szTemp, _countof(szTemp), 10);
+	_ltot_s(m_nLockTimeDef, szTemp, 10);
 	pcfg.Set(PWMKEY_LOCKTIMER, szTemp);
 
-	_ltot_s((long)m_dwDefaultExpire, szTemp, _countof(szTemp), 10);
+	_ltot_s((long)m_dwDefaultExpire, szTemp, 10);
 	pcfg.Set(PWMKEY_DEFAULTEXPIRE, szTemp);
 
 	// int j = 0;
@@ -2490,13 +2491,13 @@ void CPwSafeDlg::_SaveWindowPositionAndSize(CPrivateConfigEx* pConfig)
 	if((pConfig != NULL) && (m_lNormalWndSizeW >= 0) && (m_lNormalWndSizeH >= 0))
 	{
 		TCHAR szTemp[SI_REGSIZE];
-		_ltot_s(m_lNormalWndPosX, szTemp, _countof(szTemp) - 1, 10);
+		_ltot_s(m_lNormalWndPosX, szTemp, 10);
 		pConfig->Set(PWMKEY_WINDOWPX, szTemp);
-		_ltot_s(m_lNormalWndPosY, szTemp, _countof(szTemp) - 1, 10);
+		_ltot_s(m_lNormalWndPosY, szTemp, 10);
 		pConfig->Set(PWMKEY_WINDOWPY, szTemp);
-		_ltot_s(m_lNormalWndSizeW, szTemp, _countof(szTemp) - 1, 10);
+		_ltot_s(m_lNormalWndSizeW, szTemp, 10);
 		pConfig->Set(PWMKEY_WINDOWDX, szTemp);
-		_ltot_s(m_lNormalWndSizeH, szTemp, _countof(szTemp) - 1, 10);
+		_ltot_s(m_lNormalWndSizeH, szTemp, 10);
 		pConfig->Set(PWMKEY_WINDOWDY, szTemp);
 	}
 }
@@ -6793,6 +6794,8 @@ void CPwSafeDlg::OnFileChangeLanguage()
 	NotifyUserActivity();
 
 	CLanguagesDlg dlg;
+	if(!dlg.InitEx(this->m_hWnd)) return;
+
 	if(NewGUI_DoModal(&dlg) == IDOK)
 	{
 		m_bRestartApplication = TRUE;
@@ -8694,7 +8697,7 @@ void CPwSafeDlg::OnInfoTranslation()
 	NotifyUserActivity();
 	_SetDisplayDialog(true);
 
-	CString str = TRL("Currently Used Language"); str += _T(":\r\n");
+	CString str = TRL("Currently used language"); str += _T(":\r\n");
 	if(_tcscmp(TRL("~LANGUAGENAME"), _T("~LANGUAGENAME")) != 0)
 	{
 		str += TRL("~LANGUAGENAME");
@@ -8706,7 +8709,7 @@ void CPwSafeDlg::OnInfoTranslation()
 	else str += _T("Unknown or English version");
 	str += _T("\r\n\r\n");
 
-	str += TRL("Language File Version"); str += _T(":\r\n");
+	str += TRL("Version"); str += _T(":\r\n");
 	if(_tcscmp(TRL("~LANGUAGEVERSION"), _T("~LANGUAGEVERSION")) != 0)
 		str += TRL("~LANGUAGEVERSION");
 	else str += _T("Unknown or English version");
@@ -8718,7 +8721,7 @@ void CPwSafeDlg::OnInfoTranslation()
 	else str += _T("Unknown or English version");
 	str += _T("\r\n\r\n");
 
-	str += TRL("Translation Author Contact"); str += _T(":\r\n");
+	str += TRL("Contact"); str += _T(":\r\n");
 	if(_tcscmp(TRL("~LANGUAGEAUTHOREMAIL"), _T("~LANGUAGEAUTHOREMAIL")) != 0)
 		str += TRL("~LANGUAGEAUTHOREMAIL");
 	else str += _T("Unknown or English version");

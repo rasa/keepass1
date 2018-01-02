@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,28 +21,40 @@
 #include "PopularPasswords.h"
 #include <boost/static_assert.hpp>
 
-std::vector<TppDictPtr> CPopularPasswords::m_vDicts;
+std::vector<LPWSTR> CPopularPasswords::g_vMem;
+std::vector<TppDictPtr> CPopularPasswords::g_vDicts;
 
 CPopularPasswords::CPopularPasswords()
 {
 }
 
+void CPopularPasswords::Clear()
+{
+	g_vDicts.clear();
+
+	for(size_t i = 0; i < g_vMem.size(); ++i)
+	{
+		SAFE_DELETE_ARRAY(g_vMem[i]);
+	}
+	g_vMem.clear();
+}
+
 size_t CPopularPasswords::GetMaxLength()
 {
-	const size_t s = m_vDicts.size();
-	if(s == 0) { ASSERT(FALSE); return 0; }
+	const size_t s = g_vDicts.size();
+	if(s == 0) { ASSERT(FALSE); return 0; } // Should be initialized
 
-	ASSERT(m_vDicts[s - 1].get() != NULL);
-	ASSERT(m_vDicts[s - 1]->size() > 0);
+	ASSERT(g_vDicts[s - 1].get() != NULL);
+	ASSERT(g_vDicts[s - 1]->size() > 0);
 	return (s - 1);
 }
 
 bool CPopularPasswords::ContainsLength(size_t uLen)
 {
 	if(uLen == 0) return false;
-	if(uLen >= m_vDicts.size()) return false;
+	if(uLen >= g_vDicts.size()) return false;
 
-	const TppDictPtr& p = m_vDicts[uLen];
+	const TppDictPtr& p = g_vDicts[uLen];
 	ASSERT((p.get() == NULL) || (p->size() > 0));
 	return (p.get() != NULL);
 }
@@ -52,16 +64,17 @@ bool CPopularPasswords::IsPopular(LPCWSTR lpw, size_t* pdwDictSize)
 	if(lpw == NULL) { ASSERT(FALSE); return false; }
 
 	const size_t uLen = wcslen(lpw);
-	if(uLen >= m_vDicts.size()) return false;
+	if(uLen >= g_vDicts.size()) return false;
 
-	const TppDictPtr& p = m_vDicts[uLen];
+#ifdef _DEBUG
+	for(size_t i = 0; i < uLen; ++i) { ASSERT(lpw[i] == towlower(lpw[i])); }
+#endif
+
+	const TppDictPtr& p = g_vDicts[uLen];
 	if(p.get() == NULL) return false;
 
-	if(pdwDictSize != NULL)
-		*pdwDictSize = p->size();
-
-	TppWord w(lpw);
-	return (p->find(w) != p->end());
+	if(pdwDictSize != NULL) *pdwDictSize = p->size();
+	return (p->count(lpw) > 0);
 }
 
 void CPopularPasswords::Add(const UTF8_BYTE* pTextUTF8)
@@ -78,10 +91,9 @@ void CPopularPasswords::Add(const UTF8_BYTE* pTextUTF8)
 	if(lpw == NULL) { ASSERT(FALSE); return; }
 	ZeroMemory(lpw, cchWBuf * sizeof(WCHAR));
 
-	const int r = MultiByteToWideChar(CP_UTF8, 0, lpc, nUTF8Len,
-		lpw, cchWBuf - 8);
+	const int r = MultiByteToWideChar(CP_UTF8, 0, lpc, nUTF8Len, lpw, cchWBuf - 8);
 	ASSERT(r <= nUTF8Len);
-	if((r == 0) || (lpw[0] == 0)) { ASSERT(FALSE); SAFE_DELETE_ARRAY(lpw); return; }
+	if((r == 0) || (lpw[0] == L'\0')) { ASSERT(FALSE); SAFE_DELETE_ARRAY(lpw); return; }
 
 	size_t n = wcslen(lpw);
 	ASSERT(n > 0);
@@ -91,36 +103,35 @@ void CPopularPasswords::Add(const UTF8_BYTE* pTextUTF8)
 		++n;
 	}
 
-	std::vector<WCHAR> v;
+	LPCWSTR lpWord = NULL;
 	for(size_t i = 0; i < n; ++i)
 	{
-		const WCHAR ch = lpw[i];
+		lpw[i] = towlower(lpw[i]);
 
-		if(iswspace(ch) != 0)
+		if(iswspace(lpw[i]) != 0)
 		{
-			if(v.size() > 0)
+			if(lpWord != NULL)
 			{
-				v.push_back(0); // Terminate string
-				TppWord w(&v[0]);
+				lpw[i] = L'\0'; // Terminate the word
 
-				if(w.size() >= m_vDicts.size())
-					m_vDicts.resize(w.size() + 1);
+				const size_t cc = wcslen(lpWord);
+				if(cc >= g_vDicts.size()) g_vDicts.resize(cc + 1);
 
-				TppDictPtr p = m_vDicts[w.size()];
+				TppDictPtr p = g_vDicts[cc];
 				if(p.get() == NULL)
 				{
 					p = TppDictPtr(new TppDict());
-					m_vDicts[w.size()] = p;
+					g_vDicts[cc] = p;
 				}
 
-				p->insert(w);
-				v.clear();
+				p->insert(lpWord);
+				lpWord = NULL;
 			}
 		}
-		else v.push_back(ch);
+		else if(lpWord == NULL) lpWord = &lpw[i];
 	}
 
-	SAFE_DELETE_ARRAY(lpw);
+	g_vMem.push_back(lpw);
 }
 
 void CPopularPasswords::AddResUTF8(LPCTSTR lpResName, LPCTSTR lpResType)

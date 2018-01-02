@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -733,8 +733,8 @@ void CPwGeneratorExDlg::OnBnClickedGenerateBtn()
 		randomSource.AddToUserEntropyPool(dlg.m_pFinalRandom, 32);
 	}
 
-	std::vector<TCHAR> strPassword;
-	USHORT uError = PwgGenerateWithExtVerify(strPassword, &pws, &randomSource, m_hWnd);
+	std::vector<TCHAR> vPassword;
+	USHORT uError = PwgGenerateWithExtVerify(vPassword, &pws, &randomSource, m_hWnd);
 
 	if(uError != PWGE_SUCCESS)
 	{
@@ -742,16 +742,16 @@ void CPwGeneratorExDlg::OnBnClickedGenerateBtn()
 		strError += _T(".");
 		MessageBox(strError.c_str(), PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);
 
-		EraseTCharVector(strPassword);
+		EraseTCharVector(vPassword, true);
 	}
 
-	if(strPassword.size() > PWGD_MAX_PASSWORD_LENGTH)
-		strPassword[PWGD_MAX_PASSWORD_LENGTH] = 0; // Truncate
+	if(vPassword.size() > PWGD_MAX_PASSWORD_LENGTH)
+		vPassword[PWGD_MAX_PASSWORD_LENGTH] = 0; // Truncate
 
-	if(strPassword.size() > 0) m_cEditPw.SetPassword(&strPassword[0]);
+	if(vPassword.size() > 0) m_cEditPw.SetPassword(&vPassword[0]);
 	else m_cEditPw.SetPassword(_T(""));
 
-	EraseTCharVector(strPassword);
+	EraseTCharVector(vPassword, false);
 
 	this->EnableControlsEx(FALSE);
 }

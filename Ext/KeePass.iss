@@ -11,11 +11,11 @@
 #define MyAppUrlName "KeePass.url"
 #define MyAppHelpName "KeePass.chm"
 
-#define KeeVersionStr "1.34"
-#define KeeVersionWin "1.34.0.0"
-#define KeeVersionWinShort "1.34"
+#define KeeVersionStr "1.35"
+#define KeeVersionWin "1.35.0.0"
+#define KeeVersionWinShort "1.35"
 
-#define KeeDevPeriod "2003-2017"
+#define KeeDevPeriod "2003-2018"
 
 [Setup]
 AppName={#MyAppFullName}
@@ -75,6 +75,10 @@ Name: spanish; MessagesFile: compiler:Languages\Spanish.isl
 Name: fileassoc; Description: {cm:AssocFileExtension,{#MyAppName},.kdb}
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+
+[Dirs]
+Name: "{app}\Languages"; Flags: uninsalwaysuninstall
+Name: "{app}\Plugins"; Flags: uninsalwaysuninstall
 
 [Files]
 Source: ..\Build\WinGUI_Distrib\KeePass.exe; DestDir: {app}; Flags: ignoreversion

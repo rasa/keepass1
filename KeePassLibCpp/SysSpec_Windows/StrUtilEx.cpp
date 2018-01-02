@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -154,7 +154,7 @@ UTF8_BYTE *_StringToUTF8(const TCHAR *pszSourceString)
 	ASSERT(j == (dwBytesNeeded + 1));
 
 #ifndef _UNICODE
-	mem_erase((unsigned char *)pUniBuffer, dwUniBufferLength * sizeof(WCHAR));
+	mem_erase(pUniBuffer, dwUniBufferLength * sizeof(WCHAR));
 	SAFE_DELETE_ARRAY(pUniBuffer);
 #endif
 
@@ -306,7 +306,7 @@ TCHAR *_UTF8ToString(const UTF8_BYTE *pUTF8String)
 	if(dwNumChars != 122) { ASSERT(nErr != 122); } // ERROR_INSUFFICIENT_BUFFER is defined as 122...
 	else { ASSERT(GetLastError() == 0); nErr = nErr; }
 
-	if(p != NULL) mem_erase((unsigned char *)p, dwPBufLength);
+	if(p != NULL) mem_erase(p, dwPBufLength);
 	SAFE_DELETE_ARRAY(p);
 	return (TCHAR *)pANSI;
 #endif
