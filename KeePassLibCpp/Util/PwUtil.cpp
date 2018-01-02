@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ BOOL CPwUtil::LoadHexKey32(FILE *fp, BYTE *pBuf)
 		pBuf[i] = bt;
 	}
 
-	mem_erase((BYTE *)buf, 64);
+	mem_erase(buf, 64);
 	return TRUE;
 }
 
@@ -81,7 +81,7 @@ BOOL CPwUtil::SaveHexKey32(FILE *fp, BYTE *pBuf)
 
 	fwrite(buf, 1, 64, fp);
 
-	mem_erase((BYTE *)buf, 64);
+	mem_erase(buf, 64);
 	return TRUE;
 }
 
@@ -128,8 +128,7 @@ CString CPwUtil::FormatError(int nErrorCode, DWORD dwFlags)
 	if(nErrorCode != PWE_SUCCESS)
 	{
 		TCHAR tszTemp[24];
-		_stprintf_s(tszTemp, _countof(tszTemp), _T("%08X"),
-			static_cast<unsigned int>(nErrorCode));
+		_stprintf_s(tszTemp, _T("%08X"), static_cast<unsigned int>(nErrorCode));
 
 		if((dwFlags & PWFF_NO_INTRO) == 0)
 		{
@@ -374,7 +373,7 @@ void CPwUtil::FreeKpEntry(KP_ENTRY* p)
 	SAFE_DELETE_ARRAY(p->lpAdditional);
 
 	if(p->lpPassword != NULL)
-		mem_erase((unsigned char *)p->lpPassword, _tcslen(p->lpPassword) * sizeof(TCHAR));
+		mem_erase(const_cast<LPTSTR>(p->lpPassword), _tcslen(p->lpPassword) * sizeof(TCHAR));
 	SAFE_DELETE_ARRAY(p->lpPassword);
 }
 

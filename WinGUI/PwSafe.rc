@@ -111,7 +111,7 @@ CAPTION "About KeePass"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,203,111,58,14,WS_GROUP
-    LTEXT           "Copyright © 2003-2017 Dominik Reichl.",IDC_STATIC,7,7,254,8
+    LTEXT           "Copyright © 2003-2018 Dominik Reichl.",IDC_STATIC,7,7,254,8
     LTEXT           "KeePass is OSI Certified Open Source Software.",IDC_STATIC,7,20,254,8
     LTEXT           "The program is distributed under the terms of the GNU General Public License v2 or later.",IDC_STATIC,7,33,254,17
     LTEXT           "<>",IDC_HLINK_HOMEPAGE,7,65,254,8
@@ -288,14 +288,15 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,135,204,10
 END
 
-IDD_LANGUAGES_DLG DIALOGEX 0, 0, 460, 212
+IDD_LANGUAGES_DLG DIALOGEX 0, 0, 470, 212
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_NOFAILCREATE | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "Load Language File"
+CAPTION "Select Language"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "&Close",IDCANCEL,395,191,58,14
-    CONTROL         "List1",IDC_LANGUAGES_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,446,179
-    PUSHBUTTON      "&Get more languages...",IDC_BTN_GETLANGUAGE,7,191,125,14
+    DEFPUSHBUTTON   "&Close",IDCANCEL,405,191,58,14
+    CONTROL         "List1",IDC_LANGUAGES_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,456,179
+    PUSHBUTTON      "Get More &Languages...",IDC_BTN_GETLANGUAGE,7,191,125,14
+    PUSHBUTTON      "Open &Folder",IDC_BTN_OPENFOLDER,137,191,79,14
 END
 
 IDD_OPTIONS_DLG DIALOGEX 0, 0, 394, 225
@@ -442,7 +443,8 @@ BEGIN
     DEFPUSHBUTTON   "&Close",IDOK,349,178,58,14
     CONTROL         "List1",IDC_PLUGINS_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,400,163
     PUSHBUTTON      "&Help",IDC_BTN_PLGHELP,7,178,58,14
-    LTEXT           "Get more plugins...",IDC_STATIC_HL_GETPLUGINS,73,181,221,8
+    PUSHBUTTON      "Open &Folder",IDC_BTN_OPENFOLDER,71,178,79,14
+    LTEXT           "Get more plugins...",IDC_STATIC_HL_GETPLUGINS,159,181,185,8
 END
 
 IDD_IMPORT_OPTIONS_DLG DIALOGEX 0, 0, 318, 177
@@ -713,7 +715,7 @@ BEGIN
     IDD_LANGUAGES_DLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 453
+        RIGHTMARGIN, 463
         TOPMARGIN, 7
         BOTTOMMARGIN, 205
     END
@@ -847,8 +849,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,34,0,0
- PRODUCTVERSION 1,34,0,0
+ FILEVERSION 1,35,0,0
+ PRODUCTVERSION 1,35,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -865,13 +867,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://keepass.info/"
             VALUE "CompanyName", "Dominik Reichl"
-            VALUE "FileDescription", "KeePass Password Safe 1.34"
-            VALUE "FileVersion", "1.34.0.0"
+            VALUE "FileDescription", "KeePass Password Safe 1.35"
+            VALUE "FileVersion", "1.35.0.0"
             VALUE "InternalName", "PwSafe"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2017 Dominik Reichl"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2018 Dominik Reichl"
             VALUE "OriginalFilename", "KeePass.exe"
-            VALUE "ProductName", "KeePass Password Safe 1.34"
-            VALUE "ProductVersion", "1.34.0.0"
+            VALUE "ProductName", "KeePass Password Safe 1.35"
+            VALUE "ProductVersion", "1.35.0.0"
         END
     END
     BLOCK "VarFileInfo"

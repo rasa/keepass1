@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -39,11 +39,15 @@
 
 #define PRL_MAX_DEPTH 10
 
+// XML data encoding flags
+#define XEF_NONE 0
+#define XEF_NBSP 1
+
 typedef BOOL(WINAPI *LPPATHRELATIVEPATHTO)(LPTSTR pszPath, LPCTSTR pszFrom, DWORD dwAttrFrom, LPCTSTR pszTo, DWORD dwAttrTo);
 
-void EraseCString(CString *pString);
-void EraseWCharVector(std::vector<WCHAR>& vBuffer);
-void EraseTCharVector(std::vector<TCHAR>& vBuffer);
+void EraseCString(CString* pString);
+void EraseWCharVector(std::vector<WCHAR>& vBuffer, bool bClear);
+void EraseTCharVector(std::vector<TCHAR>& vBuffer, bool bClear);
 
 // Fix an URL if necessary (check protocol, form, etc.)
 void FixURL(CString *pstrURL);
@@ -96,7 +100,7 @@ void _StringToUuid(const TCHAR *ptszSource, BYTE *pUuid);
 CString CsFileOnly(const CString *psFilePath);
 
 // TCHAR *MakeSafeXmlString(const TCHAR *ptString);
-std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString);
+std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString, DWORD dwFlags = XEF_NONE);
 
 // Our own simple string functions which do some additional memory checks
 DWORD szlen(const char *pszString);
@@ -135,6 +139,8 @@ std::basic_string<TCHAR> SU_CompactWith3Dots(LPCTSTR lpString, size_t uMaxChars)
 
 int SU_FindUnescapedCharW(LPCWSTR lpw, WCHAR wch);
 void SU_AppendW(std::vector<WCHAR>& v, LPCWSTR lp);
+
+std_string SU_DriveLetterToUpper(const std_string& strPath);
 
 /////////////////////////////////////////////////////////////////////////////
 // Natural string comparison API

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include <boost/lexical_cast.hpp>
 
 #include "../Util/MemUtil.h"
-#include "../Util/StrUtil.h"
 #include "../Util/Base64.h"
 #include "../Util/TranslateEx.h"
 
@@ -139,20 +138,20 @@ void CPwExport::_ExpLine(LPCTSTR lpString)
 	_ExpStr(m_pszNewLine);
 }
 
-void CPwExport::_ExpXmlStr(LPCTSTR lpString)
+void CPwExport::_ExpXmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags)
 {
-	std::basic_string<TCHAR> str = MakeSafeXmlString(lpString);
+	std::basic_string<TCHAR> str = MakeSafeXmlString(lpString, dwXmlEncFlags);
 	if(str.size() == 0) return;
-	
+
 	UTF8_BYTE *pUtf8String = _StringToUTF8(str.c_str());
 	fwrite(pUtf8String, 1, strlen((char *)pUtf8String), m_fp);
 	SAFE_DELETE_ARRAY(pUtf8String);
 }
 
-void CPwExport::_ExpHtmlStr(LPCTSTR lpString)
+void CPwExport::_ExpHtmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags)
 {
 	if(lpString[0] == 0) _ExpStr(_T("&nbsp;"));
-	else _ExpXmlStr(lpString);
+	else _ExpXmlStr(lpString, dwXmlEncFlags);
 }
 
 void CPwExport::_ExpStrIf(BOOL bCondition, LPCTSTR lpString)
@@ -396,7 +395,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("<meta http-equiv=\"cache-control\" content=\"no-cache\" />"));
 		_ExpLine(_T("<meta http-equiv=\"pragma\" content=\"no-cache\" />"));
 
-		_ExpLine(_T("<style type=\"text/css\"><!--"));
+		_ExpLine(_T("<style type=\"text/css\">"));
+		_ExpLine(_T("/* <![CDATA[ */"));
 
 		_ExpLine(_T("body, p, div, h1, h2, h3, h4, h5, h6, ol, ul, li, td, th, dd, dt, a {"));
 		_ExpLine(_T("\tfont-family: \"Tahoma\", \"MS Sans Serif\", \"Sans Serif\", \"Verdana\", sans-serif;"));
@@ -413,12 +413,14 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
 		_ExpLine(_T("\tpadding-left: 2pt;"));
+		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
 		_ExpLine(_T("}"));
 		_ExpLine(_T("h3 {"));
 		_ExpLine(_T("\tfont-size: 1.2em;"));
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
 		_ExpLine(_T("\tpadding-left: 2pt;"));
+		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
 		_ExpLine(_T("}"));
 		_ExpLine(_T("h4 { font-size: 1em; }"));
 		_ExpLine(_T("h5 { font-size: 0.89em; }"));
@@ -469,7 +471,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("\tword-wrap: break-word;"));
 		_ExpLine(_T("}"));
 
-		_ExpLine(_T("--></style>"));
+		_ExpLine(_T("/* ]]> */"));
+		_ExpLine(_T("</style>"));
 
 		_ExpLine(_T("</head>"));
 		_ExpLine(_T("<body>"));
@@ -789,7 +792,7 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				if(pOptions->bPassword != FALSE)
 				{
 					_ExpStrIf(pOptions->bPassword, _T("<code>"));
-					_ExpHtmlStr(p->pszPassword);
+					_ExpHtmlStr(p->pszPassword, XEF_NBSP);
 					_ExpStr(_T("</code>"));
 				}
 

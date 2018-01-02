@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ public:
 
 		m_strAlph = lpwAlph;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 		std::set<WCHAR> s;
 		for(size_t i = 0; i < m_strAlph.size(); ++i)
 		{
@@ -305,7 +305,7 @@ DWORD CPwQualityEst::EstimatePasswordBits(LPCTSTR lpPassword)
 
 	const DWORD dwRes = CPwQualityEst::_EstimateQuality(lpw);
 
-	mem_erase((unsigned char *)lpw, wcslen(lpw) * sizeof(WCHAR));
+	mem_erase(lpw, wcslen(lpw) * sizeof(WCHAR));
 	SAFE_DELETE_ARRAY(lpw);
 	return dwRes;
 #endif
@@ -448,26 +448,25 @@ size_t QeHammingDist(LPCWSTR lp1, size_t uOffset1, LPCWSTR lp2,
 }
 
 bool QeEvalAddPopularPasswordPattern(std::vector<TqePatInsts>& vPatterns,
-	LPCWSTR lpw, size_t i, std::vector<WCHAR>& vSub, double dblCostPerMod)
+	LPCWSTR lpw, size_t i, std::vector<WCHAR>& vSub, size_t n,
+	double dblCostPerMod)
 {
-	vSub.push_back(0); // Terminate string
-	size_t uDictSize;
-	const bool b = CPopularPasswords::IsPopular(&vSub[0], &uDictSize);
-	vSub.pop_back();
-	if(!b) return false;
+	ASSERT(vSub.size() == (n + 1)); // vSub is null-terminated
+	if(vSub.size() == 0) { ASSERT(FALSE); return false; }
+	ASSERT(vSub[vSub.size() - 1] == L'\0');
 
-	const size_t n = vSub.size();
+	size_t uDictSize;
+	if(!CPopularPasswords::IsPopular(&vSub[0], &uDictSize)) return false;
+
 	const size_t d = QeHammingDist(&vSub[0], 0, lpw, i, n);
 
 	double dblCost = QE_LOG2(static_cast<double>(uDictSize));
-
 	// dblCost += log2(n binom d)
 	size_t k = min(d, n - d);
 	for(size_t j = n; j > (n - k); --j)
 		dblCost += QE_LOG2(static_cast<double>(j));
 	for(size_t j = k; j >= 2; --j)
 		dblCost -= QE_LOG2(static_cast<double>(j));
-
 	dblCost += dblCostPerMod * static_cast<double>(d);
 
 	vPatterns[i].push_back(boost::shared_ptr<CQePatternInstance>(
@@ -492,22 +491,30 @@ void QeFindPopularPasswords(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPa
 	{
 		if(!CPopularPasswords::ContainsLength(nSubLen)) continue;
 
-		std::vector<WCHAR> vSub(nSubLen);
+		std::vector<WCHAR> vSub(nSubLen + 1);
+		vSub[nSubLen] = L'\0';
 
 		for(size_t i = 0; i <= (n - nSubLen); ++i)
 		{
 			if(QeVectorContains(vLower, L'\0', i, nSubLen)) continue;
 
 			memcpy(&vSub[0], &vLower[i], nSubLen * sizeof(WCHAR));
-			if(!QeEvalAddPopularPasswordPattern(vPatterns, lpw, i, vSub, 0.0))
+			if(!QeEvalAddPopularPasswordPattern(vPatterns, lpw, i, vSub,
+				nSubLen, 0.0))
 			{
 				memcpy(&vSub[0], &vLeet[i], nSubLen * sizeof(WCHAR));
-				if(QeEvalAddPopularPasswordPattern(vPatterns, lpw, i, vSub, 1.5))
+				if(QeEvalAddPopularPasswordPattern(vPatterns, lpw, i, vSub,
+					nSubLen, 1.5))
 					memset(&vLower[i], 0, nSubLen * sizeof(WCHAR));
 			}
 			else memset(&vLower[i], 0, nSubLen * sizeof(WCHAR));
 		}
+
+		EraseWCharVector(vSub, false);
 	}
+
+	EraseWCharVector(vLower, false);
+	EraseWCharVector(vLeet, false);
 }
 
 bool QePartsEqual(const std::vector<WCHAR>& v, size_t x1, size_t x2,
@@ -563,8 +570,10 @@ void QeFindRepetitions(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPattern
 		}
 
 		const DWORD tDiff = GetTickCount() - tStart;
-		if(tDiff > 500) return;
+		if(tDiff > 500) break;
 	}
+
+	EraseWCharVector(v, false);
 }
 
 void QeAddNumberPattern(std::vector<TqePatInsts>& vPatterns,
@@ -613,21 +622,18 @@ void QeFindNumbers(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPatterns)
 
 void QeFindDiffSeqs(LPCWSTR lpw, size_t n, std::vector<TqePatInsts>& vPatterns)
 {
-	int d = INT_MIN;
+	int d = INT_MAX;
 	size_t p = 0;
 
-	std::vector<WCHAR> v(n + 1);
-	memcpy(&v[0], lpw, n * sizeof(WCHAR));
-	v[n] = WCHAR_MAX;
-
-	for(size_t i = 1; i < v.size(); ++i)
+	for(size_t i = 1; i <= n; ++i)
 	{
-		const int dCur = static_cast<int>(v[i]) - static_cast<int>(v[i - 1]);
+		const int dCur = ((i == n) ? INT_MIN :
+			(static_cast<int>(lpw[i]) - static_cast<int>(lpw[i - 1])));
 		if(dCur != d)
 		{
 			if((i - p) >= 3) // At least 3 chars involved
 			{
-				boost::shared_ptr<CQeCharType> pct = QeGetCharType(v[p]);
+				boost::shared_ptr<CQeCharType> pct = QeGetCharType(lpw[p]);
 				double dblCost = pct->GetCharSize() + QE_LOG2(
 					static_cast<double>(i - p - 1));
 

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -51,8 +51,7 @@ void CNewDialogsEx::ShowError(HWND hParent, int nErrorCode, DWORD dwFlags)
 	CString strText = CPwUtil::FormatError(nErrorCode, dwFlags | PWFF_MAIN_TEXT_ONLY);
 
 	TCHAR tszTemp[24];
-	_stprintf_s(tszTemp, _countof(tszTemp), _T("%08X"),
-		static_cast<unsigned int>(nErrorCode));
+	_stprintf_s(tszTemp, _T("%08X"), static_cast<unsigned int>(nErrorCode));
 
 	CString strMore = TRL("Error code");
 	strMore += _T(": 0x");
