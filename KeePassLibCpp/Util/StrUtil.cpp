@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,35 +32,34 @@
 #endif
 
 // Securely erase a CString object
-void EraseCString(CString *pString)
+void EraseCString(CString* pString)
 {
-	ASSERT(pString != NULL); if(pString == NULL) return;
+	if(pString == NULL) { ASSERT(FALSE); return; }
 
-	const int nBufLen = pString->GetLength();
-	if(nBufLen <= 0) return; // Nothing to clear
+	const int n = pString->GetLength();
+	if(n <= 0) return;
 
-	LPTSTR lpt = pString->GetBuffer(0);
-
-	for(int j = 0; j < nBufLen; ++j)
-		lpt[j] = (TCHAR)0;
-
+	LPTSTR lp = pString->GetBuffer(0);
+	SecureZeroMemory(lp, n * sizeof(TCHAR));
 	pString->ReleaseBuffer();
 }
 
-void EraseWCharVector(std::vector<WCHAR>& vBuffer)
+void EraseWCharVector(std::vector<WCHAR>& vBuffer, bool bClear)
 {
-	const DWORD dwBufSize = static_cast<DWORD>(vBuffer.size());
-	for(DWORD i = 0; i < dwBufSize; ++i) vBuffer[i] = 0;
+	const size_t n = vBuffer.size();
+	if(n == 0) return;
 
-	vBuffer.clear();
+	SecureZeroMemory(&vBuffer[0], n * sizeof(WCHAR));
+	if(bClear) vBuffer.clear();
 }
 
-void EraseTCharVector(std::vector<TCHAR>& vBuffer)
+void EraseTCharVector(std::vector<TCHAR>& vBuffer, bool bClear)
 {
-	const DWORD dwBufSize = static_cast<DWORD>(vBuffer.size());
-	for(DWORD i = 0; i < dwBufSize; ++i) vBuffer[i] = 0;
+	const size_t n = vBuffer.size();
+	if(n == 0) return;
 
-	vBuffer.clear();
+	SecureZeroMemory(&vBuffer[0], n * sizeof(TCHAR));
+	if(bClear) vBuffer.clear();
 }
 
 void FixURL(CString *pstrURL)
@@ -548,7 +547,7 @@ TCHAR *MakeSafeXmlString(const TCHAR *ptString)
 	return pFinal;
 } */
 
-std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString)
+std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString, DWORD dwFlags)
 {
 	std::basic_string<TCHAR> strRet;
 	if(lpString == NULL) { ASSERT(FALSE); return strRet; }
@@ -557,8 +556,9 @@ std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString)
 	std::basic_string<WCHAR> strOrgW = _StringToUnicodeStl(lpString);
 	std::vector<WCHAR> vRet;
 
-	// const size_t cchBufW = 8;
-	// WCHAR vBufW[cchBufW];
+	const bool bNbsp = ((dwFlags & XEF_NBSP) != XEF_NONE);
+
+	// WCHAR vBufW[8];
 
 	for(std::basic_string<WCHAR>::const_iterator it = strOrgW.begin();
 		it != strOrgW.end(); ++it)
@@ -581,11 +581,13 @@ std::basic_string<TCHAR> MakeSafeXmlString(LPCTSTR lpString)
 			SU_AppendW(vRet, L"&#xD;");
 		else if(wch == L'\n')
 			SU_AppendW(vRet, L"&#xA;");
+		else if((wch == L' ') && bNbsp)
+			SU_AppendW(vRet, L"&nbsp;");
 		// https://www.w3.org/TR/xml/#charsets
 		else if((wch < L'\x09') || (wch == L'\x0B') || (wch == L'\x0C') ||
 			((wch > L'\x0D') && (wch < L'\x20')))
 		{
-			// _itow_s((int)(DWORD)wch, vBufW, cchBufW, 16);
+			// _itow_s((int)(DWORD)wch, vBufW, 16);
 			// SU_AppendW(vRet, L"&#x");
 			// SU_AppendW(vRet, vBufW);
 			// vRet.push_back(L';');
@@ -926,6 +928,17 @@ void SU_AppendW(std::vector<WCHAR>& v, LPCWSTR lp)
 
 	LPCWSTR lpCur = lp;
 	while(*lpCur != L'\0') { v.push_back(*lpCur); ++lpCur; }
+}
+
+std_string SU_DriveLetterToUpper(const std_string& strPath)
+{
+	std_string str = strPath;
+	if(str.size() < 3) return str;
+
+	if((str[1] == _T(':')) && (str[2] == _T('\\')))
+		str[0] = static_cast<TCHAR>(toupper(str[0]));
+
+	return str;
 }
 
 /////////////////////////////////////////////////////////////////////////////

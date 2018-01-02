@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -53,6 +53,7 @@ void CPluginsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_btClose);
 	DDX_Control(pDX, IDC_PLUGINS_LIST, m_cList);
 	DDX_Control(pDX, IDC_BTN_PLGHELP, m_btHelp);
+	DDX_Control(pDX, IDC_BTN_OPENFOLDER, m_btOpenFolder);
 	//}}AFX_DATA_MAP
 }
 
@@ -61,6 +62,7 @@ BEGIN_MESSAGE_MAP(CPluginsDlg, CDialog)
 	ON_COMMAND(ID_PLUGIN_CONFIG, OnPluginConfig)
 	ON_COMMAND(ID_PLUGIN_ABOUT, OnPluginAbout)
 	ON_BN_CLICKED(IDC_BTN_PLGHELP, &CPluginsDlg::OnBtnClickedPlgHelp)
+	ON_BN_CLICKED(IDC_BTN_OPENFOLDER, &CPluginsDlg::OnBtnClickedOpenFolder)
 	ON_WM_CONTEXTMENU()
 	//}}AFX_MSG_MAP
 
@@ -81,6 +83,7 @@ BOOL CPluginsDlg::OnInitDialog()
 
 	NewGUI_XPButton(m_btClose, IDB_OK, IDB_OK);
 	NewGUI_XPButton(m_btHelp, IDB_HELP_SMALL, IDB_HELP_SMALL);
+	NewGUI_XPButton(m_btOpenFolder, IDB_TB_OPEN, IDB_TB_OPEN);
 
 	NewGUI_ConfigSideBanner(&m_banner, this);
 	m_banner.SetIcon(AfxGetApp()->LoadIcon(IDI_PLUGINS),
@@ -245,6 +248,16 @@ LRESULT CPluginsDlg::OnXHyperLinkClicked(WPARAM wParam, LPARAM lParam)
 void CPluginsDlg::OnBtnClickedPlgHelp()
 {
 	WU_OpenAppHelp(PWM_HELP_PLUGINS, m_hWnd);
+}
+
+void CPluginsDlg::OnBtnClickedOpenFolder()
+{
+	std_string str = CPluginManager::GetPluginsDir(0);
+	if(GetFileAttributes(str.c_str()) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(str.c_str(), NULL);
+
+	str = std_string(_T("cmd://\"")) + str + _T("\"");
+	OpenUrlEx(str.c_str(), this->m_hWnd);
 }
 
 void CPluginsDlg::OnContextMenu(CWnd* pWnd, CPoint point)

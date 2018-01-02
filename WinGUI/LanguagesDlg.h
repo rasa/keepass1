@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -26,12 +26,14 @@
 #include "NewGUI/XPStyleButtonST.h"
 
 #define PWMX_ENGLISH_AUTHOR  _T("Dominik Reichl")
-#define PWMX_ENGLISH_CONTACT _T("dominik.reichl@t-online.de, https://www.dominik-reichl.de/")
+#define PWMX_ENGLISH_CONTACT _T("https://www.dominik-reichl.de/")
 
 class CLanguagesDlg : public CDialog
 {
 public:
 	CLanguagesDlg(CWnd* pParent = NULL);
+
+	bool InitEx(HWND hParent);
 
 	void _LoadLanguage(LPCTSTR szLang);
 
@@ -41,6 +43,7 @@ public:
 	//{{AFX_DATA(CLanguagesDlg)
 	enum { IDD = IDD_LANGUAGES_DLG };
 	CXPStyleButtonST	m_btGetLang;
+	CXPStyleButtonST	m_btOpenFolder;
 	CListCtrl	m_listLang;
 	CXPStyleButtonST	m_btClose;
 	//}}AFX_DATA
@@ -57,6 +60,7 @@ protected:
 	virtual void OnCancel();
 	afx_msg void OnClickLanguagesList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBtnGetLanguage();
+	afx_msg void OnBtnOpenFolder();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

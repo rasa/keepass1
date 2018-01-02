@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -228,7 +228,7 @@ UINT32 TestCryptoImpl()
 	if(memcmp(aHash, aTemp2, 32) != 0) uTestMask |= TI_ERR_ARCFOUR_CRYPT;
 	if(memcmp(aHash, aTemp, 32) == 0) uTestMask |= TI_ERR_ARCFOUR_CRYPT;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	WCHAR* pw = _StringToUnicode("Test567890123");
 	char* pa = _StringToAnsi(pw);
 	ASSERT(strcmp(pa, "Test567890123") == 0);

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ PWG_ERROR PwgGenerateEx(std::vector<TCHAR>& vOutPassword,
 	ASSERT(pSettings != NULL);
 	if(pSettings == NULL) return PWGE_NULL_PTR;
 
-	EraseTCharVector(vOutPassword);
+	EraseTCharVector(vOutPassword, true);
 
 	CNewRandom* pAllocatedRandom = NULL;
 	CNewRandom* pRandom = pRandomSource;
@@ -82,11 +82,11 @@ PWG_ERROR PwgGenerateEx(std::vector<TCHAR>& vOutPassword,
 	vOutPassword.resize(szlen(pFinalString) + 1);
 	for(DWORD dwCopy = 0; dwCopy <= szlen(pFinalString); ++dwCopy)
 		vOutPassword[dwCopy] = pFinalString[dwCopy];
-	mem_erase((unsigned char *)pFinalString, szlen(pFinalString));
+	mem_erase(pFinalString, szlen(pFinalString));
 	SAFE_DELETE_ARRAY(pFinalString);
 #endif
 
-	EraseWCharVector(vOutBuffer);
+	EraseWCharVector(vOutBuffer, true);
 	SAFE_DELETE(pAllocatedRandom);
 	return pwgErr;
 }

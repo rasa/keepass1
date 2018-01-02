@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "../KeePassLibCpp/Util/TranslateEx.h"
 #include "../KeePassLibCpp/Util/AppUtil.h"
 #include "../KeePassLibCpp/Util/MemUtil.h"
+#include "../KeePassLibCpp/Util/PopularPasswords.h"
 #include "../KeePassLibCpp/Util/StrUtil.h"
 #include "../KeePassLibCpp/Crypto/MemoryProtectionEx.h"
 #include "../KeePassLibCpp/Crypto/KeyTransform_BCrypt.h"
@@ -66,8 +67,8 @@ END_MESSAGE_MAP()
 
 CPwSafeApp::CPwSafeApp()
 {
-	_tcscpy_s(g_pFontNameNormal, _countof(g_pFontNameNormal), _T("MS Serif"));
-	_tcscpy_s(g_pFontNameSymbol, _countof(g_pFontNameSymbol), _T("Symbol"));
+	_tcscpy_s(g_pFontNameNormal, _T("MS Serif"));
+	_tcscpy_s(g_pFontNameSymbol, _T("Symbol"));
 
 	m_hGlobalMutex = NULL;
 }
@@ -254,6 +255,7 @@ void CPwSafeApp::_App_CleanUp()
 	CGradientUtil::Release();
 	CKpCommandLineImpl::ClearStatic();
 	CMemoryProtectionEx::Release();
+	CPopularPasswords::Clear();
 
 	NewGUI_CleanUp();
 	NewGUI_TerminateGDIPlus();
@@ -340,14 +342,14 @@ BOOL CPwSafeApp::RegisterShellAssociation()
 	l = WU_RegCreateKey(HKEY_CLASSES_ROOT, _T("kdbfile"), &hBase);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); return FALSE; }
 
-	// _tcscpy_s(tszTemp, _countof(tszTemp), TRL("KeePass Password Database"));
+	// _tcscpy_s(tszTemp, TRL("KeePass Password Database"));
 	strTemp = TRL("KeePass Password Database");
 
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
 	l = RegSetValueEx(hBase, _T(""), 0, REG_SZ, (CONST BYTE *)strTemp.c_str(), dw);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); RegCloseKey(hBase); return FALSE; }
 
-	// _tcscpy_s(tszTemp, _countof(tszTemp), _T(""));
+	// _tcscpy_s(tszTemp, _T(""));
 	strTemp = _T("");
 
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
@@ -357,9 +359,9 @@ BOOL CPwSafeApp::RegisterShellAssociation()
 	l = WU_RegCreateKey(hBase, _T("DefaultIcon"), &hTemp);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); RegCloseKey(hBase); return FALSE; }
 
-	// _tcscpy_s(tszTemp, _countof(tszTemp), tszMe);
+	// _tcscpy_s(tszTemp, tszMe);
 	strTemp = strMe;
-	// _tcscat_s(tszTemp, _countof(tszTemp), _T(",0"));
+	// _tcscat_s(tszTemp, _T(",0"));
 	strTemp += _T(",0");
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
 	l = RegSetValueEx(hTemp, _T(""), 0, REG_SZ, (CONST BYTE *)strTemp.c_str(), dw);
@@ -376,7 +378,7 @@ BOOL CPwSafeApp::RegisterShellAssociation()
 	l = WU_RegCreateKey(hShell, _T("open"), &hTemp);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); RegCloseKey(hShell); RegCloseKey(hBase); return FALSE; }
 
-	// _tcscpy_s(tszTemp, _countof(tszTemp), TRL("&Open with KeePass"));
+	// _tcscpy_s(tszTemp, TRL("&Open with KeePass"));
 	strTemp = TRL("&Open with KeePass");
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
 	l = RegSetValueEx(hTemp, _T(""), 0, REG_SZ, (CONST BYTE *)strTemp.c_str(), dw);
@@ -385,11 +387,11 @@ BOOL CPwSafeApp::RegisterShellAssociation()
 	l = WU_RegCreateKey(hTemp, _T("command"), &hTemp2);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); RegCloseKey(hTemp); RegCloseKey(hShell); RegCloseKey(hBase); return FALSE; }
 
-	// _tcscpy_s(tszTemp, _countof(tszTemp), _T("\""));
+	// _tcscpy_s(tszTemp, _T("\""));
 	strTemp = _T("\"");
-	// _tcscat_s(tszTemp, _countof(tszTemp), tszMe);
+	// _tcscat_s(tszTemp, tszMe);
 	strTemp += strMe;
-	// _tcscat_s(tszTemp, _countof(tszTemp), _T("\" \"%1\""));
+	// _tcscat_s(tszTemp, _T("\" \"%1\""));
 	strTemp += _T("\" \"%1\"");
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
 	l = RegSetValueEx(hTemp2, _T(""), 0, REG_SZ, (CONST BYTE *)strTemp.c_str(), dw);

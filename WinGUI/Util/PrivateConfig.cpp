@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -36,9 +36,9 @@ CPrivateConfig::CPrivateConfig(BOOL bRequireWriteAccess)
 	m_szFileLocal[0] = 0; m_szFileLocal[1] = 0;
 	dwSubLen = 1 + (DWORD)_tcslen(PWM_EXENAME) + 4 + 2;
 	VERIFY(GetApplicationDirectory(m_szFileLocal, (MAX_PATH * 2) - dwSubLen, TRUE, FALSE));
-	_tcscat_s(m_szFileLocal, _countof(m_szFileLocal), _T("\\"));
-	_tcscat_s(m_szFileLocal, _countof(m_szFileLocal), PWM_EXENAME);
-	_tcscat_s(m_szFileLocal, _countof(m_szFileLocal), _T(".ini"));
+	_tcscat_s(m_szFileLocal, _T("\\"));
+	_tcscat_s(m_szFileLocal, PWM_EXENAME);
+	_tcscat_s(m_szFileLocal, _T(".ini"));
 
 	m_szFileUser[0] = 0; m_szFileUser[1] = 0;
 
@@ -61,8 +61,8 @@ CPrivateConfig::CPrivateConfig(BOOL bRequireWriteAccess)
 
 	if(m_szFileUser[0] == 0)
 	{
-		_tcscpy_s(m_szFileUser, _countof(m_szFileUser), PWM_EXENAME); // Not found -- make the same as m_szFileGeneric
-		_tcscat_s(m_szFileUser, _countof(m_szFileUser), _T(".ini"));
+		_tcscpy_s(m_szFileUser, PWM_EXENAME); // Not found -- make the same as m_szFileGeneric
+		_tcscat_s(m_szFileUser, _T(".ini"));
 	}
 	else
 	{
@@ -74,20 +74,20 @@ CPrivateConfig::CPrivateConfig(BOOL bRequireWriteAccess)
 		if(uLen != 0)
 		{
 			if(m_szFileUser[uLen - 1] != _T('\\'))
-				_tcscat_s(m_szFileUser, _countof(m_szFileUser), _T("\\"));
+				_tcscat_s(m_szFileUser, _T("\\"));
 
-			_tcscat_s(m_szFileUser, _countof(m_szFileUser), PWM_EXENAME);
+			_tcscat_s(m_szFileUser, PWM_EXENAME);
 
-			_tcscpy_s(tszAppDir, _countof(tszAppDir), m_szFileUser);
+			_tcscpy_s(tszAppDir, m_szFileUser);
 
-			_tcscat_s(m_szFileUser, _countof(m_szFileUser), _T("\\"));
-			_tcscat_s(m_szFileUser, _countof(m_szFileUser), PWM_EXENAME);
-			_tcscat_s(m_szFileUser, _countof(m_szFileUser), _T(".ini"));
+			_tcscat_s(m_szFileUser, _T("\\"));
+			_tcscat_s(m_szFileUser, PWM_EXENAME);
+			_tcscat_s(m_szFileUser, _T(".ini"));
 		}
 	}
 
-	_tcscpy_s(m_szFileGeneric, _countof(m_szFileGeneric), PWM_EXENAME);
-	_tcscat_s(m_szFileGeneric, _countof(m_szFileGeneric), _T(".ini"));
+	_tcscpy_s(m_szFileGeneric, PWM_EXENAME);
+	_tcscat_s(m_szFileGeneric, _T(".ini"));
 
 	m_nUseDir = 0;
 	if(bRequireWriteAccess == TRUE)

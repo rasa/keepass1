@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -53,6 +53,8 @@ class CPluginManager : boost::noncopyable
 public:
     static CPluginManager& Instance();
 
+	static std_string GetPluginsDir(size_t i);
+
 	// BOOL SetAppInfo(const KP_APP_INFO *pAppInfo);
 	BOOL SetDirectCommandRange(DWORD dwFirstCommand, DWORD dwLastCommand);
 
@@ -76,7 +78,8 @@ private:
 	CPluginManager();
 	~CPluginManager();
 
-	std::vector<std_string> FindPluginCandidates();
+	static std::vector<std_string> FindPluginCandidates();
+	static void FindPluginCandidatesEx(std::vector<std_string>& v, const std_string& strBaseDir);
 
 	bool _IsValidPlugin(LPCTSTR lpFile, KP_PLUGIN_INSTANCE* pOutStruct);
 	void CleanUp();

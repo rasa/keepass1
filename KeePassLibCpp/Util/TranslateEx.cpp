@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2017 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -50,18 +50,20 @@ BOOL LoadTranslationTable(LPCTSTR pszTableName)
 	ZeroMemory(&szPath[0], MAX_PATH * 3 * sizeof(TCHAR));
 	GetModuleFileName(NULL, &szPath[0], MAX_PATH * 3 - 2);
 
-	size_t uPathPos = _tcslen(szPath) - 1;
-	while(uPathPos != 0)
+	int iPathPos = static_cast<int>(_tcslen(szPath)) - 1;
+	while(iPathPos >= 0)
 	{
-		if((szPath[uPathPos] == _T('\\')) || (szPath[uPathPos] == _T('/')))
+		if((szPath[iPathPos] == _T('\\')) || (szPath[iPathPos] == _T('/')))
 		{
-			szPath[uPathPos + 1] = 0;
+			szPath[iPathPos + 1] = _T('\0');
 			break;
 		}
-		--uPathPos;
+		--iPathPos;
 	}
-	_tcscat_s(szPath, _countof(szPath), pszTableName);
-	_tcscat_s(szPath, _countof(szPath), _T(".lng"));
+	_tcscat_s(szPath, PWM_DIR_LANGUAGES);
+	_tcscat_s(szPath, _T("\\"));
+	_tcscat_s(szPath, pszTableName);
+	_tcscat_s(szPath, _T(".lng"));
 
 	FILE *fp = NULL;
 	_tfopen_s(&fp, szPath, _T("rb"));
