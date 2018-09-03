@@ -1,3 +1,31 @@
+18/09/03 - 1.36
+- KeePass now uses Transactional NTFS (TxF) for writing
+  database files, if possible; this improves the compatibility
+  with other programs that are watching these files (e.g. file
+  synchronization services)
+- Added automatic completion support for the user name box in
+  the entry editing dialog (suggesting user names that are used
+  in other entries)
+- Added option 'Search for passwords in quick searches' (turned
+  off by default)
+- The KP1_CFG_LOCAL environment variable now supports paths
+  relative to the current working directory
+
+- File transactions now preserve access control list (ACL)
+  entries
+- File transactions are not used anymore when attempting to
+  write to a local file that does not exist yet (to ensure a
+  correct default ACL)
+- File transactions are not used anymore for files that have a
+  reparse point (e.g. symbolic links)
+- The configuration system does not create a KeePass folder in
+  the user's application data folder anymore when the target
+  configuration file location is outside this folder
+- Upgraded to Boost libraries version 1.68.0
+- Upgraded installer
+- Various code optimizations
+- Minor other improvements
+
 18/01/02 - 1.35
 - The installers (regular and MSI) now create empty 'Languages'
   and 'Plugins' folders in the application directory, and the

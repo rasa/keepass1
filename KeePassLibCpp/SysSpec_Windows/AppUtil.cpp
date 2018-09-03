@@ -26,6 +26,7 @@
 #include "../Util/FileTransactionEx.h"
 #include "../PwManager.h"
 
+#include <aclapi.h>
 #include <boost/scoped_array.hpp>
 
 // #ifndef _WIN32_WCE
@@ -348,3 +349,49 @@ BOOL AU_RemoveZoneIdentifier(LPCTSTR lpFile)
 	return TRUE;
 }
 #endif // _WIN32_WCE
+
+void AU_ProtectProcessWithDacl_Priv(HANDLE hProcess, HANDLE hToken)
+{
+	DWORD cbTokenUser = 0;
+	GetTokenInformation(hToken, TokenUser, NULL, 0, &cbTokenUser);
+	if(cbTokenUser == 0) { ASSERT(FALSE); return; }
+
+	scoped_array<BYTE> aTokenUser(new BYTE[cbTokenUser]);
+	ZeroMemory(aTokenUser.get(), cbTokenUser);
+	if(GetTokenInformation(hToken, TokenUser, aTokenUser.get(),
+		cbTokenUser, &cbTokenUser) == FALSE) { ASSERT(FALSE); return; }
+
+	PTOKEN_USER pTokenUser = (PTOKEN_USER)aTokenUser.get();
+	PSID pSid = pTokenUser->User.Sid;
+	if((pSid == NULL) || (IsValidSid(pSid) == FALSE)) { ASSERT(FALSE); return; }
+
+	DWORD cbAcl = sizeof(ACL) + sizeof(ACCESS_ALLOWED_ACE) - sizeof(DWORD) +
+		GetLengthSid(pSid);
+	scoped_array<BYTE> aAcl(new BYTE[cbAcl]);
+	PACL pAcl = (PACL)aAcl.get();
+
+	if(InitializeAcl(pAcl, cbAcl, ACL_REVISION) == FALSE) { ASSERT(FALSE); return; }
+
+	if(AddAccessAllowedAce(pAcl, ACL_REVISION, SYNCHRONIZE |
+		PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_TERMINATE, pSid) == FALSE)
+	{
+		ASSERT(FALSE);
+		return;
+	}
+
+	VERIFY(SetSecurityInfo(hProcess, SE_KERNEL_OBJECT, DACL_SECURITY_INFORMATION,
+		NULL, NULL, pAcl, NULL) == ERROR_SUCCESS);
+}
+
+void AU_ProtectProcessWithDacl()
+{
+	HANDLE hProcess = GetCurrentProcess();
+	HANDLE hToken = NULL;
+
+	if(OpenProcessToken(hProcess, TOKEN_QUERY, &hToken) != FALSE)
+	{
+		AU_ProtectProcessWithDacl_Priv(hProcess, hToken);
+		VERIFY(CloseHandle(hToken));
+	}
+	else { ASSERT(FALSE); }
+}

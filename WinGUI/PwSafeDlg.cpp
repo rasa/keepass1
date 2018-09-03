@@ -889,6 +889,7 @@ BOOL CPwSafeDlg::OnInitDialog()
 	m_bSecureEdits = cConfig.GetBool(PWMKEY_SECUREEDITS, TRUE);
 	m_bSingleClickTrayIcon = cConfig.GetBool(PWMKEY_SINGLECLICKTRAY, FALSE);
 	m_bShowTrayOnlyIfTrayed = cConfig.GetBool(PWMKEY_SHOWTRAYONLYIFTRAYED, FALSE);
+	m_bQuickFindInPasswords = cConfig.GetBool(PWMKEY_QUICKFINDINPWS, FALSE);
 	m_bQuickFindIncBackup = cConfig.GetBool(PWMKEY_QUICKFINDINCBK, TRUE);
 	m_bQuickFindIncExpired = cConfig.GetBool(PWMKEY_QUICKFINDINCEXP, TRUE);
 	m_bDeleteBackupsOnSave = cConfig.GetBool(PWMKEY_DELETEBKONSAVE, FALSE);
@@ -2323,6 +2324,7 @@ void CPwSafeDlg::SaveOptions()
 	pcfg.SetBool(PWMKEY_SECUREEDITS, m_bSecureEdits);
 	pcfg.SetBool(PWMKEY_SINGLECLICKTRAY, m_bSingleClickTrayIcon);
 	pcfg.SetBool(PWMKEY_SHOWTRAYONLYIFTRAYED, m_bShowTrayOnlyIfTrayed);
+	pcfg.SetBool(PWMKEY_QUICKFINDINPWS, m_bQuickFindInPasswords);
 	pcfg.SetBool(PWMKEY_QUICKFINDINCBK, m_bQuickFindIncBackup);
 	pcfg.SetBool(PWMKEY_QUICKFINDINCEXP, m_bQuickFindIncExpired);
 	pcfg.SetBool(PWMKEY_DELETEBKONSAVE, m_bDeleteBackupsOnSave);
@@ -4943,6 +4945,7 @@ void CPwSafeDlg::OnFileSave()
 
 	BYTE vWrittenHash[32];
 	const int nErr = m_mgr.SaveDatabase(m_strFile, &vWrittenHash[0]);
+	const DWORD dwWinErr = GetLastError();
 
 	sdb.Release();
 	CTaskbarListEx::SetProgressState(this->m_hWnd, TBPF_NOPROGRESS);
@@ -4950,6 +4953,7 @@ void CPwSafeDlg::OnFileSave()
 
 	if(nErr != PWE_SUCCESS)
 	{
+		if(nErr == PWE_GETLASTERROR) SetLastError(dwWinErr); // Restore error
 		CNewDialogsEx::ShowError(this->m_hWnd, nErr, PWFF_DATALOSS_WITHOUT_SAVE);
 		_SetDisplayDialog(false);
 		return;
@@ -5286,6 +5290,7 @@ void CPwSafeDlg::OnSafeOptions()
 	dlg.m_bSingleClickTrayIcon = m_bSingleClickTrayIcon;
 	dlg.m_bShowTrayOnlyIfTrayed = m_bShowTrayOnlyIfTrayed;
 	dlg.m_dwDefaultExpire = m_dwDefaultExpire;
+	dlg.m_bQuickFindInPasswords = m_bQuickFindInPasswords;
 	dlg.m_bQuickFindIncBackup = m_bQuickFindIncBackup;
 	dlg.m_bQuickFindIncExpired = m_bQuickFindIncExpired;
 	dlg.m_bMinimizeBeforeAT = ((m_nAutoTypeMethod == ATM_MINIMIZE) ? TRUE : FALSE);
@@ -5342,6 +5347,7 @@ void CPwSafeDlg::OnSafeOptions()
 		m_bSecureEdits = dlg.m_bSecureEdits;
 		m_bSingleClickTrayIcon = dlg.m_bSingleClickTrayIcon;
 		m_bShowTrayOnlyIfTrayed = dlg.m_bShowTrayOnlyIfTrayed;
+		m_bQuickFindInPasswords = dlg.m_bQuickFindInPasswords;
 		m_bQuickFindIncBackup = dlg.m_bQuickFindIncBackup;
 		m_bQuickFindIncExpired = dlg.m_bQuickFindIncExpired;
 		m_bDeleteBackupsOnSave = dlg.m_bDeleteBackupsOnSave;
@@ -9661,8 +9667,9 @@ void CPwSafeDlg::SetStatusTextEx(LPCTSTR lpStatusText, int nPane)
 
 void CPwSafeDlg::_DoQuickFind(LPCTSTR lpText)
 {
-	DWORD dwFlags = (PWMF_TITLE | PWMF_USER | PWMF_URL | PWMF_PASSWORD |
-		PWMF_ADDITIONAL | PWMF_UUID | PWMF_GROUPNAME);
+	DWORD dwFlags = (PWMF_TITLE | PWMF_USER | PWMF_URL | PWMF_ADDITIONAL |
+		PWMF_UUID | PWMF_GROUPNAME);
+	if(m_bQuickFindInPasswords != FALSE) dwFlags |= PWMF_PASSWORD;
 
 	LPCTSTR lpSearch = lpText;
 	if(lpSearch == NULL)

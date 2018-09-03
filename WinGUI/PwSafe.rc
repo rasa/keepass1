@@ -849,8 +849,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,35,0,0
- PRODUCTVERSION 1,35,0,0
+ FILEVERSION 1,36,0,0
+ PRODUCTVERSION 1,36,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -867,13 +867,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://keepass.info/"
             VALUE "CompanyName", "Dominik Reichl"
-            VALUE "FileDescription", "KeePass Password Safe 1.35"
-            VALUE "FileVersion", "1.35.0.0"
+            VALUE "FileDescription", "KeePass Password Safe 1.36"
+            VALUE "FileVersion", "1.36.0.0"
             VALUE "InternalName", "PwSafe"
             VALUE "LegalCopyright", "Copyright (C) 2003-2018 Dominik Reichl"
             VALUE "OriginalFilename", "KeePass.exe"
-            VALUE "ProductName", "KeePass Password Safe 1.35"
-            VALUE "ProductVersion", "1.35.0.0"
+            VALUE "ProductName", "KeePass Password Safe 1.36"
+            VALUE "ProductVersion", "1.36.0.0"
         END
     END
     BLOCK "VarFileInfo"

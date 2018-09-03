@@ -85,6 +85,7 @@ public:
 	BOOL m_bSingleInstance;
 	BOOL m_bSingleClickTrayIcon;
 	BOOL m_bShowTrayOnlyIfTrayed;
+	BOOL m_bQuickFindInPasswords;
 	BOOL m_bQuickFindIncBackup;
 	BOOL m_bQuickFindIncExpired;
 	BOOL m_bMinimizeBeforeAT;

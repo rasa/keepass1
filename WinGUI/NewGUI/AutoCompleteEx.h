@@ -1,4 +1,4 @@
-﻿/*
+/*
   KeePass Password Safe - The Open-Source Password Manager
   Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
 
@@ -17,23 +17,25 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ___KEEPASS_LIBRARY_API_H___
-#define ___KEEPASS_LIBRARY_API_H___
+#ifndef ___AUTO_COMPLETE_EX_H___
+#define ___AUTO_COMPLETE_EX_H___
 
-#include "APIDefEx.h"
+#pragma once
 
-// Library build number (independent of underlying KeePass version)
-#define KEEPASS_LIBRARY_BUILD 0x000001AA
+#include "../../KeePassLibCpp/SysDefEx.h"
+#include "../../KeePassLibCpp/Util/StrUtil.h"
+#include <boost/utility.hpp>
 
-KP_SHARE DWORD GetKeePassVersion();
-KP_SHARE LPCTSTR GetKeePassVersionString();
+class CAutoCompleteEx : boost::noncopyable
+{
+private:
+	CAutoCompleteEx() { };
 
-KP_SHARE DWORD GetLibraryBuild();
+public:
+	static void Init(HWND hWnd, const std::vector<LPCTSTR>& vItems);
 
-KP_SHARE BOOL TransformKey256(UINT8* pBuffer256, const UINT8* pKeySeed256, UINT64 qwRounds);
-KP_SHARE UINT64 TransformKeyBenchmark256(DWORD dwTimeMs);
+private:
+	static void InitPriv(HWND hWnd, const std::vector<LPCTSTR>& vItems);
+};
 
-// KP_SHARE BOOL TF_ShowLangBar(UINT32 dwFlags);
-KP_SHARE void ProtectProcessWithDacl();
-
-#endif
+#endif // ___AUTO_COMPLETE_EX_H___

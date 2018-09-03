@@ -941,6 +941,21 @@ std_string SU_DriveLetterToUpper(const std_string& strPath)
 	return str;
 }
 
+TCHAR SU_GetDriveLetter(LPCTSTR lp)
+{
+	if(lp == NULL) { ASSERT(FALSE); return _T('\0'); }
+
+	const TCHAR ch = lp[0];
+	if(ch == _T('\0')) return _T('\0');
+
+	if(lp[1] != _T(':')) return _T('\0');
+	if(lp[2] != _T('\\')) return _T('\0');
+
+	if((ch >= _T('A')) && (ch <= _T('Z'))) return ch;
+	if((ch >= _T('a')) && (ch <= _T('z'))) return (ch - _T('a') + _T('A'));
+	return _T('\0');
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // WCharStream class
 

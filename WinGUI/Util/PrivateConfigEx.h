@@ -70,7 +70,7 @@ public:
 private:
 	void GetConfigPaths();
 	void FlushGlobal(BOOL bDeleteCache);
-	void PrepareUserWrite();
+	void PrepareUserWrite(LPCTSTR lpFile);
 	void ApplyFileOverrides();
 
 	BOOL GetIn(LPCTSTR pszField, LPTSTR pszValue, int nConfigID) const;

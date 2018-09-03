@@ -38,12 +38,12 @@
 
 // When making a Windows build, don't forget to update the verinfo resource
 #ifndef _UNICODE
-#define PWM_VERSION_STR  _T("1.35")
+#define PWM_VERSION_STR  _T("1.36")
 #else
-#define PWM_VERSION_STR  _T("1.35 Unicode")
+#define PWM_VERSION_STR  _T("1.36 Unicode")
 #endif
-#define PWM_VERSION_DW   0x01230000
-#define PWM_VERSION_QW   0x0001002300000000ULL
+#define PWM_VERSION_DW   0x01240000
+#define PWM_VERSION_QW   0x0001002400000000ULL
 // #define PWM_DEVSNAPSHOT
 
 // Database file signature bytes
@@ -158,6 +158,7 @@
 #define PWMKEY_SHOWTRAYONLYIFTRAYED _T("KeeShowTrayOnlyIfTrayed")
 #define PWMKEY_DEFAULTEXPIRE    _T("KeeDefaultExpire")
 #define PWMKEY_AUTOPWGEN        _T("KeeAutoPwGen")
+#define PWMKEY_QUICKFINDINPWS   _T("KeeQuickFindInPasswords")
 #define PWMKEY_QUICKFINDINCBK   _T("KeeQuickFindIncBackup")
 #define PWMKEY_QUICKFINDINCEXP  _T("KeeQuickFindIncExpired")
 #define PWMKEY_AUTOTYPEMETHOD   _T("KeeAutoTypeMethod")

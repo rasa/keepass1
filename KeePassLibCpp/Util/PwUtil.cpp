@@ -843,13 +843,23 @@ CNullableEx<FILETIME> CPwUtil::GetFileCreationTime(LPCTSTR lpFile)
 		OPEN_EXISTING, 0, NULL);
 	if(h == INVALID_HANDLE_VALUE) return CNullableEx<FILETIME>();
 
-	FILETIME vTimes[3];
-	const BOOL bResult = GetFileTime(h, &vTimes[0], &vTimes[1], &vTimes[2]);
+	FILETIME t;
+	FILETIME vDummy[2];
+	const BOOL bResult = GetFileTime(h, &t, &vDummy[0], &vDummy[1]);
 	VERIFY(CloseHandle(h));
 
-	if(bResult == FALSE) { ASSERT(FALSE); return CNullableEx<FILETIME>(); }
+	if(bResult != FALSE)
+	{
+		SYSTEMTIME st;
+		ZeroMemory(&st, sizeof(SYSTEMTIME));
+		if(FileTimeToSystemTime(&t, &st) != FALSE)
+		{
+			if(st.wYear >= 1971) return CNullableEx<FILETIME>(t);
+		}
+	}
 
-	return CNullableEx<FILETIME>(vTimes[0]);
+	ASSERT(FALSE);
+	return CNullableEx<FILETIME>();
 }
 
 bool CPwUtil::SetFileCreationTime(LPCTSTR lpFile, const FILETIME* pTime)
@@ -863,22 +873,6 @@ bool CPwUtil::SetFileCreationTime(LPCTSTR lpFile, const FILETIME* pTime)
 	VERIFY(SetFileTime(h, pTime, NULL, NULL));
 	VERIFY(CloseHandle(h));
 	return true;
-}
-
-bool CPwUtil::EfsEncryptFile(LPCTSTR lpFile)
-{
-	if(lpFile == NULL) { ASSERT(FALSE); return false; }
-
-	HMODULE hLib = ::LoadLibrary(_T("AdvApi32.dll"));
-	if(hLib == NULL) { ASSERT(FALSE); return false; }
-
-	bool bResult = false;
-	LPENCRYPTFILE lpEncryptFile = (LPENCRYPTFILE)::GetProcAddress(hLib, ENCRYPTFILE_FNNAME);
-	if(lpEncryptFile != NULL) { bResult = (lpEncryptFile(lpFile) != FALSE); }
-	else { ASSERT(FALSE); }
-
-	::FreeLibrary(hLib);
-	return bResult;
 }
 
 bool CPwUtil::IsDatabaseFile(LPCTSTR lpFile)

@@ -141,6 +141,7 @@ int SU_FindUnescapedCharW(LPCWSTR lpw, WCHAR wch);
 void SU_AppendW(std::vector<WCHAR>& v, LPCWSTR lp);
 
 std_string SU_DriveLetterToUpper(const std_string& strPath);
+TCHAR SU_GetDriveLetter(LPCTSTR lp);
 
 /////////////////////////////////////////////////////////////////////////////
 // Natural string comparison API

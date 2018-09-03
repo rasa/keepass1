@@ -377,6 +377,7 @@ private:
 	BOOL m_bUsePuttyForURLs;
 	BOOL m_bSaveOnLATMod;
 	BOOL m_bStartMinimized;
+	BOOL m_bQuickFindInPasswords;
 	BOOL m_bQuickFindIncBackup;
 	BOOL m_bQuickFindIncExpired;
 	BOOL m_bCheckForUpdate;

@@ -248,6 +248,7 @@ BOOL COptionsDlg::OnInitDialog()
 
 	m_olAdvanced.AddGroupText(_T(""), 0);
 	m_olAdvanced.AddGroupText(TRL("Quick search (toolbar)"), 12);
+	m_olAdvanced.AddCheckItem(TRL("Search for passwords in quick searches"), &m_bQuickFindInPasswords, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Include backup entries in quick searches"), &m_bQuickFindIncBackup, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Include expired entries in quick searches"), &m_bQuickFindIncExpired, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Focus entry list after a successful quick search"), &m_bFocusResAfterQuickFind, NULL, OL_LINK_NULL);

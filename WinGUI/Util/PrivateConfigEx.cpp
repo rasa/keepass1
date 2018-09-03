@@ -27,6 +27,8 @@
 #include "../../KeePassLibCpp/Util/AppUtil.h"
 #include "../../KeePassLibCpp/Util/TranslateEx.h"
 
+#include <boost/static_assert.hpp>
+
 // A GUID used to detect non-existing keys in queries
 #define PCFG_NOTFOUND _T("DD1B11FE241D475AA14A7555729D6BCB")
 
@@ -171,17 +173,23 @@ void CPrivateConfigEx::FlushIni(LPCTSTR lpIniFilePath)
 	WritePrivateProfileString(NULL, NULL, NULL, lpIniFilePath);
 }
 
-void CPrivateConfigEx::PrepareUserWrite()
+void CPrivateConfigEx::PrepareUserWrite(LPCTSTR lpFile)
 {
 	ASSERT(m_bCanWrite == TRUE);
 
 	if((m_bPreferUser == TRUE) || (_FileWritable(m_strFileGlobal.c_str()) == FALSE))
 	{
-		if(m_strUserPath.size() > 0)
+		if((m_strUserPath.size() > 0) && (m_bTriedToCreateUserPath == FALSE))
 		{
-			if(m_bTriedToCreateUserPath == FALSE)
+			std_string strDir = m_strUserPath;
+			strDir += _T("\\");
+
+			// Ensure the user path existence only if the file that is
+			// about to be written resides in this path
+			if((strDir.size() < _tcslen(lpFile)) && (_tcsnicmp(strDir.c_str(),
+				lpFile, strDir.size()) == 0))
 			{
-				CreateDirectory(m_strUserPath.c_str(), NULL); // Ensure existance
+				CreateDirectory(m_strUserPath.c_str(), NULL); // Ensure existence
 				m_bTriedToCreateUserPath = TRUE; // Try once only
 			}
 		}
@@ -288,7 +296,7 @@ BOOL CPrivateConfigEx::SetIn(LPCTSTR pszField, LPCTSTR pszValue, int nConfigID)
 			lpFile = m_strFileGlobal.c_str();
 	}
 	else if(nConfigID == CFG_ID_USER)
-		this->PrepareUserWrite();
+		PrepareUserWrite(lpFile);
 
 	return ((WritePrivateProfileString(PWM_EXENAME, pszField, pszValue, lpFile) ==
 		FALSE) ? FALSE : TRUE); // Zero-based success mapping
