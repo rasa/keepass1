@@ -28,6 +28,7 @@
 
 #include "../KeePassLibCpp/Util/MemUtil.h"
 #include "../KeePassLibCpp/Util/StrUtil.h"
+#include "NewGUI/AutoCompleteEx.h"
 #include "NewGUI/NewGUICommon.h"
 #include "NewGUI/FontUtil.h"
 #include "../KeePassLibCpp/Util/TranslateEx.h"
@@ -486,6 +487,8 @@ BOOL CAddEntryDlg::OnInitDialog()
 	}
 
 	if(CPwSafeDlg::m_bMiniMode == TRUE) this->UrlToCombo(false);
+
+	InitAutoCompletions();
 
 	KP_ENTRY kpInitial = _CurrentDataToEntry(true);
 	CPwUtil::HashKpEntry(&kpInitial, m_vInitialHash);
@@ -1413,6 +1416,27 @@ void CAddEntryDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		menu.DestroyMenu();
 	}
 	else { CDialog::OnContextMenu(pWnd, point); }
+}
+
+void CAddEntryDlg::InitAutoCompletions()
+{
+	CWnd* pWnd = GetDlgItem(IDC_EDIT_USERNAME);
+	if(pWnd == NULL) { ASSERT(FALSE); return; }
+	HWND hWnd = pWnd->GetSafeHwnd();
+	if(hWnd == NULL) { ASSERT(FALSE); return; }
+
+	std::vector<LPCTSTR> v;
+	const DWORD dwEntries = m_pMgr->GetNumberOfEntries();
+	for(DWORD i = 0; i < dwEntries; ++i)
+	{
+		const PW_ENTRY* p = m_pMgr->GetEntry(i);
+		if(p == NULL) { ASSERT(FALSE); continue; }
+
+		LPCTSTR lp = p->pszUserName;
+		if((lp != NULL) && (*lp != _T('\0'))) v.push_back(lp);
+	}
+
+	CAutoCompleteEx::Init(hWnd, v);
 }
 
 #pragma warning(pop)

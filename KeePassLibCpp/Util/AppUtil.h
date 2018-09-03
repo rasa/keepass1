@@ -68,4 +68,6 @@ BOOL AU_IsAppX();
 BOOL AU_RemoveZoneIdentifier(LPCTSTR lpFile);
 #endif // _WIN32_WCE
 
+void AU_ProtectProcessWithDacl();
+
 #endif // ___APPLICATION_UTILITIES_H___

@@ -45,6 +45,7 @@ private:
 	void UpdateControlsStatus();
 	void SetExpireDays(DWORD dwDays, BOOL bSetTime);
 	void PerformMiniModeAdjustments();
+	void InitAutoCompletions();
 
 	KP_ENTRY _CurrentDataToEntry(bool bUpdateData);
 	// void _ClearStringsCache();
