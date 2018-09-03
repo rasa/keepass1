@@ -293,22 +293,18 @@ CString MakeRelativePathEx(LPCTSTR lpBaseFile, LPCTSTR lpTargetFile)
 CString GetShortestAbsolutePath(LPCTSTR lpFilePath)
 {
 	CString str;
+	if(lpFilePath == NULL) { ASSERT(FALSE); return str; }
 
-	ASSERT(lpFilePath != NULL); if(lpFilePath == NULL) return str;
+	DWORD dwBufLen = static_cast<DWORD>(_tcslen(lpFilePath) + 12);
+	if(dwBufLen <= MAX_PATH) dwBufLen = MAX_PATH + 1;
 
-	DWORD dwBufLen = (DWORD)_tcslen(lpFilePath) + 12, dw;
 	LPTSTR lpBuf = new TCHAR[dwBufLen + 1];
-	LPTSTR lpFilePart = NULL;
+	ZeroMemory(lpBuf, (dwBufLen + 1) * sizeof(TCHAR));
 
-	if(lpBuf != NULL)
-	{
-		lpBuf[0] = 0;
-		dw = GetFullPathName(lpFilePath, dwBufLen, lpBuf, &lpFilePart);
+	DWORD dw = GetFullPathName(lpFilePath, dwBufLen, lpBuf, NULL);
 
-		if((dw != 0) && (dw < dwBufLen)) str = lpBuf;
-		else str = lpFilePath;
-	}
-	else str = lpFilePath;
+	if((dw != 0) && (dw <= dwBufLen)) str = lpBuf;
+	else { ASSERT(FALSE); str = lpFilePath; }
 
 	SAFE_DELETE_ARRAY(lpBuf);
 	return str;

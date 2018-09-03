@@ -39,13 +39,6 @@ typedef struct _PG_TREENODE
 	std::vector<boost::shared_ptr<_PG_TREENODE> > vChildNodes;
 } PG_TREENODE;
 
-#ifdef _UNICODE
-#define ENCRYPTFILE_FNNAME "EncryptFileW"
-#else
-#define ENCRYPTFILE_FNNAME "EncryptFileA"
-#endif
-typedef BOOL(WINAPI *LPENCRYPTFILE)(LPCTSTR lpFileName);
-
 template<typename T>
 class CNullableEx
 {
@@ -131,8 +124,6 @@ public:
 
 	static CNullableEx<FILETIME> GetFileCreationTime(LPCTSTR lpFile);
 	static bool SetFileCreationTime(LPCTSTR lpFile, const FILETIME* pTime);
-
-	static bool EfsEncryptFile(LPCTSTR lpFile);
 
 	static bool IsDatabaseFile(LPCTSTR lpFile);
 

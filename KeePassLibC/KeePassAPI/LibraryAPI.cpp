@@ -20,6 +20,7 @@
 #include "StdAfx.h"
 #include "../../KeePassLibCpp/PwManager.h"
 #include "../../KeePassLibCpp/Crypto/KeyTransform.h"
+#include "../../KeePassLibCpp/Util/AppUtil.h"
 #include "LibraryAPI.h"
 // #include <Ctfutb.h>
 
@@ -64,3 +65,8 @@ KP_SHARE UINT64 TransformKeyBenchmark256(DWORD dwTimeMs)
 	pMgr->Release();
 	return (r ? TRUE : FALSE);
 } */
+
+KP_SHARE void ProtectProcessWithDacl()
+{
+	AU_ProtectProcessWithDacl();
+}

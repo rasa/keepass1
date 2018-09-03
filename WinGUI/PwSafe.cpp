@@ -90,6 +90,7 @@ BOOL CPwSafeApp::InitInstance()
 #endif
 
 	AU_EnsureInitialized();
+	// AU_ProtectProcessWithDacl();
 
 	// Do not run as AppX, because of compatibility problems
 	if((AU_IsAppX() == TRUE) || (ProcessControlCommands() == TRUE))
@@ -139,7 +140,15 @@ BOOL CPwSafeApp::InitInstance()
 
 	std::basic_string<TCHAR> strCfgLocal = WU_GetEnv(KPENV_CFG_LOCAL, true);
 	if(strCfgLocal.size() > 0)
+	{
+		if(WU_IsAbsolutePath(strCfgLocal.c_str()) == FALSE)
+		{
+			CString strAbs = GetShortestAbsolutePath(strCfgLocal.c_str());
+			strCfgLocal = (LPCTSTR)strAbs;
+		}
+
 		CPrivateConfigEx::SetConfigFileOverride(CFG_ID_USER, strCfgLocal.c_str());
+	}
 
 	CPrivateConfigEx* pc = new CPrivateConfigEx(FALSE);
 	if(pc != NULL)

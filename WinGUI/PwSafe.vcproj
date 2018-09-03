@@ -3066,6 +3066,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewGUI\AutoCompleteEx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NewGUI\AutoCompleteEx.h"
+				>
+			</File>
+			<File
 				RelativePath="NewGUI\AutoRichEditCtrlFx.cpp"
 				>
 				<FileConfiguration
