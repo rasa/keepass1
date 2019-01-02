@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@
 #define WU_MAX_MACHINE_LEN 1024
 
 #define CFN_CLIPBOARD_VIEWER_IGNORE _T("Clipboard Viewer Ignore")
+#define CFN_CLOUD_ALLOWED           _T("CanUploadToCloudClipboard")
+#define CFN_HISTORY_ALLOWED         _T("CanIncludeInClipboardHistory")
 
 #define APPHS_LOCAL  0
 #define APPHS_ONLINE 1
@@ -42,6 +44,8 @@
 #define WU_REG_32 1
 #define WU_REG_64 2
 #define WU_REG_ALL (WU_REG_32 | WU_REG_64)
+
+#define WU_CFG_CLIP_NOPERSIST 1
 
 typedef struct _AV_APP_INFO
 {
@@ -51,7 +55,7 @@ typedef struct _AV_APP_INFO
 
 #ifndef _WIN32_WCE
 void CopyStringToClipboard(const TCHAR *lptString, PW_ENTRY *pEntryContext,
-	CPwManager *pDatabaseContext);
+	CPwManager *pDatabaseContext, HWND hWnd);
 void ClearClipboardIfOwner();
 
 void RegisterOwnClipboardData(unsigned char* pData, unsigned long dwDataSize);
@@ -62,7 +66,9 @@ void RegisterOwnClipboardData(unsigned char* pData, unsigned long dwDataSize);
 BOOL MakeClipboardDelayRender(HWND hOwner, HWND *phNextCB);
 void CopyDelayRenderedClipboardData(const TCHAR *lptString, CPwManager *pReferenceSource);
 
-void SetClipboardIgnoreFormat();
+bool WU_OpenClipboard(HWND hWndNewOwner);
+bool WU_SetClipboardData(UINT uFormat, LPCVOID lpData, SIZE_T cbData);
+void WU_SetClipboardIgnoreFormats();
 #endif
 
 CString MakeRelativePathEx(LPCTSTR lpBaseFile, LPCTSTR lpTargetFile);
@@ -161,5 +167,8 @@ LONG WU_RegCreateKey(_In_ HKEY hKey, _In_opt_ LPCTSTR lpSubKey,
 
 void WU_PrintHtmlFile(LPCTSTR lpFile, HWND hParent);
 void WU_FixPrintCommandLine(CString& str);
+
+BOOL WU_GetConfigBool(int iCfgID, BOOL bDefault);
+void WU_SetConfigBool(int iCfgID, BOOL bValue);
 
 #endif

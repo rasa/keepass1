@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -231,21 +231,31 @@ void NewGUI_TranslateCWnd(CWnd *pWnd)
 	pWnd->SetWindowText(TRL_VAR(str));
 }
 
-BOOL CALLBACK NewGUI_TranslateWindowCb(HWND hwnd, LPARAM lParam)
+BOOL CALLBACK NewGUI_TranslateWindowCb(HWND hWnd, LPARAM lParam)
 {
-	TCHAR sz[512];
-
 	UNREFERENCED_PARAMETER(lParam);
-	ASSERT(hwnd != NULL);
+	if(hWnd == NULL) { ASSERT(FALSE); return TRUE; }
 
-	GetClassName(hwnd, sz, 16);
+	const int cc = 512;
+	TCHAR sz[cc];
+	sz[cc - 1] = _T('\0');
+
+	sz[0] = _T('\0');
+	GetClassName(hWnd, sz, 16);
 	if(_tcsicmp(sz, _T("Edit")) == 0) return TRUE;
 	if(_tcsicmp(sz, _T("RICHEDIT")) == 0) return TRUE;
 	if(_tcsicmp(sz, _T("ComboBox")) == 0) return TRUE;
 	if(_tcsicmp(sz, _T("ComboBoxEx32")) == 0) return TRUE;
 
-	sz[0] = 0; sz[1] = 0;
-	if(GetWindowText(hwnd, sz, 511) != 0) SetWindowText(hwnd, TRL_VAR(sz));
+	sz[0] = _T('\0');
+	const int ccText = GetWindowText(hWnd, sz, cc - 1);
+	if((ccText < 0) || (ccText > (cc - 1))) { ASSERT(FALSE); return TRUE; }
+	
+	if(ccText != 0)
+	{
+		sz[ccText] = _T('\0');
+		SetWindowText(hWnd, TRL_VAR(sz));
+	}
 	return TRUE;
 }
 
