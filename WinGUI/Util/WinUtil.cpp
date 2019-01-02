@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -55,12 +55,12 @@ using boost::scoped_array;
 static unsigned char g_shaLastString[32];
 // static LPCTSTR g_lpChildWindowText = NULL;
 
-static UINT g_uCfIgnoreID = 0; // ID of CFN_CLIPBOARD_VIEWER_IGNORE
-
 static int g_nAppHelpSource = APPHS_LOCAL;
 
 static bool g_bStdInPw = false;
 static std::basic_string<TCHAR> g_strStdInPw;
+
+static BOOL g_bClipNoPersist = TRUE;
 
 #ifndef _WIN32_WCE
 
@@ -70,44 +70,74 @@ static std::basic_string<TCHAR> g_strStdInPw;
 #define CF_TTEXTEX CF_TEXT
 #endif
 
-void CopyStringToClipboard(const TCHAR *lptString, PW_ENTRY *pEntryContext,
-	CPwManager *pDatabaseContext)
+bool WU_OpenClipboard(HWND hWndNewOwner)
 {
-	if(OpenClipboard(NULL) == FALSE) { ASSERT(FALSE); return; }
+	// https://referencesource.microsoft.com/#system.windows.forms/winforms/managed/system/winforms/Clipboard.cs
+	const DWORD dwRetries = 15; // Default is 10
+	const DWORD dwDelay = 100;
+
+	for(DWORD i = 0; i < dwRetries; ++i)
+	{
+		if(OpenClipboard(hWndNewOwner) != FALSE) return true;
+		Sleep(dwDelay);
+	}
+
+	ASSERT(FALSE);
+	return false;
+}
+
+bool WU_SetClipboardData(UINT uFormat, LPCVOID lpData, SIZE_T cbData)
+{
+	if(lpData == NULL) { ASSERT(FALSE); return false; }
+
+	HGLOBAL h = GlobalAlloc(GHND, cbData);
+	if(h == NULL) { ASSERT(FALSE); return false; }
+
+	LPVOID lp = GlobalLock(h);
+	if(lp == NULL) { ASSERT(FALSE); GlobalFree(h); return false; }
+
+	memcpy(lp, lpData, cbData);
+	GlobalUnlock(h);
+
+	if(SetClipboardData(uFormat, h) == NULL)
+	{
+		ASSERT(FALSE);
+		GlobalFree(h);
+		return false;
+	}
+
+	return true;
+}
+
+void CopyStringToClipboard(const TCHAR *lptString, PW_ENTRY *pEntryContext,
+	CPwManager *pDatabaseContext, HWND hWnd)
+{
+	if(!WU_OpenClipboard(hWnd)) return;
 	if(EmptyClipboard() == FALSE) { ASSERT(FALSE); return; }
 
 	if(lptString == NULL) // No string to copy => empty clipboard only
 	{
-		CloseClipboard();
+		VERIFY(CloseClipboard());
 		return;
 	}
 
-	CString strData = lptString;
-	strData = SprCompile(strData, false, pEntryContext, pDatabaseContext, false, false);
+	CString strData = SprCompile(lptString, false, pEntryContext,
+		pDatabaseContext, false, false);
 
-	size_t cbDataSize = static_cast<size_t>(strData.GetLength()) * sizeof(TCHAR);
-	if(cbDataSize == 0) // No string to copy => empty clipboard only
+	size_t cbData = static_cast<size_t>(strData.GetLength()) * sizeof(TCHAR);
+	if(cbData == 0) // No string to copy => empty clipboard only
 	{
-		CloseClipboard();
+		VERIFY(CloseClipboard());
 		return;
 	}
-	cbDataSize += sizeof(TCHAR); // Plus null terminator of string
+	cbData += sizeof(TCHAR); // Plus null terminator of string
 
-	SetClipboardIgnoreFormat();
-
-	HGLOBAL globalHandle = GlobalAlloc(GHND | GMEM_DDESHARE, cbDataSize);
-	if(globalHandle == NULL) { ASSERT(FALSE); CloseClipboard(); return; }
-	LPVOID globalData = GlobalLock(globalHandle);
-	if(globalData == NULL) { ASSERT(FALSE); CloseClipboard(); return; }
-	_tcscpy_s((TCHAR *)globalData, cbDataSize / sizeof(TCHAR),
-		(LPCTSTR)strData); // Copy string plus null byte to global memory
-	GlobalUnlock(globalHandle);
-
-	VERIFY(SetClipboardData(CF_TTEXTEX, globalHandle) != NULL);
+	WU_SetClipboardIgnoreFormats();
+	WU_SetClipboardData(CF_TTEXTEX, (LPCTSTR)strData, cbData);
 	VERIFY(CloseClipboard());
 
 	RegisterOwnClipboardData((unsigned char *)(LPCTSTR)strData,
-		static_cast<unsigned long>(cbDataSize - sizeof(TCHAR)));
+		static_cast<unsigned long>(cbData - sizeof(TCHAR)));
 }
 
 void RegisterOwnClipboardData(unsigned char* pData, unsigned long dwDataSize)
@@ -125,7 +155,7 @@ void RegisterOwnClipboardData(unsigned char* pData, unsigned long dwDataSize)
 
 void ClearClipboardIfOwner()
 {
-	if(OpenClipboard(NULL) == FALSE) { ASSERT(FALSE); return; }
+	if(!WU_OpenClipboard(NULL)) return;
 
 	if((IsClipboardFormatAvailable(CF_TEXT) == FALSE) &&
 		(IsClipboardFormatAvailable(CF_OEMTEXT) == FALSE))
@@ -164,65 +194,76 @@ void ClearClipboardIfOwner()
 
 BOOL MakeClipboardDelayRender(HWND hOwner, HWND *phNextCB)
 {
-	BOOL bResult = OpenClipboard(hOwner);
+	if(!WU_OpenClipboard(hOwner)) return FALSE;
 
-	if(bResult != FALSE)
-	{
-		// Add a clipboard listener to the cb chain so we can block any listeners from
-		// knowing we are adding sensitive data to the clipboard
-		if(phNextCB != NULL)
-			if(*phNextCB == NULL)
-				*phNextCB = SetClipboardViewer(hOwner);
+	// Add a clipboard listener to the cb chain so we can block any listeners from
+	// knowing we are adding sensitive data to the clipboard
+	if(phNextCB != NULL)
+		if(*phNextCB == NULL)
+			*phNextCB = SetClipboardViewer(hOwner);
 
-		EmptyClipboard();
-		SetClipboardIgnoreFormat();
-		SetClipboardData(CF_TTEXTEX, NULL);
-		CloseClipboard();
-	}
+	EmptyClipboard();
+	WU_SetClipboardIgnoreFormats();
+	SetClipboardData(CF_TTEXTEX, NULL);
+	CloseClipboard();
 
-	return bResult;
+	return TRUE;
 }
 
 void CopyDelayRenderedClipboardData(const TCHAR *lptString, CPwManager *pReferenceSource)
 {
 	ASSERT(lptString != NULL); if(lptString == NULL) return;
 
-	SetClipboardIgnoreFormat();
+	WU_SetClipboardIgnoreFormats();
 
-	CString strData = lptString;
-	strData = SprCompile(strData, false, NULL, pReferenceSource, false, false);
+	CString strData = SprCompile(lptString, false, NULL, pReferenceSource,
+		false, false);
+	const size_t cb = static_cast<size_t>(strData.GetLength()) * sizeof(TCHAR);
 
-	const size_t cch = static_cast<size_t>(strData.GetLength());
-	HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, (cch + 1) * sizeof(TCHAR));
-	ASSERT(hglb != NULL); if(hglb == NULL) return;
-
-	LPTSTR lptstr = (LPTSTR)GlobalLock(hglb);
-	if(cch > 1) memcpy(lptstr, (LPCTSTR)strData, cch * sizeof(TCHAR));
-	lptstr[cch] = (TCHAR)0;
-	GlobalUnlock(hglb);
-
-	// Put the delayed clipboard data in the clipboard.
-	SetClipboardData(CF_TTEXTEX, hglb);
+	// Put the delayed clipboard data in the clipboard
+	WU_SetClipboardData(CF_TTEXTEX, (LPCTSTR)strData, cb + sizeof(TCHAR));
 
 	RegisterOwnClipboardData((unsigned char *)(LPCTSTR)strData,
-		static_cast<unsigned long>(cch * sizeof(TCHAR)));
+		static_cast<unsigned long>(cb));
 }
 
-void SetClipboardIgnoreFormat()
+void WU_SetClipboardIgnoreFormats()
 {
-	if(g_uCfIgnoreID == 0)
-		g_uCfIgnoreID = RegisterClipboardFormat(CFN_CLIPBOARD_VIEWER_IGNORE);
-
-	if(g_uCfIgnoreID != 0) // Registered
+	UINT uID = RegisterClipboardFormat(CFN_CLIPBOARD_VIEWER_IGNORE);
+	if(uID != 0)
 	{
-		const size_t cch = _tcslen(PWM_PRODUCT_NAME);
-		HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, (cch + 1) * sizeof(TCHAR));
-		ASSERT(hglb != NULL); if(hglb == NULL) return;
-		LPTSTR lptstr = (LPTSTR)GlobalLock(hglb);
-		_tcscpy_s(lptstr, cch + 1, PWM_PRODUCT_NAME);
-		GlobalUnlock(hglb);
+		if(AU_IsWin9xSystem() != FALSE)
+		{
+			std::basic_string<char> str = _StringToAnsiStl(PWM_PRODUCT_NAME_SHORT);
+			WU_SetClipboardData(uID, str.c_str(), (str.size() + 1) * sizeof(char));
+		}
+		else
+		{
+			std::basic_string<WCHAR> str = _StringToUnicodeStl(PWM_PRODUCT_NAME_SHORT);
+			WU_SetClipboardData(uID, str.c_str(), (str.size() + 1) * sizeof(WCHAR));
+		}
+	}
+	else { ASSERT(FALSE); }
 
-		SetClipboardData(g_uCfIgnoreID, hglb);
+	if(g_bClipNoPersist != FALSE)
+	{
+		BOOST_STATIC_ASSERT(sizeof(BOOL) == 4);
+
+		uID = RegisterClipboardFormat(CFN_CLOUD_ALLOWED);
+		if(uID != 0)
+		{
+			const BOOL b = FALSE;
+			WU_SetClipboardData(uID, &b, sizeof(BOOL));
+		}
+		else { ASSERT(FALSE); }
+
+		uID = RegisterClipboardFormat(CFN_HISTORY_ALLOWED);
+		if(uID != 0)
+		{
+			const BOOL b = FALSE;
+			WU_SetClipboardData(uID, &b, sizeof(BOOL));
+		}
+		else { ASSERT(FALSE); }
 	}
 }
 
@@ -1668,4 +1709,18 @@ void WU_FixPrintCommandLine(CString& str)
 
 		SAFE_DELETE_ARRAY(lpSys);
 	}
+}
+
+BOOL WU_GetConfigBool(int iCfgID, BOOL bDefault)
+{
+	if(iCfgID == WU_CFG_CLIP_NOPERSIST) return g_bClipNoPersist;
+
+	ASSERT(FALSE);
+	return bDefault;
+}
+
+void WU_SetConfigBool(int iCfgID, BOOL bValue)
+{
+	if(iCfgID == WU_CFG_CLIP_NOPERSIST) g_bClipNoPersist = bValue;
+	else { ASSERT(FALSE); }
 }

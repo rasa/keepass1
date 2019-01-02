@@ -1,3 +1,23 @@
+19/01/02 - 1.37
+- Added option 'Do not store data in the Windows clipboard
+  history and the cloud clipboard' (the option is turned on by
+  default; for entry clipboard commands in the main window)
+- Enhanced installer (added user directory checks, the plugins
+  web page option can be translated now, ...)
+
+- In order to avoid selection/Ctrl+A problems, the user name
+  auto-completion now does not append suggestions anymore; it
+  only shows a list of suggestions (in which a suggestion can
+  be selected manually)
+- Improved reliability of clipboard operations
+- The data for the 'Clipboard Viewer Ignore' clipboard format
+  is now stored in UTF-16 on Windows 2000 and higher
+- Moved the option 'Clear clipboard when closing/locking the
+  database' from the 'Advanced' tab to the 'Memory' tab
+- Upgraded to Boost libraries version 1.69.0
+- Various code optimizations
+- Minor other improvements
+
 18/09/03 - 1.36
 - KeePass now uses Transactional NTFS (TxF) for writing
   database files, if possible; this improves the compatibility
