@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -44,6 +44,8 @@ COptionsDlg::COptionsDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(COptionsDlg)
 	m_nNewlineSequence = -1;
 	m_uClipboardSeconds = 0;
+	m_bClearClipOnDbClose = TRUE;
+	m_bClipNoPersist = TRUE;
 	m_bImgButtons = FALSE;
 	m_bEntryGrid = FALSE;
 	m_bLockOnMinimize = FALSE;
@@ -80,6 +82,8 @@ void COptionsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_btOK);
 	DDX_Radio(pDX, IDC_RADIO_NEWLINE_0, m_nNewlineSequence);
 	DDX_Text(pDX, IDC_EDIT_CLIPBOARDTIME, m_uClipboardSeconds);
+	DDX_Check(pDX, IDC_CHECK_CLIP_CLEARONDBCLOSE, m_bClearClipOnDbClose);
+	DDX_Check(pDX, IDC_CHECK_CLIP_NOPERSIST, m_bClipNoPersist);
 	DDX_Check(pDX, IDC_CHECK_IMGBUTTONS, m_bImgButtons);
 	DDX_Check(pDX, IDC_CHECK_ENTRYGRID, m_bEntryGrid);
 	DDX_Check(pDX, IDC_CHECK_LOCKMIN, m_bLockOnMinimize);
@@ -153,6 +157,8 @@ BOOL COptionsDlg::OnInitDialog()
 	m_wndgrp.AddWindow(NULL, OPTGRP_FILES, TRUE);
 	m_wndgrp.AddWindow(GetDlgItem(IDC_CHECK_SAVEONLATMOD), OPTGRP_FILES, TRUE);
 
+	m_wndgrp.AddWindow(GetDlgItem(IDC_STATIC_CLIP_INFO), OPTGRP_MEMORY, TRUE);
+	m_wndgrp.AddWindow(NULL, OPTGRP_MEMORY, TRUE);
 	// m_wndgrp.AddWindow(GetDlgItem(IDC_STATIC_CLIPBOARDMETHOD), OPTGRP_MEMORY, TRUE);
 	// m_wndgrp.AddWindow(GetDlgItem(IDC_RADIO_CLIPMETHOD_TIMED), OPTGRP_MEMORY, TRUE);
 	// m_wndgrp.AddWindow(GetDlgItem(IDC_RADIO_CLIPMETHOD_SECURE), OPTGRP_MEMORY, TRUE);
@@ -162,6 +168,9 @@ BOOL COptionsDlg::OnInitDialog()
 	GetDlgItem(IDC_RADIO_CLIPMETHOD_SECURE)->ShowWindow(SW_HIDE);
 	m_wndgrp.AddWindow(GetDlgItem(IDC_STATIC_CLIPCLEARTXT), OPTGRP_MEMORY, TRUE);
 	m_wndgrp.AddWindow(GetDlgItem(IDC_EDIT_CLIPBOARDTIME), OPTGRP_MEMORY, TRUE);
+	m_wndgrp.AddWindow(NULL, OPTGRP_MEMORY, TRUE);
+	m_wndgrp.AddWindow(GetDlgItem(IDC_CHECK_CLIP_CLEARONDBCLOSE), OPTGRP_MEMORY, TRUE);
+	m_wndgrp.AddWindow(GetDlgItem(IDC_CHECK_CLIP_NOPERSIST), OPTGRP_MEMORY, TRUE);
 
 	m_wndgrp.AddWindow(GetDlgItem(IDC_CHECK_IMGBUTTONS), OPTGRP_GUI, TRUE);
 	m_wndgrp.AddWindow(GetDlgItem(IDC_CHECK_ENTRYGRID), OPTGRP_GUI, TRUE);
@@ -269,7 +278,7 @@ BOOL COptionsDlg::OnInitDialog()
 	m_olAdvanced.AddCheckItem(TRL("Use local date/time format instead of ISO notation"), &m_bUseLocalTimeFormat, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Register Ctrl+Alt+K hot key (brings the KeePass window to front)"), &m_bRegisterRestoreHotKey, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Delete TAN entries immediately after using them"), &m_bDeleteTANsAfterUse, NULL, OL_LINK_NULL);
-	m_olAdvanced.AddCheckItem(TRL("Clear clipboard when closing/locking the database"), &m_bClearClipOnDbClose, NULL, OL_LINK_NULL);
+	// m_olAdvanced.AddCheckItem(TRL("Clear clipboard when closing/locking the database"), &m_bClearClipOnDbClose, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Use file transactions for writing databases"), &m_bUseTransactedFileWrites, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Use advanced memory protection (DPAPI, only Windows Vista and higher)"), CMemoryProtectionEx::GetEnabledPtr(), NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Use CNG/BCrypt for key transformations (only Windows Vista and higher)"), CKeyTransformBCrypt::GetEnabledPtr(), NULL, OL_LINK_NULL);

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -104,7 +104,6 @@ public:
 	BOOL m_bFocusResAfterQuickFind;
 	BOOL m_bAlwaysAllowIpc;
 	BOOL m_bDropToBackOnCopy;
-	BOOL m_bClearClipOnDbClose;
 	BOOL m_bDeleteTANsAfterUse;
 	BOOL m_bUseTransactedFileWrites;
 	BOOL m_bRememberKeySources;
@@ -124,6 +123,8 @@ public:
 	CXPStyleButtonST	m_btnAutoType;
 	int		m_nNewlineSequence;
 	UINT	m_uClipboardSeconds;
+	BOOL	m_bClearClipOnDbClose;
+	BOOL	m_bClipNoPersist;
 	BOOL	m_bImgButtons;
 	BOOL	m_bEntryGrid;
 	BOOL	m_bLockOnMinimize;

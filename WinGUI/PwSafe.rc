@@ -111,7 +111,7 @@ CAPTION "About KeePass"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,203,111,58,14,WS_GROUP
-    LTEXT           "Copyright © 2003-2018 Dominik Reichl.",IDC_STATIC,7,7,254,8
+    LTEXT           "Copyright © 2003-2019 Dominik Reichl.",IDC_STATIC,7,7,254,8
     LTEXT           "KeePass is OSI Certified Open Source Software.",IDC_STATIC,7,20,254,8
     LTEXT           "The program is distributed under the terms of the GNU General Public License v2 or later.",IDC_STATIC,7,33,254,17
     LTEXT           "<>",IDC_HLINK_HOMEPAGE,7,65,254,8
@@ -343,6 +343,7 @@ BEGIN
     CONTROL         "Unix newline sequence (\\n)",IDC_RADIO_NEWLINE_1,"Button",BS_AUTORADIOBUTTON,18,77,337,10
     CONTROL         "Mark database as modified on last access time change",IDC_CHECK_SAVEONLATMOD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,183,342,10
+    LTEXT           "The following options apply to entry clipboard commands in the main window (like 'Copy User Name' and 'Copy Password').",IDC_STATIC_CLIP_INFO,0,26,353,17
     LTEXT           "Clipboard behavior:",IDC_STATIC_CLIPBOARDMETHOD,65,52,328,8
     CONTROL         "Timed: copy data to the clipboard and clear it automatically after some seconds",IDC_RADIO_CLIPMETHOD_TIMED,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,57,25,336,10
@@ -350,6 +351,10 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_TABSTOP,50,40,343,10
     LTEXT           "Clipboard auto-clear time (seconds):",IDC_STATIC_CLIPCLEARTXT,18,106,337,8
     EDITTEXT        IDC_EDIT_CLIPBOARDTIME,19,53,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Clear clipboard when closing/locking the database",IDC_CHECK_CLIP_CLEARONDBCLOSE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,51,353,10
+    CONTROL         "Do not store data in the Windows clipboard history and the cloud clipboard",IDC_CHECK_CLIP_NOPERSIST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,39,353,10
     LTEXT           "Here you can associate .kdb files with KeePass (so KeePass opens the file when double-clicking on it):",IDC_STATIC_ASSOC,7,187,359,17
     PUSHBUTTON      "Create &Association",IDC_BTN_CREATEASSOC,13,211,113,14
     PUSHBUTTON      "&Remove Association",IDC_BTN_DELETEASSOC,129,211,113,14
@@ -517,7 +522,7 @@ BEGIN
     EDITTEXT        IDC_EDIT_PATTERN,25,192,266,14,ES_AUTOHSCROLL
     CONTROL         "Randomly permute characters of password",IDC_CHECK_PATTERN_PERMUTE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,210,269,10
-    CONTROL         "Collect additional &entropy",IDC_CHECK_COLLECT_ENTROPY,
+    CONTROL         "&Show dialog for collecting user input as additional entropy",IDC_CHECK_COLLECT_ENTROPY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,224,218,10
     PUSHBUTTON      "Advanced",IDC_BTN_ADVANCED,233,221,58,14
     EDITTEXT        IDC_EDIT_PW,14,257,196,14,ES_AUTOHSCROLL
@@ -849,8 +854,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,36,0,0
- PRODUCTVERSION 1,36,0,0
+ FILEVERSION 1,37,0,0
+ PRODUCTVERSION 1,37,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -867,13 +872,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://keepass.info/"
             VALUE "CompanyName", "Dominik Reichl"
-            VALUE "FileDescription", "KeePass Password Safe 1.36"
-            VALUE "FileVersion", "1.36.0.0"
+            VALUE "FileDescription", "KeePass Password Safe 1.37"
+            VALUE "FileVersion", "1.37.0.0"
             VALUE "InternalName", "PwSafe"
-            VALUE "LegalCopyright", "Copyright (C) 2003-2018 Dominik Reichl"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2019 Dominik Reichl"
             VALUE "OriginalFilename", "KeePass.exe"
-            VALUE "ProductName", "KeePass Password Safe 1.36"
-            VALUE "ProductVersion", "1.36.0.0"
+            VALUE "ProductName", "KeePass Password Safe 1.37"
+            VALUE "ProductVersion", "1.37.0.0"
         END
     END
     BLOCK "VarFileInfo"

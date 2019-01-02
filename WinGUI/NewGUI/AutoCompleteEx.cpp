@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -243,7 +243,9 @@ void CAutoCompleteEx::InitPriv(HWND hWnd, const std::vector<LPCTSTR>& vItems)
 
 	if(SUCCEEDED(pAC->Init(hWnd, pEnum, NULL, NULL)))
 	{
-		VERIFY(SUCCEEDED(pAC->SetOptions(ACO_AUTOSUGGEST | ACO_AUTOAPPEND)));
+		// Do not use ACO_AUTOAPPEND, because it breaks Ctrl+A;
+		// https://sourceforge.net/p/keepass/discussion/329220/thread/4f626b91/
+		VERIFY(SUCCEEDED(pAC->SetOptions(ACO_AUTOSUGGEST)));
 	}
 	else { ASSERT(FALSE); }
 

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2018 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -829,6 +829,9 @@ BOOL CPwSafeDlg::OnInitDialog()
 			m_dwClipboardSecs = 10 + 1;
 	}
 	else m_dwClipboardSecs = 10 + 1;
+
+	WU_SetConfigBool(WU_CFG_CLIP_NOPERSIST, cConfig.GetBool(
+		PWMKEY_CLIPNOPERSIST, TRUE));
 
 	WORD wATHotKeyVK = static_cast<WORD>(_T('A'));
 	WORD wATHotKeyMod = (HOTKEYF_CONTROL | HOTKEYF_ALT);
@@ -2268,6 +2271,8 @@ void CPwSafeDlg::SaveOptions()
 	// Save clipboard auto-clear time
 	_ultot_s(m_dwClipboardSecs, szTemp, 10);
 	pcfg.Set(PWMKEY_CLIPSECS, szTemp);
+
+	pcfg.SetBool(PWMKEY_CLIPNOPERSIST, WU_GetConfigBool(WU_CFG_CLIP_NOPERSIST, TRUE));
 
 	// _itot_s(m_nClipboardMethod, szTemp, 10);
 	// pcfg.Set(PWMKEY_CLIPBOARDMETHOD, szTemp);
@@ -3723,7 +3728,7 @@ void CPwSafeDlg::OnPwlistCopyPw()
 		CString strPwCopy = p->pszPassword;
 		m_mgr.LockEntryPassword(p);
 
-		CopyStringToClipboard(strPwCopy, p, &m_mgr);
+		CopyStringToClipboard(strPwCopy, p, &m_mgr, this->GetSafeHwnd());
 		EraseCString(&strPwCopy);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 
@@ -3887,7 +3892,7 @@ void CPwSafeDlg::OnDblclkPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 			strData = m_cList.GetItemText(static_cast<int>(dwSel), 4);
 		else strData = p->pszAdditional;
 		strData = CsRemoveMeta(&strData);
-		CopyStringToClipboard(strData, p, &m_mgr);
+		CopyStringToClipboard(strData, p, &m_mgr, this->GetSafeHwnd());
 		EraseCString(&strData);
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
@@ -3895,41 +3900,41 @@ void CPwSafeDlg::OnDblclkPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 		break;
 	case 5:
 		_PwTimeToStringEx(p->tCreation, strData, CPwSafeDlg::m_bUseLocalTimeFormat);
-		CopyStringToClipboard(strData, NULL, NULL);
+		CopyStringToClipboard(strData, NULL, NULL, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
 		break;
 	case 6:
 		_PwTimeToStringEx(p->tLastMod, strData, CPwSafeDlg::m_bUseLocalTimeFormat);
-		CopyStringToClipboard(strData, NULL, NULL);
+		CopyStringToClipboard(strData, NULL, NULL, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
 		break;
 	case 7:
 		_PwTimeToStringEx(p->tLastAccess, strData, CPwSafeDlg::m_bUseLocalTimeFormat);
-		CopyStringToClipboard(strData, NULL, NULL);
+		CopyStringToClipboard(strData, NULL, NULL, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
 		break;
 	case 8:
 		_PwTimeToStringEx(p->tExpire, strData, CPwSafeDlg::m_bUseLocalTimeFormat);
-		CopyStringToClipboard(strData, NULL, NULL);
+		CopyStringToClipboard(strData, NULL, NULL, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
 		break;
 	case 9:
 		_UuidToString(p->uuid, &strData);
-		CopyStringToClipboard(strData, NULL, NULL);
+		CopyStringToClipboard(strData, NULL, NULL, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
 		break;
 	case 10:
-		CopyStringToClipboard(p->pszBinaryDesc, p, &m_mgr);
+		CopyStringToClipboard(p->pszBinaryDesc, p, &m_mgr, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 		SetStatusTextEx(TRL("Field copied to clipboard."));
 		DropToBackgroundIfOptionEnabled(false);
@@ -3967,7 +3972,7 @@ void CPwSafeDlg::OnPwlistCopyUser()
 			return;
 		}
 
-		CopyStringToClipboard(p->pszUserName, p, &m_mgr);
+		CopyStringToClipboard(p->pszUserName, p, &m_mgr, this->GetSafeHwnd());
 		m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
 	}
 	else if(m_nClipboardMethod == CM_ENHSECURE)
@@ -4086,13 +4091,13 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 			{
 				CString strUser = SprCompile(p->pszUserName, false, p, &m_mgr, false, true);
 				if(OpenUrlUsingPutty(strURL, strUser) == FALSE)
-					OpenUrlEx(strURL, this->m_hWnd);
+					OpenUrlEx(strURL, this->GetSafeHwnd());
 			}
-			else OpenUrlEx(strURL, this->m_hWnd);
+			else OpenUrlEx(strURL, this->GetSafeHwnd());
 
 			bLaunched = TRUE;
 		}
-		else CopyStringToClipboard(strURL, NULL, NULL); // Dereferenced already
+		else CopyStringToClipboard(strURL, NULL, NULL, this->GetSafeHwnd());
 
 		EraseCString(&strURL);
 
@@ -5257,6 +5262,7 @@ void CPwSafeDlg::OnSafeOptions()
 
 	dlg.m_uClipboardSeconds = m_dwClipboardSecs - 1;
 	dlg.m_nClipboardMethod = m_nClipboardMethod;
+	dlg.m_bClipNoPersist = WU_GetConfigBool(WU_CFG_CLIP_NOPERSIST, TRUE);
 	dlg.m_bOpenLastDb = m_bOpenLastDb;
 	dlg.m_bStartMinimized = m_bStartMinimized;
 	dlg.m_bImgButtons = m_bImgButtons;
@@ -5324,6 +5330,7 @@ void CPwSafeDlg::OnSafeOptions()
 	{
 		m_bWindowsNewLine = ((dlg.m_nNewlineSequence == 0) ? TRUE : FALSE);
 		m_dwClipboardSecs = dlg.m_uClipboardSeconds + 1;
+		WU_SetConfigBool(WU_CFG_CLIP_NOPERSIST, dlg.m_bClipNoPersist);
 		m_bOpenLastDb = dlg.m_bOpenLastDb;
 		m_bStartMinimized = dlg.m_bStartMinimized;
 		m_bImgButtons = dlg.m_bImgButtons;
