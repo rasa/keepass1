@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,14 +35,12 @@ using boost::scoped_array;
 PWG_ERROR PwgGenerateEx(std::vector<TCHAR>& vOutPassword,
 	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource)
 {
-	ASSERT(pSettings != NULL);
-	if(pSettings == NULL) return PWGE_NULL_PTR;
+	if(pSettings == NULL) { ASSERT(FALSE); return PWGE_NULL_PTR; }
 
 	EraseTCharVector(vOutPassword, true);
 
 	CNewRandom* pAllocatedRandom = NULL;
 	CNewRandom* pRandom = pRandomSource;
-
 	if(pRandom == NULL)
 	{
 		pAllocatedRandom = new CNewRandom();
@@ -51,115 +49,89 @@ PWG_ERROR PwgGenerateEx(std::vector<TCHAR>& vOutPassword,
 
 	std::vector<WCHAR> vOutBuffer;
 
-	PWG_ERROR pwgErr = PWGE_UNKNOWN_GENERATOR;
+	PWG_ERROR e = PWGE_UNKNOWN_GENERATOR;
 	if(pSettings->btGeneratorType == PWGT_CHARSET)
-		pwgErr = CsbgGenerate(vOutBuffer, pSettings, pRandom);
+		e = CsbgGenerate(vOutBuffer, pSettings, pRandom);
 	else if(pSettings->btGeneratorType == PWGT_PATTERN)
-	{
-		// Fill output buffer with dummy password
-		PbgGenerate(vOutBuffer, pSettings, pRandom);
-
-		// Now generate the real password (this will overwrite
-		// the characters in the buffer and won't do any memory
-		// relocations, i.e. the final characters will be in
-		// this place only and can be erased securely later)
-		pwgErr = PbgGenerate(vOutBuffer, pSettings, pRandom);
-	}
+		e = PbgGenerate(vOutBuffer, pSettings, pRandom);
+	else { ASSERT(FALSE); }
 
 	if((vOutBuffer.size() == 0) || (std::find(vOutBuffer.begin(),
-		vOutBuffer.end(), 0) == vOutBuffer.end()))
-	{
-		vOutBuffer.push_back(0); // Terminate string
-		vOutBuffer.push_back(0);
-	}
+		vOutBuffer.end(), L'\0') == vOutBuffer.end()))
+		vOutBuffer.push_back(L'\0'); // Terminate string
 
+	ASSERT(vOutBuffer.size() > 0);
 #ifdef _UNICODE
 	vOutPassword.resize(vOutBuffer.size());
-	for(size_t dwCopy = 0; dwCopy < vOutBuffer.size(); ++dwCopy)
-		vOutPassword[dwCopy] = vOutBuffer[dwCopy];
+	memcpy(&vOutPassword[0], &vOutBuffer[0], vOutPassword.size() * sizeof(WCHAR));
 #else
-	char *pFinalString = _StringToAnsi(&vOutBuffer[0]);
-	vOutPassword.resize(szlen(pFinalString) + 1);
-	for(DWORD dwCopy = 0; dwCopy <= szlen(pFinalString); ++dwCopy)
-		vOutPassword[dwCopy] = pFinalString[dwCopy];
-	mem_erase(pFinalString, szlen(pFinalString));
-	SAFE_DELETE_ARRAY(pFinalString);
+	char* pszAnsi = _StringToAnsi(&vOutBuffer[0]);
+	vOutPassword.resize(szlen(pszAnsi) + 1);
+	memcpy(&vOutPassword[0], pszAnsi, vOutPassword.size() * sizeof(char));
+	mem_erase(pszAnsi, vOutPassword.size() * sizeof(char));
+	SAFE_DELETE_ARRAY(pszAnsi);
 #endif
 
-	EraseWCharVector(vOutBuffer, true);
+	EraseWCharVector(vOutBuffer, false);
 	SAFE_DELETE(pAllocatedRandom);
-	return pwgErr;
+	return e;
 }
 
-WCHAR PwgGenerateCharacter(const PW_GEN_SETTINGS_EX* pSettings,
-	CNewRandom* pRandom, PwCharSet* pCharSet)
+WCHAR PwgGenerateCharacter(const PwCharSet& pcs, CNewRandom* pRandom)
 {
-	ASSERT(pSettings != NULL); if(pSettings == NULL) return 0;
-	ASSERT(pRandom != NULL); if(pRandom == NULL) return 0;
-	ASSERT(pCharSet != NULL); if(pCharSet == NULL) return 0;
+	if(pRandom == NULL) { ASSERT(FALSE); return L'\0'; }
+	if(pcs.Size() == 0) return L'\0';
 
-	if(pCharSet->Size() == 0) return 0;
-
-	ASSERT(sizeof(UINT64) == 8);
-	UINT64 uIndex;
-	pRandom->GetRandomBuffer((BYTE *)&uIndex, sizeof(UINT64));
-
-	uIndex %= static_cast<UINT64>(pCharSet->Size());
-
-	const WCHAR wch = pCharSet->GetAt(static_cast<unsigned int>(uIndex));
-
-	if(pSettings->bNoRepeat != FALSE) pCharSet->Remove(wch);
-
-	return wch;
+	const UINT64 i = pRandom->GetRandomUInt64(pcs.Size());
+	return pcs.GetAt(static_cast<unsigned int>(i));
 }
 
-void PwgPrepareCharSet(PwCharSet* pCharSet, const PW_GEN_SETTINGS_EX* pSettings)
+bool PwgPrepareCharSet(PwCharSet& pcs, const PW_GEN_SETTINGS_EX* pSettings)
 {
-	ASSERT(pCharSet != NULL); if(pCharSet == NULL) return;
-	ASSERT(pSettings != NULL); if(pSettings == NULL) return;
+	if(pSettings == NULL) { ASSERT(FALSE); return false; }
 
-	pCharSet->Remove(PDCS_INVALID);
+	const unsigned int cc = pcs.Size();
+	for(unsigned int i = 0; i < cc; ++i)
+	{
+		const WCHAR ch = pcs.GetAt(i);
+		if((ch == L'\0') || (ch == L'\t') || (ch == L'\r') || (ch == L'\n') ||
+			((ch >= L'\xD800') && (ch <= L'\xDFFF'))) // Surrogate
+			return false;
+	}
 
-	if(pSettings->bNoConfusing != FALSE)
-		pCharSet->Remove(PDCS_CONFUSING);
+	if(pSettings->bNoConfusing != FALSE) pcs.Remove(PDCS_CONFUSING);
 
 	if(pSettings->strExcludeChars.size() > 0)
-		pCharSet->Remove(pSettings->strExcludeChars.c_str());
+		pcs.Remove(pSettings->strExcludeChars.c_str());
+
+	return true;
 }
 
 void PwgShufflePassword(std::vector<WCHAR>& vBuffer, CNewRandom* pRandom)
 {
-	ASSERT(pRandom != NULL); if(pRandom == NULL) return;
+	if(pRandom == NULL) { ASSERT(FALSE); return; }
 
-	DWORD dwLength = static_cast<DWORD>(vBuffer.size());
-
-	// Update length by finding the first 0 character
-	for(DWORD dwScan = 0; dwScan < vBuffer.size(); ++dwScan)
+	size_t cc = vBuffer.size();
+	for(size_t i = 0; i < vBuffer.size(); ++i)
 	{
-		if(vBuffer[dwScan] == 0)
+		if(vBuffer[i] == L'\0')
 		{
-			dwLength = dwScan;
+			cc = i;
 			break;
 		}
 	}
+	if(cc <= 1) return; // Nothing to shuffle
 
-	if(dwLength <= 1) return; // Nothing to permute
-
-	ASSERT(sizeof(UINT64) == 8);
-	UINT64 uRandomIndex;
-	for(DWORD dwSelect = 0; dwSelect < (dwLength - 1); ++dwSelect)
+	for(size_t i = cc - 1; i >= 1; --i)
 	{
-		pRandom->GetRandomBuffer((BYTE *)&uRandomIndex, sizeof(UINT64));
-		uRandomIndex %= (UINT64)(dwLength - dwSelect);
+		const size_t j = static_cast<size_t>(pRandom->GetRandomUInt64(i + 1));
 
-		ASSERT((dwSelect + (DWORD)uRandomIndex) < dwLength);
-
-		WCHAR wchTemp = vBuffer[dwSelect];
-		vBuffer[dwSelect] = vBuffer[dwSelect + (DWORD)uRandomIndex];
-		vBuffer[dwSelect + (DWORD)uRandomIndex] = wchTemp;
+		const WCHAR t = vBuffer[i];
+		vBuffer[i] = vBuffer[j];
+		vBuffer[j] = t;
 	}
 
-	ASSERT(wcslen(&vBuffer[0]) == dwLength);
+	ASSERT(wcslen(&vBuffer[0]) == cc);
 }
 
 LPCTSTR PwgErrorToString(PWG_ERROR uError)
@@ -169,6 +141,8 @@ LPCTSTR PwgErrorToString(PWG_ERROR uError)
 	if(uError == PWGE_UNKNOWN_GENERATOR) return _T("Internal error");
 	if(uError == PWGE_TOO_FEW_CHARACTERS)
 		return _T("There are too few characters in the character set to build up a password matching the specified rules");
+	if(uError == PWGE_INVALID_CHARSET) return _T("The character set is invalid");
+	if(uError == PWGE_INVALID_PATTERN) return _T("The pattern is invalid");
 
 	return _T("Unknown error");
 }

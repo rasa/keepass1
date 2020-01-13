@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ public:
 	virtual ~CNewRandom();
 
 	void GetRandomBuffer(_Out_bytecap_(dwSize) BYTE *pBuf, DWORD dwSize);
+	UINT64 GetRandomUInt64(UINT64 uMaxExcl);
 
 	void AddToUserEntropyPool(const BYTE *pData, DWORD dwSize);
 	void ClearUserEntropyPool();

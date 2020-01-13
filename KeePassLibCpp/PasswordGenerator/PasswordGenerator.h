@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@
 #define PWGE_NULL_PTR 1
 #define PWGE_UNKNOWN_GENERATOR 2
 #define PWGE_TOO_FEW_CHARACTERS 3
+#define PWGE_INVALID_CHARSET 4
+#define PWGE_INVALID_PATTERN 5
 
 #define PWGD_VERSION_BYTE 2
 
@@ -68,15 +70,12 @@ typedef struct _PW_GEN_SETTINGS_EX
 #pragma pack()
 #endif
 
-// Note: the returned vector contains at least one Null character at the end
+// vOutPassword is null-terminated
 PWG_ERROR PwgGenerateEx(std::vector<TCHAR>& vOutPassword,
 	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource);
 
-WCHAR PwgGenerateCharacter(const PW_GEN_SETTINGS_EX* pSettings,
-	CNewRandom* pRandom, PwCharSet* pCharSet);
-
-void PwgPrepareCharSet(PwCharSet* pCharSet, const PW_GEN_SETTINGS_EX* pSettings);
-
+WCHAR PwgGenerateCharacter(const PwCharSet& pcs, CNewRandom* pRandom);
+bool PwgPrepareCharSet(PwCharSet& pcs, const PW_GEN_SETTINGS_EX* pSettings);
 void PwgShufflePassword(std::vector<WCHAR>& vBuffer, CNewRandom* pRandom);
 
 LPCTSTR PwgErrorToString(PWG_ERROR uError);
