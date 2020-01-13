@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -250,6 +250,7 @@ int NewGUI_Scale(int nPixels, CWnd* pParentWindow);
 CSize NewGUI_Scale(const CSize& rSize, CWnd* pParentWindow);
 
 COLORREF NewGUI_ColorToGrayscale(COLORREF clr);
+COLORREF NewGUI_ColorMid(COLORREF clrA, COLORREF clrB);
 
 void NewGUI_InitGDIPlus();
 void NewGUI_TerminateGDIPlus();

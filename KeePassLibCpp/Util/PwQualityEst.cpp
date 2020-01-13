@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #define QE_PAT_UPPERALPHA L'U'
 #define QE_PAT_DIGIT      L'D'
 #define QE_PAT_SPECIAL    L'S'
-#define QE_PAT_HIGH       L'H'
+#define QE_PAT_LATIN1S    L'H'
 #define QE_PAT_OTHER      L'X'
 #define QE_PAT_DICTIONARY L'W'
 #define QE_PAT_REPETITION L'R'
@@ -276,8 +276,8 @@ void CPwQualityEst::_EnsureInitialized()
 		if(strSpecial.find(L' ') != strSpecial.npos) { ASSERT(FALSE); }
 		else strSpecial += L' ';
 
-		const std::basic_string<WCHAR> strHigh =
-			PwCharSet::GetHighAnsiChars().ToString();
+		const std::basic_string<WCHAR> strLatin1S =
+			PwCharSet::GetLatin1SChars().ToString();
 
 		m_vCharTypes.push_back(boost::shared_ptr<CQeCharType>(
 			new CQeCharType(QE_PAT_LOWERALPHA, PDCS_LOWER_CASE, true)));
@@ -288,10 +288,10 @@ void CPwQualityEst::_EnsureInitialized()
 		m_vCharTypes.push_back(boost::shared_ptr<CQeCharType>(
 			new CQeCharType(QE_PAT_SPECIAL, strSpecial.c_str(), false)));
 		m_vCharTypes.push_back(boost::shared_ptr<CQeCharType>(
-			new CQeCharType(QE_PAT_HIGH, strHigh.c_str(), false)));
+			new CQeCharType(QE_PAT_LATIN1S, strLatin1S.c_str(), false)));
 		m_vCharTypes.push_back(boost::shared_ptr<CQeCharType>(
 			new CQeCharType(QE_PAT_OTHER, 0x10000U - (2U * 26U) - 10U -
-			strSpecial.size() - strHigh.size())));
+			strSpecial.size() - strLatin1S.size())));
 	}
 }
 
@@ -399,9 +399,9 @@ WCHAR QeDecodeLeetChar(WCHAR chLeet)
 		case L'\x00D1':
 		case L'\x00F1': ch = L'n'; break;
 		case L'0':
-		case L'°':
 		case L'*':
 		case L'\x00A4':
+		case L'\x00B0':
 		case L'\x00D8':
 		case L'\x00F8': ch = L'o'; break;
 		case L'\x00AE': ch = L'r'; break;

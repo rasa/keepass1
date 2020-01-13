@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,32 +22,30 @@
 #include "../Util/StrUtil.h"
 
 PWG_ERROR CsbgGenerate(std::vector<WCHAR>& vOutBuffer,
-	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource)
+	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandom)
 {
-	ASSERT(pSettings != NULL);
-	if(pSettings == NULL) return PWGE_NULL_PTR;
-	ASSERT(pRandomSource != NULL);
-	if(pRandomSource == NULL) return PWGE_NULL_PTR;
+	if(pSettings == NULL) { ASSERT(FALSE); return PWGE_NULL_PTR; }
+	if(pRandom == NULL) { ASSERT(FALSE); return PWGE_NULL_PTR; }
 
-	vOutBuffer.resize(pSettings->dwLength + 2);
-	vOutBuffer[pSettings->dwLength] = 0;
-	vOutBuffer[pSettings->dwLength + 1] = 0;
+	const DWORD cc = pSettings->dwLength;
+	vOutBuffer.resize(cc + 1);
+	vOutBuffer[cc] = L'\0';
+	if(cc == 0) return PWGE_SUCCESS;
 
-	PwCharSet pwCharSet(pSettings->strCharSet.c_str());
+	PwCharSet pcs(pSettings->strCharSet.c_str());
+	if(!PwgPrepareCharSet(pcs, pSettings)) return PWGE_INVALID_CHARSET;
 
-	PwgPrepareCharSet(&pwCharSet, pSettings);
-
-	for(DWORD i = 0; i < pSettings->dwLength; ++i)
+	for(DWORD i = 0; i < cc; ++i)
 	{
-		const WCHAR ch = PwgGenerateCharacter(pSettings, pRandomSource, &pwCharSet);
-
-		if(ch == 0) // Failed to generate character
+		const WCHAR ch = PwgGenerateCharacter(pcs, pRandom);
+		if(ch == L'\0') // Failed to generate character
 		{
 			EraseWCharVector(vOutBuffer, true);
 			return PWGE_TOO_FEW_CHARACTERS;
 		}
 
 		vOutBuffer[i] = ch;
+		if(pSettings->bNoRepeat != FALSE) pcs.Remove(ch);
 	}
 
 	return PWGE_SUCCESS;

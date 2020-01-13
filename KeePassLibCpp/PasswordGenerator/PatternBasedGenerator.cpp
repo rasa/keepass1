@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,167 +19,151 @@
 
 #include "StdAfx.h"
 #include "PatternBasedGenerator.h"
-#include "../Util/StrUtil.h"
 
-#define PBG_RANDOM_BUFFER_SIZE 1024
+#include <list>
 
 PWG_ERROR PbgGenerate(std::vector<WCHAR>& vOutBuffer,
-	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource)
+	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandom)
 {
-	ASSERT(pSettings != NULL);
-	if(pSettings == NULL) return PWGE_NULL_PTR;
-	ASSERT(pRandomSource != NULL);
-	if(pRandomSource == NULL) return PWGE_NULL_PTR;
+	if(pSettings == NULL) { ASSERT(FALSE); return PWGE_NULL_PTR; }
+	if(pRandom == NULL) { ASSERT(FALSE); return PWGE_NULL_PTR; }
 
-	DWORD dwOutBufPos = 0;
+	vOutBuffer.clear();
 
-	DWORD dwRandomPos = 0;
-	BYTE pbRandom[PBG_RANDOM_BUFFER_SIZE];
-	pRandomSource->GetRandomBuffer(pbRandom, PBG_RANDOM_BUFFER_SIZE);
+	std::basic_string<WCHAR> strPattern = pSettings->strPattern;
+	if(strPattern.size() == 0) return PWGE_SUCCESS;
 
-	PbgWString strOrgPattern = pSettings->strPattern;
-	PbgWString strExpPattern = PbgExpandPattern(strOrgPattern);
+	WCharStream cs(strPattern.c_str());
+	std::list<WCHAR> llGenerated;
+	PwCharSet pcs;
 
-	WCharStream csPattern(strExpPattern.c_str());
-	WCHAR ch = csPattern.ReadChar();
-
-	PwCharSet pwCustomCharSet, pwUsedCharSet;
-	bool bInCharSetDef = false;
-
-	while(ch != 0)
+	while(true)
 	{
-		PwCharSet pwCurrentCharSet;
-		bool bGenerateChar = false;
+		WCHAR ch = cs.ReadChar();
+		if(ch == L'\0') break;
+
+		pcs.Clear();
 
 		if(ch == L'\\')
 		{
-			ch = csPattern.ReadChar();
-			if(ch == 0) // Backslash at the end
-			{
-				PbgAppendChar(vOutBuffer, L'\\', dwOutBufPos);
-				break;
-			}
+			ch = cs.ReadChar();
+			if(ch == L'\0') return PWGE_INVALID_PATTERN;
 
-			if(bInCharSetDef) pwCustomCharSet.Add(ch);
-			else
-			{
-				PbgAppendChar(vOutBuffer, ch, dwOutBufPos);
-				pwUsedCharSet.Add(ch);
-			}
-		}
-		else if(ch == L'^')
-		{
-			ch = csPattern.ReadChar();
-			if(ch == 0) // ^ at the end
-			{
-				PbgAppendChar(vOutBuffer, L'^', dwOutBufPos);
-				break;
-			}
-
-			if(bInCharSetDef) pwCustomCharSet.Remove(ch);
+			pcs.Add(ch); // Allow "{...}" support and char check
 		}
 		else if(ch == L'[')
 		{
-			pwCustomCharSet.Clear();
-			bInCharSetDef = true;
+			if(!PbgReadCustomCharSet(cs, pcs))
+				return PWGE_INVALID_PATTERN;
 		}
-		else if(ch == L']')
+		else
 		{
-			pwCurrentCharSet.Add(pwCustomCharSet.ToString().c_str());
-
-			bInCharSetDef = false;
-			bGenerateChar = true;
+			if(!pcs.AddCharSet(ch))
+				return PWGE_INVALID_PATTERN;
 		}
-		else if(bInCharSetDef)
+
+		int nCount = 1;
+		if(cs.PeekChar() == L'{')
 		{
-			if(!pwCustomCharSet.AddCharSet(ch))
-				pwCustomCharSet.Add(ch);
+			nCount = PbgReadCount(cs);
+			if(nCount < 0) return PWGE_INVALID_PATTERN;
 		}
-		else if(!pwCurrentCharSet.AddCharSet(ch))
+
+		for(int i = 0; i < nCount; ++i)
 		{
-			PbgAppendChar(vOutBuffer, ch, dwOutBufPos);
-			pwUsedCharSet.Add(ch);
-		}
-		else bGenerateChar = true;
-		
-		if(bGenerateChar)
-		{
-			PwgPrepareCharSet(&pwCurrentCharSet, pSettings);
-
-			if(pSettings->bNoRepeat == TRUE)
-				pwCurrentCharSet.Remove(pwUsedCharSet.ToString().c_str());
-
-			if(pwCurrentCharSet.Size() == 0) return PWGE_TOO_FEW_CHARACTERS;
-
-			UINT64 uIndex = *(UINT64 *)&pbRandom[dwRandomPos];
-
-			dwRandomPos += sizeof(UINT64);
-			if(dwRandomPos == PBG_RANDOM_BUFFER_SIZE)
+			if(!PwgPrepareCharSet(pcs, pSettings))
+				return PWGE_INVALID_CHARSET;
+			if(pSettings->bNoRepeat != FALSE)
 			{
-				pRandomSource->GetRandomBuffer(pbRandom, PBG_RANDOM_BUFFER_SIZE);
-				dwRandomPos = 0;
+				for(std::list<WCHAR>::const_iterator it = llGenerated.begin();
+					it != llGenerated.end(); ++it)
+					pcs.Remove(*it);
 			}
 
-			uIndex %= static_cast<UINT64>(pwCurrentCharSet.Size());
+			const WCHAR chGen = PwgGenerateCharacter(pcs, pRandom);
+			if(chGen == L'\0') return PWGE_TOO_FEW_CHARACTERS;
 
-			WCHAR wch = pwCurrentCharSet.GetAt(static_cast<DWORD>(uIndex));
-			PbgAppendChar(vOutBuffer, wch, dwOutBufPos);
-			pwUsedCharSet.Add(wch);
+			llGenerated.push_back(chGen);
 		}
-
-		ch = csPattern.ReadChar();
 	}
 
-	PbgAppendChar(vOutBuffer, 0, dwOutBufPos);
-	PbgAppendChar(vOutBuffer, 0, dwOutBufPos);
-
-	for(DWORD iRem = dwOutBufPos; iRem < vOutBuffer.size(); ++iRem)
+	const size_t cc = llGenerated.size();
+	vOutBuffer.resize(cc + 1);
+	std::list<WCHAR>::const_iterator it = llGenerated.begin();
+	for(size_t i = 0; i < cc; ++i)
 	{
-		vOutBuffer[iRem] = 0; // Set the rest to zero
+		vOutBuffer[i] = *it;
+		++it;
 	}
+	ASSERT(it == llGenerated.end());
+	vOutBuffer[cc] = L'\0';
 
 	if(pSettings->bPatternPermute != FALSE)
-		PwgShufflePassword(vOutBuffer, pRandomSource);
+		PwgShufflePassword(vOutBuffer, pRandom);
 
 	return PWGE_SUCCESS;
 }
 
-PbgWString PbgExpandPattern(const PbgWString& strPattern)
+bool PbgReadCustomCharSet(WCharStream& cs, PwCharSet& pcsOut)
 {
-	PbgWString str = strPattern;
+	ASSERT(cs.PeekChar() != L'['); // Consumed already
+	ASSERT(pcsOut.Size() == 0);
 
+	bool bAdd = true;
 	while(true)
 	{
-		const int iOpen = SU_FindUnescapedCharW(str.c_str(), L'{');
-		const int iClose = SU_FindUnescapedCharW(str.c_str(), L'}');
+		WCHAR ch = cs.ReadChar();
+		if(ch == L'\0') return false;
+		if(ch == L']') break;
 
-		if((iOpen < 0) || (iClose < iOpen)) break;
-
-		const PbgWString::size_type uOpen = static_cast<PbgWString::size_type>(iOpen);
-		const PbgWString::size_type uClose = static_cast<PbgWString::size_type>(iClose);
-
-		PbgWString strCount = str.substr(uOpen + 1, uClose - uOpen - 1);
-		str.erase(uOpen, uClose - uOpen + 1);
-
-		const long lRepeat = _wtol(strCount.c_str());
-		if((lRepeat >= 0) && (uOpen >= 1))
+		if(ch == L'\\')
 		{
-			if(lRepeat == 0)
-				str.erase(uOpen - 1, 1);
-			else
-				str.insert(uOpen, lRepeat - 1, str[uOpen - 1]);
+			ch = cs.ReadChar();
+			if(ch == L'\0') return false;
+
+			if(bAdd) pcsOut.Add(ch);
+			else pcsOut.Remove(ch);
+		}
+		else if(ch == L'^')
+		{
+			if(bAdd) bAdd = false;
+			else return false; // '^' toggles the mode only once
+		}
+		else
+		{
+			PwCharSet pcs;
+			if(!pcs.AddCharSet(ch)) return false;
+
+			std::basic_string<WCHAR> str = pcs.ToString();
+			if(bAdd) pcsOut.Add(str.c_str());
+			else pcsOut.Remove(str.c_str());
 		}
 	}
 
-	return str;
+	return true;
 }
 
-void PbgAppendChar(std::vector<WCHAR>& vOutBuffer, WCHAR wch, DWORD& rdwPos)
+int PbgReadCount(WCharStream& cs)
 {
-	if(rdwPos < vOutBuffer.size())
-		vOutBuffer[rdwPos] = wch;
-	else
-		vOutBuffer.push_back(wch);
+	if(cs.ReadChar() != L'{') { ASSERT(FALSE); return -1; }
 
-	++rdwPos;
+	// Ensure not empty
+	const WCHAR chFirst = cs.PeekChar();
+	if((chFirst < L'0') || (chFirst > L'9')) return -1;
+
+	INT64 n = 0;
+	while(true)
+	{
+		const WCHAR ch = cs.ReadChar();
+		if(ch == L'}') break;
+
+		if((ch >= L'0') && (ch <= L'9'))
+		{
+			n = (n * 10) + static_cast<INT64>(ch - L'0');
+			if(n > INT32_MAX) return -1;
+		}
+		else return -1;
+	}
+
+	return static_cast<int>(n);
 }

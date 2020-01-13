@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -80,10 +80,12 @@ void CQualityProgressCtrl::OnPaint()
 
 	Color clrStart(255, 128, 0);
 	Color clrEnd(0, 255, 0);
+	Color clrMid(255, 255, 0);
 	if(IsWindowEnabled() == FALSE)
 	{
 		clrStart.SetFromCOLORREF(NewGUI_ColorToGrayscale(GetSysColor(COLOR_3DSHADOW)));
 		clrEnd.SetFromCOLORREF(NewGUI_ColorToGrayscale(GetSysColor(COLOR_3DLIGHT)));
+		clrMid.SetFromCOLORREF(NewGUI_ColorMid(clrStart.ToCOLORREF(), clrEnd.ToCOLORREF()));
 	}
 
 	// Workaround for Windows <= XP
@@ -91,6 +93,9 @@ void CQualityProgressCtrl::OnPaint()
 	if((::GetVersion() & 0xFF) < 6) rectGrad.Inflate(1, 0);
 
 	LinearGradientBrush brGrad(rectGrad, clrStart, clrEnd, LinearGradientModeHorizontal);
+	Color vColors[3] = { clrStart, clrMid, clrEnd };
+	REAL vPositions[3] = { 0.0f, 0.5f, 1.0f };
+	brGrad.SetInterpolationColors(&vColors[0], &vPositions[0], 3);
 	pg->FillRectangle(&brGrad, rectDraw.X, rectDraw.Y, nDrawWidth, rectDraw.Height);
 
 	PaintText(hDC, pg, rectDraw);

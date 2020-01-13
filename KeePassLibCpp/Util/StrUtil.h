@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ void EraseCString(CString* pString);
 void EraseWCharVector(std::vector<WCHAR>& vBuffer, bool bClear);
 void EraseTCharVector(std::vector<TCHAR>& vBuffer, bool bClear);
 
-// Fix an URL if necessary (check protocol, form, etc.)
+// Fix a URL if necessary (check protocol, form, etc.)
 void FixURL(CString *pstrURL);
 
 // If pReferenceSource is not NULL, it'll be used to dereference
@@ -165,10 +165,11 @@ public:
 	WCharStream(LPCWSTR lpData);
 
 	WCHAR ReadChar();
+	WCHAR PeekChar() const;
 
 private:
-	LPCWSTR m_lpData;
-	DWORD m_dwPosition;
+	std::basic_string<WCHAR> m_str;
+	size_t m_i;
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2019 Dominik Reichl
+  Copyright (C) 2008-2020 Dominik Reichl
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without
@@ -69,6 +69,9 @@
 #if (_MSC_VER >= 1600)
 #include <stdint.h>
 #else
+#ifndef INT32_MAX
+#define INT32_MAX 0x7FFFFFFF
+#endif
 #ifndef UINT32_MAX
 #define UINT32_MAX 0xFFFFFFFF
 #endif

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@
 #define PDCS_LOWER_HEX        L"0123456789abcdef"
 #define PDCS_UPPER_HEX        L"0123456789ABCDEF"
 
-#define PDCS_INVALID          L"\t\r\n"
 #define PDCS_CONFUSING        L"O0l1I|"
 
 #define PCS_TABSIZE (0x10000 / 8)
@@ -76,7 +75,7 @@ public:
 	void UnpackCharRanges(USHORT usRanges);
 
 	static PwCharSet GetSpecialChars();
-	static PwCharSet GetHighAnsiChars();
+	static PwCharSet GetLatin1SChars();
 
 private:
 	std::vector<WCHAR> m_vChars;

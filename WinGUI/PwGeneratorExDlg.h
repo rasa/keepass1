@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ public:
 	BOOL m_bCsSpace;
 	BOOL m_bCsSpecial;
 	BOOL m_bCsBrackets;
-	BOOL m_bCsHighAnsi;
+	BOOL m_bCsLatin1S;
 	CButton m_cbUpperCase;
 	CButton m_cbLowerCase;
 	CButton m_cbNumeric;
@@ -129,7 +129,7 @@ public:
 	CButton m_cbSpace;
 	CButton m_cbSpecial;
 	CButton m_cbBrackets;
-	CButton m_cbHighAnsi;
+	CButton m_cbLatin1S;
 	CString m_strCustomCharSet;
 	CString m_strPattern;
 	CXPStyleButtonST m_btnOK;
@@ -170,7 +170,7 @@ public:
 	afx_msg void OnBnClickedCheckCsSpace();
 	afx_msg void OnBnClickedCheckCsSpecial();
 	afx_msg void OnBnClickedCheckCsBrackets();
-	afx_msg void OnBnClickedCheckCsHighansi();
+	afx_msg void OnBnClickedCheckCsLatin1S();
 	afx_msg void OnBnClickedCheckCollectEntropy();
 	CButton m_cbPatternPermute;
 	BOOL m_bPatternPermute;

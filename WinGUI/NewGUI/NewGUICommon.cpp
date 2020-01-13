@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -759,6 +759,14 @@ COLORREF NewGUI_ColorToGrayscale(COLORREF clr)
 	else if(l >= 256) l = 255;
 
 	return RGB(l, l, l);
+}
+
+COLORREF NewGUI_ColorMid(COLORREF clrA, COLORREF clrB)
+{
+	const int r = ((int)GetRValue(clrA) + (int)GetRValue(clrB)) / 2;
+	const int g = ((int)GetGValue(clrA) + (int)GetGValue(clrB)) / 2;
+	const int b = ((int)GetBValue(clrA) + (int)GetBValue(clrB)) / 2;
+	return RGB(r, g, b);
 }
 
 void NewGUI_InitGDIPlus()
