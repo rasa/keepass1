@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -224,6 +224,25 @@ void CNewRandom::GetRandomBuffer(_Out_bytecap_(dwSize) BYTE *pBuf, DWORD dwSize)
 		pBuf += dw;
 		dwSize -= dw;
 	}
+}
+
+UINT64 CNewRandom::GetRandomUInt64(UINT64 uMaxExcl)
+{
+	if(uMaxExcl == 0) { ASSERT(FALSE); return 0; }
+
+	UINT64 uGen, uRem;
+	do
+	{
+		GetRandomBuffer(reinterpret_cast<BYTE*>(&uGen), sizeof(UINT64));
+		uRem = uGen % uMaxExcl;
+	}
+	while((uGen - uRem) > (UINT64_MAX - (uMaxExcl - 1ULL)));
+	// This ensures that the last number of the block (i.e.
+	// (uGen - uRem) + (uMaxExcl - 1)) is generatable;
+	// for signed longs, overflow to negative number:
+	// while((uGen - uRem) + (uMaxExcl - 1) < 0);
+
+	return uRem;
 }
 
 void CNewRandom::SysCryptGetRandom(BYTE *pBuf, DWORD dwSize)

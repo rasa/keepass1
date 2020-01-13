@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -255,6 +255,8 @@ void CFileTransactionEx::TxfPrepare()
 {
 	const bool bUni = (sizeof(TCHAR) >= 2);
 
+	if(TxfIsUnusable()) return;
+
 	if(m_hKtmW32 != NULL) { ASSERT(FALSE); return; }
 	m_hKtmW32 = LoadLibrary(_T("KtmW32.dll"));
 	if(m_hKtmW32 == NULL) return; // Windows <= XP
@@ -362,4 +364,29 @@ void CFileTransactionEx::TxfClosePrsv(HANDLE hTx)
 	const DWORD dw = GetLastError();
 	VERIFY(CloseHandle(hTx));
 	SetLastError(dw);
+}
+
+bool CFileTransactionEx::TxfIsUnusable()
+{
+	// The bug in Microsoft's 'cldflt.sys' driver is fixed by the
+	// Windows update 4530684;
+	// https://support.microsoft.com/en-us/help/4530684/windows-10-update-kb4530684
+	/* const DWORD cchMax = MAX_PATH;
+	WCHAR wsz[cchMax];
+	ZeroMemory(wsz, cchMax * sizeof(WCHAR));
+
+	DWORD dwType = 0, cb = (cchMax - 4) * sizeof(WCHAR);
+
+	if(RegGetValueW(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+		L"ReleaseId", RRF_RT_REG_SZ, &dwType, wsz, &cb) == ERROR_SUCCESS)
+	{
+		// Due to a bug in Microsoft's 'cldflt.sys' driver, a TxF transaction
+		// results in a Blue Screen of Death on Windows 10 1903/1909;
+		// https://www.windowslatest.com/2019/10/20/windows-10-update-issues-bsod-broken-apps-and-defender-atp/
+		// https://sourceforge.net/p/keepass/discussion/329221/thread/924b94ea48/
+		if(wcscmp(wsz, L"1903") == 0) return true;
+		if(wcscmp(wsz, L"1909") == 0) return true;
+	} */
+
+	return false;
 }

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -372,91 +372,80 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 	}
 	else if(m_nFormat == PWEXP_HTML)
 	{
-		_ExpLine(_T("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\""));
-		_ExpLine(_T("\t\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"));
+		_ExpLine(_T("<!DOCTYPE html>"));
 
 		LPCTSTR lpLang = TRL("~LANGISO6391CODE");
 		if((lpLang == NULL) || (lpLang[0] == 0) || (_tcslen(lpLang) > 4))
 			lpLang = _T("en");
-		_ExpStr(_T("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\""));
+		_ExpStr(_T("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\""));
 		_ExpXmlStr(lpLang);
-		_ExpStr(_T("\" xml:lang=\""));
+		_ExpStr(_T("\" lang=\""));
 		_ExpXmlStr(lpLang);
 		_ExpLine(_T("\">"));
 
 		_ExpLine(_T("<head>"));
-		_ExpLine(_T("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />"));
+		_ExpLine(_T("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
+		_ExpLine(_T("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />"));
+		_ExpLine(_T("<meta http-equiv=\"expires\" content=\"0\" />"));
+		_ExpLine(_T("<meta http-equiv=\"cache-control\" content=\"no-cache\" />"));
+		_ExpLine(_T("<meta http-equiv=\"pragma\" content=\"no-cache\" />"));
+
 		_ExpStr(_T("<title>"));
 		_ExpXmlStr(TRL("Entry List"));
 		_ExpStr(_T(" - "));
 		_ExpXmlStr(PWM_PRODUCT_NAME_SHORT);
 		_ExpLine(_T("</title>"));
-		_ExpLine(_T("<meta http-equiv=\"expires\" content=\"0\" />"));
-		_ExpLine(_T("<meta http-equiv=\"cache-control\" content=\"no-cache\" />"));
-		_ExpLine(_T("<meta http-equiv=\"pragma\" content=\"no-cache\" />"));
 
 		_ExpLine(_T("<style type=\"text/css\">"));
 		_ExpLine(_T("/* <![CDATA[ */"));
 
-		_ExpLine(_T("body, p, div, h1, h2, h3, h4, h5, h6, ol, ul, li, td, th, dd, dt, a {"));
+		_ExpLine(_T("body {"));
+		_ExpLine(_T("\tcolor: #000000;"));
+		_ExpLine(_T("\tbackground-color: #FFFFFF;"));
 		_ExpLine(_T("\tfont-family: \"Tahoma\", \"MS Sans Serif\", \"Sans Serif\", \"Verdana\", sans-serif;"));
 		_ExpLine(_T("\tfont-size: 10pt;"));
 		_ExpLine(_T("}"));
 
-		_ExpLine(_T("span.fserif {"));
-		_ExpLine(_T("\tfont-family: \"Times New Roman\", serif;"));
-		_ExpLine(_T("}"));
-
-		_ExpLine(_T("h1 { font-size: 2em; }"));
 		_ExpLine(_T("h2 {"));
-		_ExpLine(_T("\tfont-size: 1.5em;"));
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
 		_ExpLine(_T("\tpadding-left: 2pt;"));
 		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
 		_ExpLine(_T("}"));
 		_ExpLine(_T("h3 {"));
-		_ExpLine(_T("\tfont-size: 1.2em;"));
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
 		_ExpLine(_T("\tpadding-left: 2pt;"));
 		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
 		_ExpLine(_T("}"));
-		_ExpLine(_T("h4 { font-size: 1em; }"));
-		_ExpLine(_T("h5 { font-size: 0.89em; }"));
-		_ExpLine(_T("h6 { font-size: 0.6em; }"));
+
+		_ExpLine(_T("table, th, td {"));
+		_ExpLine(_T("\tborder: 0px none;"));
+		_ExpLine(_T("\tborder-collapse: collapse;"));
+		_ExpLine(_T("}"));
 
 		_ExpLine(_T("table {"));
 		_ExpLine(_T("\twidth: 100%;"));
 		_ExpLine(_T("\ttable-layout: fixed;"));
+		_ExpLine(_T("\tempty-cells: show;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("th, td {"));
+		_ExpLine(_T("\ttext-align: left;"));
+		_ExpLine(_T("\tvertical-align: top;"));
 		_ExpLine(_T("}"));
 
 		_ExpLine(_T("th {"));
-		_ExpLine(_T("\ttext-align: left;"));
-		_ExpLine(_T("\tvertical-align: top;"));
 		_ExpLine(_T("\tfont-weight: bold;"));
 		_ExpLine(_T("}"));
 
-		_ExpLine(_T("td {"));
-		_ExpLine(_T("\ttext-align: left;"));
-		_ExpLine(_T("\tvertical-align: top;"));
-		_ExpLine(_T("}"));
-
-		_ExpLine(_T("a:visited {"));
-		_ExpLine(_T("\ttext-decoration: none;"));
+		_ExpLine(_T("a {"));
 		_ExpLine(_T("\tcolor: #0000DD;"));
-		_ExpLine(_T("}"));
-		_ExpLine(_T("a:active {"));
 		_ExpLine(_T("\ttext-decoration: none;"));
+		_ExpLine(_T("}"));
+		_ExpLine(_T("a:hover, a:active {"));
 		_ExpLine(_T("\tcolor: #6699FF;"));
-		_ExpLine(_T("}"));
-		_ExpLine(_T("a:link {"));
-		_ExpLine(_T("\ttext-decoration: none;"));
-		_ExpLine(_T("\tcolor: #0000DD;"));
-		_ExpLine(_T("}"));
-		_ExpLine(_T("a:hover {"));
 		_ExpLine(_T("\ttext-decoration: underline;"));
-		_ExpLine(_T("\tcolor: #6699FF;"));
 		_ExpLine(_T("}"));
 
 		_ExpLine(_T(".field_name {"));
@@ -469,6 +458,10 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		// _ExpLine(_T("\tword-break: break-all;"));
 		_ExpLine(_T("\toverflow-wrap: break-word;"));
 		_ExpLine(_T("\tword-wrap: break-word;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T(".fserif {"));
+		_ExpLine(_T("\tfont-family: \"Times New Roman\", serif;"));
 		_ExpLine(_T("}"));
 
 		_ExpLine(_T("/* ]]> */"));

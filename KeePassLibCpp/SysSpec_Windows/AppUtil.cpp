@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -63,6 +63,26 @@ void AU_EnsureInitialized()
 		if(lpSetProcessDEPPolicy != NULL) lpSetProcessDEPPolicy(PROCESS_DEP_ENABLE);
 
 		::FreeLibrary(hKernel);
+		hKernel = NULL;
+	}
+	else { ASSERT(FALSE); }
+
+	HMODULE hWer = ::LoadLibrary(_T("Wer.dll"));
+	if(hWer != NULL)
+	{
+		LPWERADDEXCLUDEDAPPLICATION lpExcl = (LPWERADDEXCLUDEDAPPLICATION)
+			::GetProcAddress(hWer, WERADDEXCLUDEDAPPLICATION_FNNAME);
+		if(lpExcl != NULL)
+		{
+			std::basic_string<WCHAR> str = _StringToUnicodeStl(PWM_EXENAME);
+			str += L".exe";
+
+			VERIFY(SUCCEEDED(lpExcl(str.c_str(), FALSE)));
+		}
+		else { ASSERT(FALSE); }
+
+		::FreeLibrary(hWer);
+		hWer = NULL;
 	}
 	else { ASSERT(FALSE); }
 
@@ -175,7 +195,7 @@ int AU_WriteBigFile(LPCTSTR lpFilePath, const BYTE* pData, DWORD dwDataSize,
 {
 	// const bool bMadeUnhidden = CPwUtil::UnhideFile(lpFilePath);
 
-	CFileTransactionEx ft(lpFilePath, (bTransacted == FALSE) ? false : true);
+	CFileTransactionEx ft(lpFilePath, (bTransacted != FALSE));
 	std_string strBufFile;
 	if(!ft.OpenWrite(strBufFile)) return PWE_GETLASTERROR;
 

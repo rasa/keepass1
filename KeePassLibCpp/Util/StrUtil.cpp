@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ void FixURL(CString *pstrURL)
 	strTemp = *pstrURL;
 	strTemp = strTemp.MakeLower();
 
-	// If the string begins with one of the following prefixes it is an URL
+	// If the string begins with one of the following prefixes, it is a URL
 	if(strTemp.Left(5) == _T("http:")) bPre = TRUE;
 	else if(strTemp.Left(6) == _T("https:")) bPre = TRUE;
 	else if(strTemp.Left(4) == _T("cmd:")) bPre = TRUE;
@@ -95,7 +95,7 @@ void FixURL(CString *pstrURL)
 		if((nIndex != -1) && ((nNoIndex == -1) || (nNoIndex >= nIndex))) bPre = TRUE;
 	}
 
-	if(bPre == FALSE) // The string isn't a valid URL, so assume it's a HTTP
+	if(bPre == FALSE) // The string isn't a valid URL, so assume it's HTTP
 	{
 		strTemp = _T("http:");
 		if(pstrURL->Left(1) != _T("/")) strTemp += _T("//");
@@ -961,20 +961,24 @@ TCHAR SU_GetDriveLetter(LPCTSTR lp)
 
 WCharStream::WCharStream(LPCWSTR lpData)
 {
-	ASSERT(lpData != NULL); if(lpData == NULL) return;
+	if(lpData != NULL) m_str = lpData;
+	else { ASSERT(FALSE); }
 
-	m_lpData = lpData;
-	m_dwPosition = 0;
+	m_i = 0;
 }
 
 WCHAR WCharStream::ReadChar()
 {
-	const WCHAR tValue = m_lpData[m_dwPosition];
+	if(m_i == m_str.size()) return L'\0';
 
-	if(tValue == 0) return 0;
+	return m_str[m_i++];
+}
 
-	++m_dwPosition;
-	return tValue;
+WCHAR WCharStream::PeekChar() const
+{
+	if(m_i == m_str.size()) return L'\0';
+
+	return m_str[m_i];
 }
 
 /////////////////////////////////////////////////////////////////////////////

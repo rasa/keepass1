@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ CPwGeneratorExDlg::CPwGeneratorExDlg(CWnd* pParent /*=NULL*/)
 	, m_bCsSpace(FALSE)
 	, m_bCsSpecial(FALSE)
 	, m_bCsBrackets(FALSE)
-	, m_bCsHighAnsi(FALSE)
+	, m_bCsLatin1S(FALSE)
 	, m_strCustomCharSet(_T(""))
 	, m_strPattern(_T(""))
 	, m_bHidePw(FALSE)
@@ -82,7 +82,7 @@ void CPwGeneratorExDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_CS_SPACE, m_bCsSpace);
 	DDX_Check(pDX, IDC_CHECK_CS_SPECIAL, m_bCsSpecial);
 	DDX_Check(pDX, IDC_CHECK_CS_BRACKETS, m_bCsBrackets);
-	DDX_Check(pDX, IDC_CHECK_CS_HIGHANSI, m_bCsHighAnsi);
+	DDX_Check(pDX, IDC_CHECK_CS_LATIN1S, m_bCsLatin1S);
 	DDX_Control(pDX, IDC_CHECK_CS_UPPERCASE, m_cbUpperCase);
 	DDX_Control(pDX, IDC_CHECK_CS_LOWERCASE, m_cbLowerCase);
 	DDX_Control(pDX, IDC_CHECK_CS_NUMERIC, m_cbNumeric);
@@ -91,7 +91,7 @@ void CPwGeneratorExDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_CS_SPACE, m_cbSpace);
 	DDX_Control(pDX, IDC_CHECK_CS_SPECIAL, m_cbSpecial);
 	DDX_Control(pDX, IDC_CHECK_CS_BRACKETS, m_cbBrackets);
-	DDX_Control(pDX, IDC_CHECK_CS_HIGHANSI, m_cbHighAnsi);
+	DDX_Control(pDX, IDC_CHECK_CS_LATIN1S, m_cbLatin1S);
 	DDX_Text(pDX, IDC_EDIT_CUSTOMCHARSET, m_strCustomCharSet);
 	DDX_Text(pDX, IDC_EDIT_PATTERN, m_strPattern);
 	DDX_Control(pDX, IDOK, m_btnOK);
@@ -140,7 +140,7 @@ BEGIN_MESSAGE_MAP(CPwGeneratorExDlg, CDialog)
 	ON_BN_CLICKED(IDC_CHECK_CS_SPACE, &CPwGeneratorExDlg::OnBnClickedCheckCsSpace)
 	ON_BN_CLICKED(IDC_CHECK_CS_SPECIAL, &CPwGeneratorExDlg::OnBnClickedCheckCsSpecial)
 	ON_BN_CLICKED(IDC_CHECK_CS_BRACKETS, &CPwGeneratorExDlg::OnBnClickedCheckCsBrackets)
-	ON_BN_CLICKED(IDC_CHECK_CS_HIGHANSI, &CPwGeneratorExDlg::OnBnClickedCheckCsHighansi)
+	ON_BN_CLICKED(IDC_CHECK_CS_LATIN1S, &CPwGeneratorExDlg::OnBnClickedCheckCsLatin1S)
 	ON_BN_CLICKED(IDC_CHECK_COLLECT_ENTROPY, &CPwGeneratorExDlg::OnBnClickedCheckCollectEntropy)
 	ON_BN_CLICKED(IDC_BTN_ADVANCED, &CPwGeneratorExDlg::OnBnClickedAdvanced)
 	ON_BN_CLICKED(IDC_CHECK_PATTERN_PERMUTE, &CPwGeneratorExDlg::OnBnClickedPatternPermute)
@@ -175,6 +175,23 @@ BOOL CPwGeneratorExDlg::OnInitDialog()
 	CString strSpecialChars;
 	m_cbSpecial.GetWindowText(strSpecialChars);
 	m_cbSpecial.SetWindowText(strSpecialChars + _T(" (!, $, %, &&, ...)"));
+
+	char* pszAnsi = _StringToAnsi(L"\x00C4\x00B5\x00B6");
+	if(pszAnsi != NULL)
+	{
+		BYTE* pbAnsi = reinterpret_cast<BYTE*>(pszAnsi); // To unsigned
+
+		if((pbAnsi[0] == 0xC4) && (pbAnsi[1] == 0xB5) && (pbAnsi[2] == 0xB6) &&
+			(pbAnsi[3] == 0))
+		{
+			CString strLatin1S;
+			m_cbLatin1S.GetWindowText(strLatin1S);
+			m_cbLatin1S.SetWindowText(strLatin1S + _T(" (\x00C4, \x00B5, \x00B6, ...)"));
+		}
+
+		SAFE_DELETE_ARRAY(pszAnsi);
+	}
+	else { ASSERT(FALSE); }
 
 	RECT rectWindow, rectWork; // Save space by removing the banner, if needed
 	this->GetWindowRect(&rectWindow);
@@ -345,7 +362,7 @@ void CPwGeneratorExDlg::UpdateDialogDataEx(BOOL bDialogToInternal,
 {
 	ASSERT(pSettings != NULL); if(pSettings == NULL) return;
 
-	std::basic_string<WCHAR> strHighAnsi = PwCharSet::GetHighAnsiChars().ToString();
+	std::basic_string<WCHAR> strLatin1S = PwCharSet::GetLatin1SChars().ToString();
 	std::basic_string<WCHAR> strSpecial = PwCharSet::GetSpecialChars().ToString();
 
 	this->UpdateData(TRUE);
@@ -371,7 +388,7 @@ void CPwGeneratorExDlg::UpdateDialogDataEx(BOOL bDialogToInternal,
 		if(m_bCsSpace == TRUE) cs.Add(L' ');
 		if(m_bCsBrackets == TRUE) cs.Add(PDCS_BRACKETS);
 		if(m_bCsSpecial == TRUE) cs.Add(strSpecial.c_str());
-		if(m_bCsHighAnsi == TRUE) cs.Add(strHighAnsi.c_str());
+		if(m_bCsLatin1S == TRUE) cs.Add(strLatin1S.c_str());
 
 #ifdef _UNICODE
 		cs.Add(m_strCustomCharSet);
@@ -416,7 +433,7 @@ void CPwGeneratorExDlg::UpdateDialogDataEx(BOOL bDialogToInternal,
 		m_bCsSpace = (cs.RemoveIfAllExist(L" ") ? TRUE : FALSE);
 		m_bCsBrackets = (cs.RemoveIfAllExist(PDCS_BRACKETS) ? TRUE : FALSE);
 		m_bCsSpecial = (cs.RemoveIfAllExist(strSpecial.c_str()) ? TRUE : FALSE);
-		m_bCsHighAnsi = (cs.RemoveIfAllExist(strHighAnsi.c_str()) ? TRUE : FALSE);
+		m_bCsLatin1S = (cs.RemoveIfAllExist(strLatin1S.c_str()) ? TRUE : FALSE);
 
 #ifdef _UNICODE
 		m_strCustomCharSet = cs.ToString().c_str();
@@ -468,7 +485,7 @@ void CPwGeneratorExDlg::EnableControlsEx(BOOL bSelectCustom)
 	ENSURE_ENABLED_STATE(m_cbSpace, bCharSetBased);
 	ENSURE_ENABLED_STATE(m_cbBrackets, bCharSetBased);
 	ENSURE_ENABLED_STATE(m_cbSpecial, bCharSetBased);
-	ENSURE_ENABLED_STATE(m_cbHighAnsi, bCharSetBased);
+	ENSURE_ENABLED_STATE(m_cbLatin1S, bCharSetBased);
 
 	ENSURE_ENABLED_STATE(m_stcCustomCharSet, bCharSetBased);
 	ENSURE_ENABLED_STATE(m_tbCustomCharSet, bCharSetBased);
@@ -871,7 +888,7 @@ void CPwGeneratorExDlg::OnBnClickedCheckCsBrackets()
 	this->EnableControlsEx(TRUE);
 }
 
-void CPwGeneratorExDlg::OnBnClickedCheckCsHighansi()
+void CPwGeneratorExDlg::OnBnClickedCheckCsLatin1S()
 {
 	this->EnableControlsEx(TRUE);
 }

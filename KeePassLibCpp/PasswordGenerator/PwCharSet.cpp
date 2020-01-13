@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -57,12 +57,12 @@ bool PwCharSet::Contains(WCHAR ch) const
 
 bool PwCharSet::Contains(LPCWSTR lpCharacters) const
 {
-	DWORD i = 0;
+	if(lpCharacters == NULL) { ASSERT(FALSE); return false; }
 
-	while(lpCharacters[i] != 0)
+	DWORD i = 0;
+	while(lpCharacters[i] != L'\0')
 	{
 		if(this->Contains(lpCharacters[i]) == false) return false;
-
 		++i;
 	}
 
@@ -71,9 +71,7 @@ bool PwCharSet::Contains(LPCWSTR lpCharacters) const
 
 WCHAR PwCharSet::GetAt(unsigned int uPos) const
 {
-	ASSERT(uPos < m_vChars.size());
-	if(uPos >= m_vChars.size()) return 0;
-
+	if(uPos >= m_vChars.size()) { ASSERT(FALSE); return L'\0'; }
 	return m_vChars[uPos];
 }
 
@@ -87,11 +85,10 @@ void PwCharSet::Add(WCHAR ch)
 
 void PwCharSet::Add(LPCWSTR lpCharacters)
 {
-	ASSERT(lpCharacters != NULL);
-	if(lpCharacters == NULL) return;
+	if(lpCharacters == NULL) { ASSERT(FALSE); return; }
 
-	unsigned int uPos = 0;
-	while(lpCharacters[uPos] != 0)
+	size_t uPos = 0;
+	while(lpCharacters[uPos] != L'\0')
 	{
 		this->Add(lpCharacters[uPos]);
 		++uPos;
@@ -134,13 +131,15 @@ bool PwCharSet::Remove(WCHAR ch)
 
 bool PwCharSet::Remove(LPCWSTR lpCharacters)
 {
-	bool bResult = true;
-	DWORD dwIndex = 0;
+	if(lpCharacters == NULL) { ASSERT(FALSE); return false; }
 
-	while(lpCharacters[dwIndex] != 0)
+	bool bResult = true;
+	size_t uIndex = 0;
+
+	while(lpCharacters[uIndex] != L'\0')
 	{
-		bResult &= this->Remove(lpCharacters[dwIndex]);
-		++dwIndex;
+		bResult &= this->Remove(lpCharacters[uIndex]);
+		++uIndex;
 	}
 
 	return bResult;
@@ -181,7 +180,7 @@ bool PwCharSet::AddCharSet(WCHAR chCharSetIdentifier)
 		case L'v': this->Add(PDCS_LOWER_VOWELS); break;
 		case L'V': this->Add(PDCS_LOWER_VOWELS, PDCS_UPPER_VOWELS); break;
 		case L'Z': this->Add(PDCS_UPPER_VOWELS); break;
-		case L'x': this->Add(PwCharSet::GetHighAnsiChars().ToString().c_str()); break;
+		case L'x': this->Add(PwCharSet::GetLatin1SChars().ToString().c_str()); break;
 		default: bResult = false; break;
 	}
 
@@ -190,13 +189,11 @@ bool PwCharSet::AddCharSet(WCHAR chCharSetIdentifier)
 
 std::basic_string<WCHAR> PwCharSet::ToString() const
 {
-	LPWSTR lp = new WCHAR[m_vChars.size() + 2];
+	const size_t cc = m_vChars.size();
 
-	for(DWORD i = 0; i < m_vChars.size(); ++i)
-		lp[i] = m_vChars[i];
-
-	lp[m_vChars.size()] = 0;
-	lp[m_vChars.size() + 1] = 0;
+	LPWSTR lp = new WCHAR[cc + 1];
+	if(cc != 0) memcpy(lp, &m_vChars[0], cc * sizeof(WCHAR));
+	lp[cc] = L'\0';
 
 	std::basic_string<WCHAR> str = lp;
 	SAFE_DELETE_ARRAY(lp);
@@ -217,7 +214,7 @@ PwCharSet PwCharSet::GetSpecialChars()
 	return pcs;
 }
 
-PwCharSet PwCharSet::GetHighAnsiChars()
+PwCharSet PwCharSet::GetLatin1SChars()
 {
 	PwCharSet pcs;
 
@@ -252,14 +249,14 @@ USHORT PwCharSet::PackAndRemoveCharRanges()
 	us <<= 1;
 	if(this->RemoveIfAllExist(PDCS_BRACKETS)) us |= 1;
 	us <<= 1;
-	if(this->RemoveIfAllExist(PwCharSet::GetHighAnsiChars().ToString().c_str())) us |= 1;
+	if(this->RemoveIfAllExist(PwCharSet::GetLatin1SChars().ToString().c_str())) us |= 1;
 
 	return us;
 }
 
 void PwCharSet::UnpackCharRanges(USHORT usRanges)
 {
-	if((usRanges & 1) != 0) this->Add(PwCharSet::GetHighAnsiChars().ToString().c_str());
+	if((usRanges & 1) != 0) this->Add(PwCharSet::GetLatin1SChars().ToString().c_str());
 	if((usRanges & 2) != 0) this->Add(PDCS_BRACKETS);
 	if((usRanges & 4) != 0) this->Add(L' ');
 	if((usRanges & 8) != 0) this->Add(L'_');

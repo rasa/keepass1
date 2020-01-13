@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,14 +21,12 @@
 #define ___PATTERN_BASED_GENERATOR_H___
 
 #include "PasswordGenerator.h"
-
-#define PbgWString std::basic_string<WCHAR>
+#include "../Util/StrUtil.h"
 
 PWG_ERROR PbgGenerate(std::vector<WCHAR>& vOutBuffer,
-	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandomSource);
+	const PW_GEN_SETTINGS_EX* pSettings, CNewRandom* pRandom);
 
-PbgWString PbgExpandPattern(const PbgWString& strPattern);
-
-void PbgAppendChar(std::vector<WCHAR>& vOutBuffer, WCHAR wch, DWORD& rdwPos);
+bool PbgReadCustomCharSet(WCharStream& cs, PwCharSet& pcsOut);
+int PbgReadCount(WCharStream& cs);
 
 #endif // ___PATTERN_BASED_GENERATOR_H___

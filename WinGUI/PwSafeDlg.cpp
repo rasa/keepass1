@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -4036,18 +4036,18 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 {
 	NotifyUserActivity();
 
-	PW_ENTRY *p;
-	DWORD dwGroupId = GetSelectedGroupId();
-	BOOL bLaunched = FALSE;
-
-	ASSERT(dwGroupId != DWORD_MAX); if(dwGroupId == DWORD_MAX) return;
+	const DWORD dwGroupId = GetSelectedGroupId();
+	if(dwGroupId == DWORD_MAX) { ASSERT(FALSE); return; }
 
 	_SetDisplayDialog(true);
 	if(_CallPlugins(KPM_URL_VISIT, 0, 0) == FALSE)
 		{ _SetDisplayDialog(false); return; }
 	_SetDisplayDialog(false);
 
-	if(m_bCopyURLs == FALSE) // Open URLs
+	bool bOpen = (m_bCopyURLs == FALSE);
+	if((GetKeyState(VK_SHIFT) & 0x8000) != 0) bOpen = !bOpen;
+
+	if(bOpen)
 	{
 		for(int i = 0; i < m_cList.GetItemCount(); ++i)
 		{
@@ -4056,19 +4056,19 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 			{
 				// p = m_mgr.GetEntryByGroup(dwGroupId, (DWORD)i);
 
-				DWORD dwIndex = _ListSelToEntryIndex(static_cast<DWORD>(i));
-				ASSERT(dwIndex != DWORD_MAX); if(dwIndex == DWORD_MAX) continue;
+				const DWORD dwIndex = _ListSelToEntryIndex(static_cast<DWORD>(i));
+				if(dwIndex == DWORD_MAX) { ASSERT(FALSE); continue; }
 
-				p = m_mgr.GetEntry(dwIndex);
+				PW_ENTRY* p = m_mgr.GetEntry(dwIndex);
 				ASSERT_ENTRY(p);
 
 				ParseAndOpenURLWithEntryInfo(p->pszURL, p);
 
-				_TouchEntry((DWORD)i, FALSE);
+				_TouchEntry(static_cast<DWORD>(i), FALSE);
 			}
 		}
 	}
-	else // m_bCopyURLs == TRUE
+	else // Copy
 	{
 		const DWORD dwSelectedEntry = GetSelectedEntry();
 		ASSERT(dwSelectedEntry != DWORD_MAX); if(dwSelectedEntry == DWORD_MAX) return;
@@ -4076,15 +4076,14 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 		const DWORD dwEntryIndex = _ListSelToEntryIndex(dwSelectedEntry);
 		ASSERT(dwEntryIndex != DWORD_MAX); if(dwEntryIndex == DWORD_MAX) return;
 
-		p = m_mgr.GetEntry(dwEntryIndex);
+		PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
 		ASSERT_ENTRY(p); if(p == NULL) return;
 
 		CString strURL = p->pszURL;
-
 		const bool bCmdQuotes = WU_IsCommandLineURL(strURL);
-
 		strURL = SprCompile(strURL, false, p, &m_mgr, false, bCmdQuotes);
 
+		bool bLaunched = false;
 		if(WU_IsCommandLineURL(strURL))
 		{
 			if(m_bUsePuttyForURLs == TRUE)
@@ -4095,7 +4094,7 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 			}
 			else OpenUrlEx(strURL, this->GetSafeHwnd());
 
-			bLaunched = TRUE;
+			bLaunched = true;
 		}
 		else CopyStringToClipboard(strURL, NULL, NULL, this->GetSafeHwnd());
 
@@ -4103,7 +4102,7 @@ void CPwSafeDlg::OnPwlistVisitUrl()
 
 		_TouchEntry(dwSelectedEntry, FALSE);
 
-		if(bLaunched == FALSE)
+		if(!bLaunched)
 		{
 			m_nClipboardCountdown = (int)m_dwClipboardSecs;
 			SetStatusTextEx(TRL("Field copied to clipboard."));
@@ -7303,8 +7302,8 @@ void CPwSafeDlg::OnClickPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 	UNREFERENCED_PARAMETER(pNMHDR);
 
-	// This would break the multiselect ability of the list, therefor we removed it
-	// if((GetKeyState(VK_CONTROL) & 0x8000) > 0) OnPwlistEdit();
+	// This would break the multiselect ability of the list
+	// if((GetKeyState(VK_CONTROL) & 0x8000) != 0) OnPwlistEdit();
 
 	_UpdateToolBar();
 }
@@ -8220,7 +8219,7 @@ void CPwSafeDlg::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else
 		{
-			if(GetKeyState(VK_CONTROL) & 0x1000)
+			if((GetKeyState(VK_CONTROL) & 0x8000) != 0)
 				SetCursor(AfxGetApp()->LoadStandardCursor(IDC_UPARROW));
 			else
 				SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
@@ -8324,7 +8323,7 @@ void CPwSafeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		CPoint pt = point;
 		ClientToScreen(&pt);
 
-		const BOOL bCopy = (((GetKeyState(VK_CONTROL) & 0x1000) > 0) ? TRUE : FALSE);
+		const bool bCopy = ((GetKeyState(VK_CONTROL) & 0x8000) != 0);
 
 		HTREEITEM hItemDropTo = m_cGroups.GetDropHilightItem();
 
@@ -8335,7 +8334,7 @@ void CPwSafeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 			DWORD dwNewGroupId = dwDragGroupId;
 
 			ASSERT(dwDragGroupPos != DWORD_MAX);
-			if((dwDragGroupPos != DWORD_MAX) && (bCopy == TRUE))
+			if((dwDragGroupPos != DWORD_MAX) && bCopy)
 			{
 				PW_GROUP grpNew = *m_mgr.GetGroup(dwDragGroupPos);
 				grpNew.usLevel = 0;
@@ -8367,7 +8366,7 @@ void CPwSafeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 			}
 
 			// Fix group ID, unassociate all entries from the group that we will delete
-			// if(bCopy == FALSE)
+			// if(!bCopy)
 			// {
 			//	m_mgr.SubstEntryGroupIds(dwDragGroupId, dwNewGroupId);
 			//	// If moving, delete source group

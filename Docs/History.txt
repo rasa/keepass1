@@ -1,3 +1,28 @@
+20/01/13 - 1.38
+- When double-clicking the URL cell of an entry in the main
+  entry list while holding the Shift key, KeePass now copies
+  the URL to the clipboard (a double-click without Shift
+  continues to open the URL; the option 'Copy URLs to clipboard
+  instead of opening them' reverses this behavior)
+- Added yellow intermediate step in password quality progress
+  bars
+- KeePass now excludes itself from Windows Error Reporting
+
+- The pattern-based password generator now supports repeating
+  escaped characters using '{...}'
+- The pattern-based password generator now refuses to generate
+  a password if the pattern is (partially) invalid
+- HTML export/printing: KeePass now generates HTML 5 documents
+  (instead of XHTML 1.0 documents)
+- HTML export/printing: improved internal CSS
+- CHM pages are now rendered in the highest standards mode
+  supported by Internet Explorer (EdgeHTML mode)
+- Migrated most of the documentation from XHTML 1.0 to HTML 5
+- Upgraded to Boost libraries version 1.72.0
+- Various UI text improvements
+- Various code optimizations
+- Minor other improvements
+
 19/01/02 - 1.37
 - Added option 'Do not store data in the Windows clipboard
   history and the cloud clipboard' (the option is turned on by
@@ -779,7 +804,7 @@
 
 - The auto-type sequence and auto-type window definition lines
   are now removed before copying the contents of the notes
-  field to the clipboard, executing an URL and/or auto-typing
+  field to the clipboard, executing a URL and/or auto-typing
 - KeePass recreates the temporary system/account directory, if
   it has accidently been deleted
 - When using the installation package and Windows Vista,

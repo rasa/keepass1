@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2019 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ private:
 	static std_string TxfCreateID();
 	static bool TxfIsSupported(TCHAR chDriveLetter);
 	static void TxfClosePrsv(HANDLE hTx);
+	static bool TxfIsUnusable();
 
 	void TxfPrepare();
 	bool TxfMove(bool& bFatalError);

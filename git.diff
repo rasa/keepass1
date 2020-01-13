@@ -1,0 +1,1296 @@
+diff --git a/Build/Clean.bat b/Build/Clean.bat
+old mode 100755
+new mode 100644
+diff --git a/Build/DirInfo_ReadMe.txt b/Build/DirInfo_ReadMe.txt
+old mode 100755
+new mode 100644
+diff --git a/Docs/BuildBoost.txt b/Docs/BuildBoost.txt
+old mode 100755
+new mode 100644
+diff --git a/Docs/History.txt b/Docs/History.txt
+old mode 100755
+new mode 100644
+diff --git a/Docs/License.txt b/Docs/License.txt
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/Untitled.ico b/Ext/Icons_04_CB/Finals/Untitled.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/key-blu.png b/Ext/Icons_04_CB/Finals/key-blu.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/key-bw.png b/Ext/Icons_04_CB/Finals/key-bw.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/key-grn.ico b/Ext/Icons_04_CB/Finals/key-grn.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/key-grn.png b/Ext/Icons_04_CB/Finals/key-grn.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-blu.ico b/Ext/Icons_04_CB/Finals/plock-blu.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-blu.png b/Ext/Icons_04_CB/Finals/plock-blu.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-bw.png b/Ext/Icons_04_CB/Finals/plock-bw.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-dis.ico b/Ext/Icons_04_CB/Finals/plock-dis.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-grn.ico b/Ext/Icons_04_CB/Finals/plock-grn.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock-grn.png b/Ext/Icons_04_CB/Finals/plock-grn.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock.ico b/Ext/Icons_04_CB/Finals/plock.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plock.png b/Ext/Icons_04_CB/Finals/plock.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plockb.png b/Ext/Icons_04_CB/Finals/plockb.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plockbw-r.png b/Ext/Icons_04_CB/Finals/plockbw-r.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals/plockbw.png b/Ext/Icons_04_CB/Finals/plockbw.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals2/plock-blu.ico b/Ext/Icons_04_CB/Finals2/plock-blu.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals2/plock-dis.ico b/Ext/Icons_04_CB/Finals2/plock-dis.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals2/plock.ico b/Ext/Icons_04_CB/Finals2/plock.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/Finals2/plockb.ico b/Ext/Icons_04_CB/Finals2/plockb.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/ReadMe.txt b/Ext/Icons_04_CB/ReadMe.txt
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/key-org.ico b/Ext/Icons_04_CB/key-org.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/keyhole-grn.ico b/Ext/Icons_04_CB/keyhole-grn.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/lockblue.ico b/Ext/Icons_04_CB/lockblue.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/lockgreen.ico b/Ext/Icons_04_CB/lockgreen.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/lockred.ico b/Ext/Icons_04_CB/lockred.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/lockyellow.ico b/Ext/Icons_04_CB/lockyellow.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plockb.ico b/Ext/Icons_04_CB/plockb.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plockb2.ico b/Ext/Icons_04_CB/plockb2.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plockbw.ico b/Ext/Icons_04_CB/plockbw.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plockg.ico b/Ext/Icons_04_CB/plockg.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plocko.ico b/Ext/Icons_04_CB/plocko.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plockr.ico b/Ext/Icons_04_CB/plockr.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_04_CB/plocky.ico b/Ext/Icons_04_CB/plocky.ico
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_1024.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_1024.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_128.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_16.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_20.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_20.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_24.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_24.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_256.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_32.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_48.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_512.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_512.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_64.png b/Ext/Icons_15_VA/KeePass_Round/KeePass_Round_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_128.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_16.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_256.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_32.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_48.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_64.png b/Ext/Icons_15_VA/KeePass_Round_Keyhole/KeePass_Round_Keyhole_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_128.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_16.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_256.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_32.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_48.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_64.png b/Ext/Icons_15_VA/KeePass_Round_Locked/KeePass_Round_Locked_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_128.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_16.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_24.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_24.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_256.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_32.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_48.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_64.png b/Ext/Icons_15_VA/KeePass_Square_Blue/KeePass_Square_Blue_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_128.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_16.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_24.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_24.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_256.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_32.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_48.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_64.png b/Ext/Icons_15_VA/KeePass_Square_Blue_Locked/KeePass_Square_Blue_Locked_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_128.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_128.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_16.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_16.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_256.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_256.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_32.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_32.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_48.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_48.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_64.png b/Ext/Icons_15_VA/KeePass_Square_Yellow/KeePass_Square_Yellow_64.png
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_15_VA/ReadMe.txt b/Ext/Icons_15_VA/ReadMe.txt
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_Nuvola/License.txt b/Ext/Icons_Nuvola/License.txt
+old mode 100755
+new mode 100644
+diff --git a/Ext/Icons_Nuvola/ReadMe.txt b/Ext/Icons_Nuvola/ReadMe.txt
+old mode 100755
+new mode 100644
+diff --git a/Ext/KeePass.ini b/Ext/KeePass.ini
+old mode 100755
+new mode 100644
+diff --git a/Ext/KeePass.iss b/Ext/KeePass.iss
+old mode 100755
+new mode 100644
+diff --git a/Ext/KeePassMsi/KeePassMsi.sln b/Ext/KeePassMsi/KeePassMsi.sln
+old mode 100755
+new mode 100644
+diff --git a/Ext/KeePassMsi/KeePassMsi.vdproj b/Ext/KeePassMsi/KeePassMsi.vdproj
+old mode 100755
+new mode 100644
+diff --git a/Ext/RegKDB.reg b/Ext/RegKDB.reg
+old mode 100755
+new mode 100644
+diff --git a/Ext/RegUnRegKDB.reg b/Ext/RegUnRegKDB.reg
+old mode 100755
+new mode 100644
+diff --git a/KeePass.sln b/KeePass.sln
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/APIDefEx.h b/KeePassLibC/KeePassAPI/APIDefEx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/LibraryAPI.cpp b/KeePassLibC/KeePassAPI/LibraryAPI.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/LibraryAPI.h b/KeePassLibC/KeePassAPI/LibraryAPI.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/ManagerAPI.cpp b/KeePassLibC/KeePassAPI/ManagerAPI.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/ManagerAPI.h b/KeePassLibC/KeePassAPI/ManagerAPI.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/StructAPI.cpp b/KeePassLibC/KeePassAPI/StructAPI.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassAPI/StructAPI.h b/KeePassLibC/KeePassAPI/StructAPI.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassLib.cpp b/KeePassLibC/KeePassLib.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassLib.def b/KeePassLibC/KeePassLib.def
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassLib.h b/KeePassLibC/KeePassLib.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassLib.rc b/KeePassLibC/KeePassLib.rc
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/KeePassLib.vcproj b/KeePassLibC/KeePassLib.vcproj
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/Resource.h b/KeePassLibC/Resource.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/StdAfx.cpp b/KeePassLibC/StdAfx.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/StdAfx.h b/KeePassLibC/StdAfx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibC/res/KeePassLib.rc2 b/KeePassLibC/res/KeePassLib.rc2
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/ARCFour.cpp b/KeePassLibCpp/Crypto/ARCFour.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/ARCFour.h b/KeePassLibCpp/Crypto/ARCFour.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/KeyTransform.cpp b/KeePassLibCpp/Crypto/KeyTransform.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/KeyTransform.h b/KeePassLibCpp/Crypto/KeyTransform.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/KeyTransform_BCrypt.cpp b/KeePassLibCpp/Crypto/KeyTransform_BCrypt.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/KeyTransform_BCrypt.h b/KeePassLibCpp/Crypto/KeyTransform_BCrypt.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/MemoryProtectionEx.cpp b/KeePassLibCpp/Crypto/MemoryProtectionEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/MemoryProtectionEx.h b/KeePassLibCpp/Crypto/MemoryProtectionEx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/Rijndael.cpp b/KeePassLibCpp/Crypto/Rijndael.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/Rijndael.h b/KeePassLibCpp/Crypto/Rijndael.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/SHA2/EDefs.h b/KeePassLibCpp/Crypto/SHA2/EDefs.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/SHA2/SHA2.cpp b/KeePassLibCpp/Crypto/SHA2/SHA2.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/SHA2/SHA2.h b/KeePassLibCpp/Crypto/SHA2/SHA2.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/SHA2/TDefs.h b/KeePassLibCpp/Crypto/SHA2/TDefs.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/TestImpl.cpp b/KeePassLibCpp/Crypto/TestImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/TestImpl.h b/KeePassLibCpp/Crypto/TestImpl.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/Twofish.cpp b/KeePassLibCpp/Crypto/Twofish.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/Twofish.h b/KeePassLibCpp/Crypto/Twofish.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/TwofishClass.cpp b/KeePassLibCpp/Crypto/TwofishClass.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Crypto/TwofishClass.h b/KeePassLibCpp/Crypto/TwofishClass.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/DataExchange/PwExport.cpp b/KeePassLibCpp/DataExchange/PwExport.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/DataExchange/PwExport.h b/KeePassLibCpp/DataExchange/PwExport.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/DataExchange/PwImport.cpp b/KeePassLibCpp/DataExchange/PwImport.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/DataExchange/PwImport.h b/KeePassLibCpp/DataExchange/PwImport.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Details/PwCompatImpl.cpp b/KeePassLibCpp/Details/PwCompatImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Details/PwCompatImpl.h b/KeePassLibCpp/Details/PwCompatImpl.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Details/PwFileImpl.cpp b/KeePassLibCpp/Details/PwFileImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Details/PwFindImpl.cpp b/KeePassLibCpp/Details/PwFindImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpInternetStream.cpp b/KeePassLibCpp/IO/KpInternetStream.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpInternetStream.h b/KeePassLibCpp/IO/KpInternetStream.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpMemoryStream.cpp b/KeePassLibCpp/IO/KpMemoryStream.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpMemoryStream.h b/KeePassLibCpp/IO/KpMemoryStream.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpStream.cpp b/KeePassLibCpp/IO/KpStream.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/IO/KpStream.h b/KeePassLibCpp/IO/KpStream.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/CharSetBasedGenerator.cpp b/KeePassLibCpp/PasswordGenerator/CharSetBasedGenerator.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/CharSetBasedGenerator.h b/KeePassLibCpp/PasswordGenerator/CharSetBasedGenerator.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PasswordGenerator.cpp b/KeePassLibCpp/PasswordGenerator/PasswordGenerator.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PasswordGenerator.h b/KeePassLibCpp/PasswordGenerator/PasswordGenerator.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PatternBasedGenerator.cpp b/KeePassLibCpp/PasswordGenerator/PatternBasedGenerator.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PatternBasedGenerator.h b/KeePassLibCpp/PasswordGenerator/PatternBasedGenerator.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PwCharSet.cpp b/KeePassLibCpp/PasswordGenerator/PwCharSet.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PasswordGenerator/PwCharSet.h b/KeePassLibCpp/PasswordGenerator/PwCharSet.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwCompat.cpp b/KeePassLibCpp/PwCompat.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwCompat.h b/KeePassLibCpp/PwCompat.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwManager.cpp b/KeePassLibCpp/PwManager.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwManager.h b/KeePassLibCpp/PwManager.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwStructs.h b/KeePassLibCpp/PwStructs.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/PwStructsEx.h b/KeePassLibCpp/PwStructsEx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpAPI.h b/KeePassLibCpp/SDK/Details/IKpAPI.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpAPI2.h b/KeePassLibCpp/SDK/Details/IKpAPI2.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpAPI3.h b/KeePassLibCpp/SDK/Details/IKpAPI3.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpCommandLine.h b/KeePassLibCpp/SDK/Details/IKpCommandLine.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpCommandLineOption.h b/KeePassLibCpp/SDK/Details/IKpCommandLineOption.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpConfig.h b/KeePassLibCpp/SDK/Details/IKpConfig.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpDatabase.h b/KeePassLibCpp/SDK/Details/IKpDatabase.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpFileTransaction.h b/KeePassLibCpp/SDK/Details/IKpFileTransaction.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpFullPathName.h b/KeePassLibCpp/SDK/Details/IKpFullPathName.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpPlugin.h b/KeePassLibCpp/SDK/Details/IKpPlugin.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpUnknown.h b/KeePassLibCpp/SDK/Details/IKpUnknown.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/IKpUtilities.h b/KeePassLibCpp/SDK/Details/IKpUtilities.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/KpDefs.h b/KeePassLibCpp/SDK/Details/KpDefs.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/Details/KpGuids.h b/KeePassLibCpp/SDK/Details/KpGuids.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SDK/KpSDK.h b/KeePassLibCpp/SDK/KpSDK.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SysDefEx.h b/KeePassLibCpp/SysDefEx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SysSpec_Windows/AppUtil.cpp b/KeePassLibCpp/SysSpec_Windows/AppUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SysSpec_Windows/NewRandom.cpp b/KeePassLibCpp/SysSpec_Windows/NewRandom.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SysSpec_Windows/StrUtilEx.cpp b/KeePassLibCpp/SysSpec_Windows/StrUtilEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/SysSpec_Windows/SysSpecWin.h b/KeePassLibCpp/SysSpec_Windows/SysSpecWin.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/AppUtil.h b/KeePassLibCpp/Util/AppUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/Base64.cpp b/KeePassLibCpp/Util/Base64.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/Base64.h b/KeePassLibCpp/Util/Base64.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/ComUtil.cpp b/KeePassLibCpp/Util/ComUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/ComUtil.h b/KeePassLibCpp/Util/ComUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/EntryUtil.cpp b/KeePassLibCpp/Util/EntryUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/EntryUtil.h b/KeePassLibCpp/Util/EntryUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/FileTransactionEx.cpp b/KeePassLibCpp/Util/FileTransactionEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/FileTransactionEx.h b/KeePassLibCpp/Util/FileTransactionEx.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/MemUtil.cpp b/KeePassLibCpp/Util/MemUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/MemUtil.h b/KeePassLibCpp/Util/MemUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/NewRandom.h b/KeePassLibCpp/Util/NewRandom.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PopularPasswords.cpp b/KeePassLibCpp/Util/PopularPasswords.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PopularPasswords.h b/KeePassLibCpp/Util/PopularPasswords.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PwQualityEst.cpp b/KeePassLibCpp/Util/PwQualityEst.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PwQualityEst.h b/KeePassLibCpp/Util/PwQualityEst.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PwUtil.cpp b/KeePassLibCpp/Util/PwUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/PwUtil.h b/KeePassLibCpp/Util/PwUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/StrUtil.cpp b/KeePassLibCpp/Util/StrUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/StrUtil.h b/KeePassLibCpp/Util/StrUtil.h
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/TranslateEx.cpp b/KeePassLibCpp/Util/TranslateEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/KeePassLibCpp/Util/TranslateEx.h b/KeePassLibCpp/Util/TranslateEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/AddEntryDlg.cpp b/WinGUI/AddEntryDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/AddEntryDlg.h b/WinGUI/AddEntryDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/AddGroupDlg.cpp b/WinGUI/AddGroupDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/AddGroupDlg.h b/WinGUI/AddGroupDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/CheckOptionsDlg.cpp b/WinGUI/CheckOptionsDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/CheckOptionsDlg.h b/WinGUI/CheckOptionsDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/DbSettingsDlg.cpp b/WinGUI/DbSettingsDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/DbSettingsDlg.h b/WinGUI/DbSettingsDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/EntryListDlg.cpp b/WinGUI/EntryListDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/EntryListDlg.h b/WinGUI/EntryListDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/EntryPropertiesDlg.cpp b/WinGUI/EntryPropertiesDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/EntryPropertiesDlg.h b/WinGUI/EntryPropertiesDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/FieldRefDlg.cpp b/WinGUI/FieldRefDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/FieldRefDlg.h b/WinGUI/FieldRefDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/FindInDbDlg.cpp b/WinGUI/FindInDbDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/FindInDbDlg.h b/WinGUI/FindInDbDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/GetRandomDlg.cpp b/WinGUI/GetRandomDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/GetRandomDlg.h b/WinGUI/GetRandomDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/HelpSourceDlg.cpp b/WinGUI/HelpSourceDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/HelpSourceDlg.h b/WinGUI/HelpSourceDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/IconPickerDlg.cpp b/WinGUI/IconPickerDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/IconPickerDlg.h b/WinGUI/IconPickerDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/ImportOptionsDlg.cpp b/WinGUI/ImportOptionsDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/ImportOptionsDlg.h b/WinGUI/ImportOptionsDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/LanguagesDlg.cpp b/WinGUI/LanguagesDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/LanguagesDlg.h b/WinGUI/LanguagesDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AMSEdit.cpp b/WinGUI/NewGUI/AMSEdit.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AMSEdit.h b/WinGUI/NewGUI/AMSEdit.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AutoCompleteEx.cpp b/WinGUI/NewGUI/AutoCompleteEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AutoCompleteEx.h b/WinGUI/NewGUI/AutoCompleteEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AutoRichEditCtrlFx.cpp b/WinGUI/NewGUI/AutoRichEditCtrlFx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/AutoRichEditCtrlFx.h b/WinGUI/NewGUI/AutoRichEditCtrlFx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/BCMenu.cpp b/WinGUI/NewGUI/BCMenu.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/BCMenu.h b/WinGUI/NewGUI/BCMenu.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/BtnST.cpp b/WinGUI/NewGUI/BtnST.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/BtnST.h b/WinGUI/NewGUI/BtnST.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ColorStaticEx.cpp b/WinGUI/NewGUI/ColorStaticEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ColorStaticEx.h b/WinGUI/NewGUI/ColorStaticEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ColourPickerXP.cpp b/WinGUI/NewGUI/ColourPickerXP.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ColourPickerXP.h b/WinGUI/NewGUI/ColourPickerXP.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomComboBoxEx.cpp b/WinGUI/NewGUI/CustomComboBoxEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomComboBoxEx.h b/WinGUI/NewGUI/CustomComboBoxEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomListCtrlEx.cpp b/WinGUI/NewGUI/CustomListCtrlEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomListCtrlEx.h b/WinGUI/NewGUI/CustomListCtrlEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomTreeCtrlEx.cpp b/WinGUI/NewGUI/CustomTreeCtrlEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/CustomTreeCtrlEx.h b/WinGUI/NewGUI/CustomTreeCtrlEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/DwmUtil.cpp b/WinGUI/NewGUI/DwmUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/DwmUtil.h b/WinGUI/NewGUI/DwmUtil.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/FontUtil.cpp b/WinGUI/NewGUI/FontUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/FontUtil.h b/WinGUI/NewGUI/FontUtil.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/GlobalWindowManager.cpp b/WinGUI/NewGUI/GlobalWindowManager.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/GlobalWindowManager.h b/WinGUI/NewGUI/GlobalWindowManager.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/GradientUtil.cpp b/WinGUI/NewGUI/GradientUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/GradientUtil.h b/WinGUI/NewGUI/GradientUtil.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ImageUtilEx.cpp b/WinGUI/NewGUI/ImageUtilEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ImageUtilEx.h b/WinGUI/NewGUI/ImageUtilEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/KCSideBannerWnd.cpp b/WinGUI/NewGUI/KCSideBannerWnd.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/KCSideBannerWnd.h b/WinGUI/NewGUI/KCSideBannerWnd.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/KCWndUtil.h b/WinGUI/NewGUI/KCWndUtil.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/MemDCEx.h b/WinGUI/NewGUI/MemDCEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/MsgRelayWnd.cpp b/WinGUI/NewGUI/MsgRelayWnd.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/MsgRelayWnd.h b/WinGUI/NewGUI/MsgRelayWnd.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewColorizerEx.cpp b/WinGUI/NewGUI/NewColorizerEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewColorizerEx.h b/WinGUI/NewGUI/NewColorizerEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewDialogsEx.cpp b/WinGUI/NewGUI/NewDialogsEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewDialogsEx.h b/WinGUI/NewGUI/NewDialogsEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewGUICommon.cpp b/WinGUI/NewGUI/NewGUICommon.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/NewGUICommon.h b/WinGUI/NewGUI/NewGUICommon.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/OptionsList.cpp b/WinGUI/NewGUI/OptionsList.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/OptionsList.h b/WinGUI/NewGUI/OptionsList.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/QualityProgressCtrl.cpp b/WinGUI/NewGUI/QualityProgressCtrl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/QualityProgressCtrl.h b/WinGUI/NewGUI/QualityProgressCtrl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SecureEditEx.cpp b/WinGUI/NewGUI/SecureEditEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SecureEditEx.h b/WinGUI/NewGUI/SecureEditEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/StatusDialogEx.cpp b/WinGUI/NewGUI/StatusDialogEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/StatusDialogEx.h b/WinGUI/NewGUI/StatusDialogEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SystemTray.cpp b/WinGUI/NewGUI/SystemTray.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SystemTray.h b/WinGUI/NewGUI/SystemTray.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SystemTrayEx.cpp b/WinGUI/NewGUI/SystemTrayEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/SystemTrayEx.h b/WinGUI/NewGUI/SystemTrayEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/TaskDialog/VistaTaskDialog.cpp b/WinGUI/NewGUI/TaskDialog/VistaTaskDialog.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/TaskDialog/VistaTaskDialog.h b/WinGUI/NewGUI/TaskDialog/VistaTaskDialog.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/TaskbarListEx/TaskbarListEx.cpp b/WinGUI/NewGUI/TaskbarListEx/TaskbarListEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/TaskbarListEx/TaskbarListEx.h b/WinGUI/NewGUI/TaskbarListEx/TaskbarListEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/TaskbarListEx/TaskbarListExIdl.h b/WinGUI/NewGUI/TaskbarListEx/TaskbarListExIdl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ThemeHelperST.cpp b/WinGUI/NewGUI/ThemeHelperST.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/ThemeHelperST.h b/WinGUI/NewGUI/ThemeHelperST.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/VistaMenu/VistaMenu.cpp b/WinGUI/NewGUI/VistaMenu/VistaMenu.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/VistaMenu/VistaMenu.h b/WinGUI/NewGUI/VistaMenu/VistaMenu.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/WindowGroups.cpp b/WinGUI/NewGUI/WindowGroups.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/WindowGroups.h b/WinGUI/NewGUI/WindowGroups.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/XHyperLink.cpp b/WinGUI/NewGUI/XHyperLink.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/XHyperLink.h b/WinGUI/NewGUI/XHyperLink.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/XPStyleButtonST.cpp b/WinGUI/NewGUI/XPStyleButtonST.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/NewGUI/XPStyleButtonST.h b/WinGUI/NewGUI/XPStyleButtonST.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/OptionsAutoTypeDlg.cpp b/WinGUI/OptionsAutoTypeDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/OptionsAutoTypeDlg.h b/WinGUI/OptionsAutoTypeDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/OptionsDlg.cpp b/WinGUI/OptionsDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/OptionsDlg.h b/WinGUI/OptionsDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PasswordDlg.cpp b/WinGUI/PasswordDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PasswordDlg.h b/WinGUI/PasswordDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PermissionDlg.cpp b/WinGUI/PermissionDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PermissionDlg.h b/WinGUI/PermissionDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpApiImpl.cpp b/WinGUI/Plugins/KpApiImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpApiImpl.h b/WinGUI/Plugins/KpApiImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpCommandLineImpl.cpp b/WinGUI/Plugins/KpCommandLineImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpCommandLineImpl.h b/WinGUI/Plugins/KpCommandLineImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpCommandLineOptionImpl.cpp b/WinGUI/Plugins/KpCommandLineOptionImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpCommandLineOptionImpl.h b/WinGUI/Plugins/KpCommandLineOptionImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpDatabaseImpl.cpp b/WinGUI/Plugins/KpDatabaseImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpDatabaseImpl.h b/WinGUI/Plugins/KpDatabaseImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpFileTransactionImpl.cpp b/WinGUI/Plugins/KpFileTransactionImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpFileTransactionImpl.h b/WinGUI/Plugins/KpFileTransactionImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpFullPathNameImpl.cpp b/WinGUI/Plugins/KpFullPathNameImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpFullPathNameImpl.h b/WinGUI/Plugins/KpFullPathNameImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpUtilitiesImpl.cpp b/WinGUI/Plugins/KpUtilitiesImpl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/KpUtilitiesImpl.h b/WinGUI/Plugins/KpUtilitiesImpl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/PluginMgr.cpp b/WinGUI/Plugins/PluginMgr.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Plugins/PluginMgr.h b/WinGUI/Plugins/PluginMgr.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PluginsDlg.cpp b/WinGUI/PluginsDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PluginsDlg.h b/WinGUI/PluginsDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwGeneratorAdvDlg.cpp b/WinGUI/PwGeneratorAdvDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwGeneratorAdvDlg.h b/WinGUI/PwGeneratorAdvDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwGeneratorExDlg.cpp b/WinGUI/PwGeneratorExDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwGeneratorExDlg.h b/WinGUI/PwGeneratorExDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafe.cpp b/WinGUI/PwSafe.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafe.h b/WinGUI/PwSafe.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafe.rc b/WinGUI/PwSafe.rc
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafe.vcproj b/WinGUI/PwSafe.vcproj
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafeDlg.cpp b/WinGUI/PwSafeDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/PwSafeDlg.h b/WinGUI/PwSafeDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/SingleLineEditDlg.cpp b/WinGUI/SingleLineEditDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/SingleLineEditDlg.h b/WinGUI/SingleLineEditDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/StdAfx.cpp b/WinGUI/StdAfx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/StdAfx.h b/WinGUI/StdAfx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/TanWizardDlg.cpp b/WinGUI/TanWizardDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/TanWizardDlg.h b/WinGUI/TanWizardDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/UpdateInfoDlg.cpp b/WinGUI/UpdateInfoDlg.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/UpdateInfoDlg.h b/WinGUI/UpdateInfoDlg.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/AppLocator.cpp b/WinGUI/Util/AppLocator.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/AppLocator.h b/WinGUI/Util/AppLocator.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CmdArgs.cpp b/WinGUI/Util/CmdLine/CmdArgs.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CmdArgs.h b/WinGUI/Util/CmdLine/CmdArgs.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CommandLineOption.cpp b/WinGUI/Util/CmdLine/CommandLineOption.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CommandLineOption.h b/WinGUI/Util/CmdLine/CommandLineOption.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CommandLineTokens.cpp b/WinGUI/Util/CmdLine/CommandLineTokens.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/CommandLineTokens.h b/WinGUI/Util/CmdLine/CommandLineTokens.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/Executable.cpp b/WinGUI/Util/CmdLine/Executable.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/Executable.h b/WinGUI/Util/CmdLine/Executable.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/FullPathName.cpp b/WinGUI/Util/CmdLine/FullPathName.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/CmdLine/FullPathName.h b/WinGUI/Util/CmdLine/FullPathName.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/FileLock.cpp b/WinGUI/Util/FileLock.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/FileLock.h b/WinGUI/Util/FileLock.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/KeySourcesPool.cpp b/WinGUI/Util/KeySourcesPool.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/KeySourcesPool.h b/WinGUI/Util/KeySourcesPool.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/PrivateConfig.cpp b/WinGUI/Util/PrivateConfig.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/PrivateConfig.h b/WinGUI/Util/PrivateConfig.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/PrivateConfigEx.cpp b/WinGUI/Util/PrivateConfigEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/PrivateConfigEx.h b/WinGUI/Util/PrivateConfigEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/RemoteControl.cpp b/WinGUI/Util/RemoteControl.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/RemoteControl.h b/WinGUI/Util/RemoteControl.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/RestartManagerEx.cpp b/WinGUI/Util/RestartManagerEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/RestartManagerEx.h b/WinGUI/Util/RestartManagerEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SInstance.cpp b/WinGUI/Util/SInstance.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SInstance.h b/WinGUI/Util/SInstance.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SendKeys.cpp b/WinGUI/Util/SendKeys.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SendKeys.h b/WinGUI/Util/SendKeys.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SendKeysEx.cpp b/WinGUI/Util/SendKeysEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SendKeysEx.h b/WinGUI/Util/SendKeysEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SessionNotify.cpp b/WinGUI/Util/SessionNotify.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SessionNotify.h b/WinGUI/Util/SessionNotify.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/ShutdownBlocker.cpp b/WinGUI/Util/ShutdownBlocker.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/ShutdownBlocker.h b/WinGUI/Util/ShutdownBlocker.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SprEngine/SprEncoding.cpp b/WinGUI/Util/SprEngine/SprEncoding.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SprEngine/SprEncoding.h b/WinGUI/Util/SprEngine/SprEncoding.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SprEngine/SprEngine.cpp b/WinGUI/Util/SprEngine/SprEngine.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/SprEngine/SprEngine.h b/WinGUI/Util/SprEngine/SprEngine.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/UpdateCheck.cpp b/WinGUI/Util/UpdateCheck.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/UpdateCheck.h b/WinGUI/Util/UpdateCheck.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/UpdateCheckEx.cpp b/WinGUI/Util/UpdateCheckEx.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/UpdateCheckEx.h b/WinGUI/Util/UpdateCheckEx.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/VersionInfo.cpp b/WinGUI/Util/VersionInfo.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/VersionInfo.h b/WinGUI/Util/VersionInfo.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/WinUtil.cpp b/WinGUI/Util/WinUtil.cpp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/Util/WinUtil.h b/WinGUI/Util/WinUtil.h
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/KeePass.png b/WinGUI/res/KeePass.png
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/MostPopularPasswords.bin b/WinGUI/res/MostPopularPasswords.bin
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/PwSafe.ico b/WinGUI/res/PwSafe.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/PwSafe.rc2 b/WinGUI/res/PwSafe.rc2
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/autotype.bmp b/WinGUI/res/autotype.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/cancel.bmp b/WinGUI/res/cancel.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/clienticex.bmp b/WinGUI/res/clienticex.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/clock.bmp b/WinGUI/res/clock.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/disk.bmp b/WinGUI/res/disk.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/document.bmp b/WinGUI/res/document.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/entry_ed.ico b/WinGUI/res/entry_ed.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/file.bmp b/WinGUI/res/file.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/help_sma.bmp b/WinGUI/res/help_sma.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/help_smp.bmp b/WinGUI/res/help_smp.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/iconpic.ico b/WinGUI/res/iconpic.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/infoicon.bmp b/WinGUI/res/infoicon.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/infoiconex.bmp b/WinGUI/res/infoiconex.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/key.ico b/WinGUI/res/key.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/key_smal.bmp b/WinGUI/res/key_smal.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/keyhole.ico b/WinGUI/res/keyhole.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/language.bmp b/WinGUI/res/language.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/lock_ovr.ico b/WinGUI/res/lock_ovr.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/locked.ico b/WinGUI/res/locked.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/mouse_sm.bmp b/WinGUI/res/mouse_sm.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/ok.bmp b/WinGUI/res/ok.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/optionicex.bmp b/WinGUI/res/optionicex.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/options.ico b/WinGUI/res/options.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/plugins.ico b/WinGUI/res/plugins.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/random_b.bmp b/WinGUI/res/random_b.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/randomke.bmp b/WinGUI/res/randomke.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/search.ico b/WinGUI/res/search.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_about.bmp b/WinGUI/res/tb_about.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_adden.bmp b/WinGUI/res/tb_adden.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_copyp.bmp b/WinGUI/res/tb_copyp.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_copyu.bmp b/WinGUI/res/tb_copyu.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_defau.bmp b/WinGUI/res/tb_defau.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_delet.bmp b/WinGUI/res/tb_delet.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_edite.bmp b/WinGUI/res/tb_edite.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_find.bmp b/WinGUI/res/tb_find.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_lock.bmp b/WinGUI/res/tb_lock.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_new.bmp b/WinGUI/res/tb_new.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_open.bmp b/WinGUI/res/tb_open.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_save.bmp b/WinGUI/res/tb_save.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_save1.bmp b/WinGUI/res/tb_save1.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/tb_saved.bmp b/WinGUI/res/tb_saved.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/toolssma.bmp b/WinGUI/res/toolssma.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/unlocked.ico b/WinGUI/res/unlocked.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/winprops.bmp b/WinGUI/res/winprops.bmp
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/res/world.ico b/WinGUI/res/world.ico
+old mode 100755
+new mode 100644
+diff --git a/WinGUI/resource.h b/WinGUI/resource.h
+old mode 100755
+new mode 100644

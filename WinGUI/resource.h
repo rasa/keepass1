@@ -265,7 +265,7 @@
 #define IDC_CHECK_CS_SPACE              1235
 #define IDC_CHECK_CS_SPECIAL            1236
 #define IDC_CHECK_CS_BRACKETS           1237
-#define IDC_CHECK_CS_HIGHANSI           1238
+#define IDC_CHECK_CS_LATIN1S            1238
 #define IDC_CHECK_CS_UNDERLINE          1240
 #define IDC_CHECK_NOREPEAT              1241
 #define IDC_CHECK_NOCONFUSING           1242
