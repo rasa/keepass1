@@ -336,6 +336,7 @@
 #define IDC_CHECK_CLIP_NOPERSIST        1313
 #define IDC_STATIC_CLIP_INFO            1314
 #define IDC_CHECK_CLIP_CLEARONDBCLOSE   1315
+#define IDC_CHECK_NORMDASHES            1316
 #define ID_FILE_EXIT                    32771
 #define ID_INFO_ABOUT                   32772
 #define ID_SAFE_ADDGROUP                32773
@@ -560,7 +561,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        251
 #define _APS_NEXT_COMMAND_VALUE         33040
-#define _APS_NEXT_CONTROL_VALUE         1316
+#define _APS_NEXT_CONTROL_VALUE         1317
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

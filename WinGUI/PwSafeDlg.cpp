@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@
 // #include "NewGUI/VistaMenu/VistaMenu.h"
 #include "NewGUI/NewDialogsEx.h"
 #include "NewGUI/NewColorizerEx.h"
+#include "NewGUI/DragDropEx.h"
 #include "NewGUI/DwmUtil.h"
 #include "NewGUI/FontUtil.h"
 #include "Plugins/KpApiImpl.h"
@@ -903,8 +904,9 @@ BOOL CPwSafeDlg::OnInitDialog()
 	m_bFocusResAfterQuickFind = cConfig.GetBool(PWMKEY_FOCUSRESAFTERQUICKFIND, FALSE);
 	m_bAutoTypeIEFix = cConfig.GetBool(PWMKEY_AUTOTYPEIEFIX, TRUE);
 	m_bAutoTypeSameKL = cConfig.GetBool(PWMKEY_AUTOTYPESAMEKEYBLAYOUTS, TRUE);
-	m_bDropToBackOnCopy = cConfig.GetBool(PWMKEY_DROPTOBACKONCOPY, FALSE);
 	m_bSortAutoTypeSelItems = cConfig.GetBool(PWMKEY_SORTAUTOTYPESELITEMS, TRUE);
+	m_bAutoTypeNormDashes = cConfig.GetBool(PWMKEY_AUTOTYPENORMDASHES, TRUE);
+	m_bDropToBackOnCopy = cConfig.GetBool(PWMKEY_DROPTOBACKONCOPY, FALSE);
 	m_bUseTransactedFileWrites = cConfig.GetBool(PWMKEY_TRANSACTEDFILEWRITE, TRUE);
 
 	m_bShowToolBar = cConfig.GetBool(PWMKEY_SHOWTOOLBAR, TRUE);
@@ -2468,6 +2470,7 @@ void CPwSafeDlg::SaveOptions()
 		pcfg.Set(PWMKEY_DEFAULTATSEQ, m_strDefaultAutoTypeSequence);
 	pcfg.SetBool(PWMKEY_AUTOTYPEIEFIX, m_bAutoTypeIEFix);
 	pcfg.SetBool(PWMKEY_AUTOTYPESAMEKEYBLAYOUTS, m_bAutoTypeSameKL);
+	pcfg.SetBool(PWMKEY_AUTOTYPENORMDASHES, m_bAutoTypeNormDashes);
 
 	pcfg.SetBool(PWMKEY_USEDPAPIFORMEMPROT, *CMemoryProtectionEx::GetEnabledPtr());
 	pcfg.SetBool(PWMKEY_USECNGBCRYPTFORKEYT, *CKeyTransformBCrypt::GetEnabledPtr());
@@ -4464,7 +4467,7 @@ BOOL CPwSafeDlg::_ChangeMasterKey(CPwManager *pDbMgr, BOOL bCreateNew)
 
 	if(bCreateNew == FALSE)
 	{
-		CString str = TRL("The composite master key has been changed!");
+		CString str = TRL("The master key has been changed!");
 		str += _T("\r\n\r\n");
 		str += TRL("Save the database now in order to get the new key applied.");
 		MessageBox(str, TRL("Success"), MB_ICONINFORMATION | MB_OK);
@@ -4508,8 +4511,8 @@ void CPwSafeDlg::_OpenDatabase(CPwManager *pDbMgr, const TCHAR *pszFile,
 	aOpParams[6] = dwOpFlags;
 	if(_CallPlugins(KPM_OPENDB_PRE, (LPARAM)&aOpParams[0], 0) == FALSE) return;
 
-	CString strFilter = TRL("KeePass Password Safe Files");
-	strFilter += _T(" (*.kdb/*.pwd)|*.kdb;*.pwd|");
+	CString strFilter = TRL("KeePass KDB Files");
+	strFilter += _T(" (*.kdb, *.pwd)|*.kdb;*.pwd|");
 	strFilter += TRL("All Files");
 	strFilter += _T(" (*.*)|*.*||");
 
@@ -5006,7 +5009,7 @@ void CPwSafeDlg::OnFileSaveAs()
 
 	GroupSyncStates(TRUE);
 
-	CString strFilter = TRL("KeePass Password Safe Files");
+	CString strFilter = TRL("KeePass KDB Files");
 	strFilter += _T(" (*.kdb)|*.kdb|");
 	strFilter += TRL("All Files");
 	strFilter += _T(" (*.*)|*.*||");
@@ -5316,8 +5319,9 @@ void CPwSafeDlg::OnSafeOptions()
 	dlg.m_strDefaultAutoTypeSequence = m_strDefaultAutoTypeSequence;
 	dlg.m_bAutoTypeIEFix = m_bAutoTypeIEFix;
 	dlg.m_bAutoTypeSameKL = m_bAutoTypeSameKL;
-	dlg.m_bDropToBackOnCopy = m_bDropToBackOnCopy;
 	dlg.m_bSortAutoTypeSelItems = m_bSortAutoTypeSelItems;
+	dlg.m_bAutoTypeNormDashes = m_bAutoTypeNormDashes;
+	dlg.m_bDropToBackOnCopy = m_bDropToBackOnCopy;
 	dlg.m_bDeleteTANsAfterUse = m_bDeleteTANsAfterUse;
 	dlg.m_bUseTransactedFileWrites = m_bUseTransactedFileWrites;
 	dlg.m_bRememberKeySources = CKeySourcesPool::GetEnabled();
@@ -5368,8 +5372,9 @@ void CPwSafeDlg::OnSafeOptions()
 		m_strDefaultAutoTypeSequence = dlg.m_strDefaultAutoTypeSequence;
 		m_bAutoTypeIEFix = dlg.m_bAutoTypeIEFix;
 		m_bAutoTypeSameKL = dlg.m_bAutoTypeSameKL;
-		m_bDropToBackOnCopy = dlg.m_bDropToBackOnCopy;
 		m_bSortAutoTypeSelItems = dlg.m_bSortAutoTypeSelItems;
+		m_bAutoTypeNormDashes = dlg.m_bAutoTypeNormDashes;
+		m_bDropToBackOnCopy = dlg.m_bDropToBackOnCopy;
 		m_bDeleteTANsAfterUse = dlg.m_bDeleteTANsAfterUse;
 		m_bUseTransactedFileWrites = dlg.m_bUseTransactedFileWrites;
 		CKeySourcesPool::SetEnabled(dlg.m_bRememberKeySources);
@@ -6650,7 +6655,7 @@ void CPwSafeDlg::OnBeginDragPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 	const DWORD dwEntryIndex = _ListSelToEntryIndex();
 	if(dwEntryIndex == DWORD_MAX) return;
 
-	PW_ENTRY *p = m_mgr.GetEntry(dwEntryIndex);
+	PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
 	ASSERT_ENTRY(p); if(p == NULL) return;
 
 	_SetDisplayDialog(true);
@@ -6662,13 +6667,6 @@ void CPwSafeDlg::OnBeginDragPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 
 	// if(!bAutoType)
 	m_cGroups.m_drop.SetDragAccept(TRUE);
-
-	COleDropSource *pDropSource = new COleDropSource;
-	COleDataSource *pDataSource = new COleDataSource;
-	// DROPEFFECT de = DROPEFFECT_NONE;
-
-	HGLOBAL hgDataA = NULL;
-	HGLOBAL hgDataW = NULL;
 
 	TRY
 	{
@@ -6733,58 +6731,10 @@ void CPwSafeDlg::OnBeginDragPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 		//	DropToBackgroundIfOptionEnabled(true);
 		// }
 
-		std::basic_string<char> bsA = _StringToAnsiStl(strToTransfer);
-		std::basic_string<WCHAR> bsW = _StringToUnicodeStl(strToTransfer);
-
-		const size_t cbA = (bsA.size() + 1) * sizeof(char);
-		const size_t cbW = (bsW.size() + 1) * sizeof(WCHAR);
-
-		hgDataA = GlobalAlloc(GHND, cbA);
-		hgDataW = GlobalAlloc(GHND, cbW);
-
-		if(hgDataA != NULL)
-		{
-			LPVOID lp = GlobalLock(hgDataA);
-			if(lp != NULL)
-			{
-				memcpy(lp, bsA.c_str(), cbA);
-				GlobalUnlock(hgDataA);
-
-				pDataSource->CacheGlobalData(CF_TEXT, hgDataA);
-			}
-			else { ASSERT(FALSE); }
-		}
-		else { ASSERT(FALSE); }
-
-		if(hgDataW != NULL)
-		{
-			LPVOID lp = GlobalLock(hgDataW);
-			if(lp != NULL)
-			{
-				memcpy(lp, bsW.c_str(), cbW);
-				GlobalUnlock(hgDataW);
-
-				pDataSource->CacheGlobalData(CF_UNICODETEXT, hgDataW);
-			}
-			else { ASSERT(FALSE); }
-		}
-		else { ASSERT(FALSE); }
-
-		pDataSource->DoDragDrop(DROPEFFECT_MOVE | DROPEFFECT_COPY, NULL, pDropSource);
+		CDragDropEx::Perform(strToTransfer);
 	}
 	CATCH_ALL(eEx) { ASSERT(FALSE); }
 	END_CATCH_ALL;
-
-	SAFE_DELETE(pDataSource);
-	SAFE_DELETE(pDropSource);
-
-	// pDataSource was the owner of the HGLOBALs
-	ASSERT(GlobalSize(hgDataA) == 0);
-	ASSERT(GlobalSize(hgDataW) == 0);
-	// ASSERT(GlobalSize(hgDataA) > 0);
-	// ASSERT(GlobalSize(hgDataW) > 0);
-	// if(hgDataA != NULL) { VERIFY(GlobalFree(hgDataA) == NULL); }
-	// if(hgDataW != NULL) { VERIFY(GlobalFree(hgDataW) == NULL); }
 
 	m_cGroups.m_drop._RemoveDropSelection();
 	m_cGroups.m_drop.SetDragAccept(FALSE);
@@ -10150,6 +10100,18 @@ void CPwSafeDlg::_AutoType(PW_ENTRY *pEntry, BOOL bLoseFocus, DWORD dwAutoTypeSe
 	_UpdateToolBar(TRUE);
 }
 
+CString CPwSafeDlg::_AutoTypeNormalizeWindowText(LPCTSTR lp)
+{
+	if(lp == NULL) { ASSERT(FALSE); return CString(); }
+	if(*lp == _T('\0')) return CString();
+
+	CString str(lp);
+	str = str.MakeLower();
+
+	if(m_bAutoTypeNormDashes != FALSE) return SU_NormalizeDashes(str);
+	return str;
+}
+
 void CPwSafeDlg::OnPwlistAutoType()
 {
 	NotifyUserActivity();
@@ -10347,7 +10309,6 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
 
-	ASSERT((wParam == HOTKEYID_AUTOTYPE) || (wParam == HOTKEYID_RESTORE));
 	if(wParam == HOTKEYID_AUTOTYPE)
 	{
 		NotifyUserActivity();
@@ -10380,13 +10341,15 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 		const int nLen = ::GetWindowTextLength(hWnd);
 		if(nLen <= 0) { m_bGlobalAutoTypePending = FALSE; return 0; }
 
-		std::vector<TCHAR> vWindow(static_cast<size_t>(nLen + 3), _T('\0'));
-
 		_SetDisplayDialog(true);
 
+		std::vector<TCHAR> vWindow(static_cast<size_t>(nLen + 3), _T('\0'));
 		::GetWindowText(hWnd, &vWindow[0], nLen + 2);
 
-		CString strCurWindow = &vWindow[0], strWindowExp, strWindowLookup;
+		const std_string strCurWindowStl(&vWindow[0]);
+		const CString strCurWindow(_AutoTypeNormalizeWindowText(&vWindow[0]));
+
+		CString strWindowExp, strWindowLookup;
 		DWORD dwWindowField, dwWindowFieldSeq, dwWindowFieldSeqFound = 0;
 		PW_UUID_STRUCT pwUuid;
 
@@ -10400,7 +10363,6 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 		dlg.m_strBannerTitle = TRL("Auto-Type Entry Selection");
 		dlg.m_strBannerCaption = TRL("Multiple entries exist for the current window. Please select the entry to auto-type.");
 
-		std_string strCurWindowStl = &vWindow[0];
 		if(g_vAutoTypeSelectionDialogs.find(strCurWindowStl) != g_vAutoTypeSelectionDialogs.end())
 		{
 			SetForegroundWindow();
@@ -10414,7 +10376,6 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 
 		const DWORD dwInvalidId1 = m_mgr.GetGroupId(PWS_BACKUPGROUP_SRC);
 		const DWORD dwInvalidId2 = m_mgr.GetGroupId(PWS_BACKUPGROUP);
-		strCurWindow = strCurWindow.MakeLower();
 
 		for(DWORD i = 0; i < m_mgr.GetNumberOfEntries(); ++i)
 		{
@@ -10436,7 +10397,7 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 
 				strWindowExp = ExtractParameterFromString(pe->pszAdditional, strWindowLookup, dwWindowField);
 				strWindowExp = SprCompile(strWindowExp, false, pe, &m_mgr, false, false);
-				strWindowExp = strWindowExp.MakeLower();
+				strWindowExp = _AutoTypeNormalizeWindowText(strWindowExp);
 
 				if(strWindowExp.GetLength() != 0) // An auto-type-window definition has been found
 				{
@@ -10493,7 +10454,7 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 
 					if((nSubLen != 0) && (nSubLen <= nLen))
 					{
-						strWindowExp = strWindowExp.MakeLower();
+						strWindowExp = _AutoTypeNormalizeWindowText(strWindowExp);
 						if(strCurWindow.Find(strWindowExp, 0) != -1)
 						{
 							memcpy(pwUuid.uuid, pe->uuid, 16);
@@ -10550,7 +10511,7 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 
 						strWindowExp = ExtractParameterFromString(pe->pszAdditional, strWindowLookup, dwWindowField);
 						strWindowExp = SprCompile(strWindowExp, false, pe, &m_mgr, false, false);
-						strWindowExp = strWindowExp.MakeLower();
+						strWindowExp = _AutoTypeNormalizeWindowText(strWindowExp);
 
 						if(strWindowExp.GetLength() != 0) // An auto-type-window definition has been found
 						{
@@ -10622,6 +10583,7 @@ LRESULT CPwSafeDlg::OnHotKey(WPARAM wParam, LPARAM lParam)
 		if((m_bMinimized == TRUE) || (m_bTrayed == TRUE))
 			SetViewHideState(TRUE, FALSE);
 	}
+	else { ASSERT(FALSE); }
 
 	return 0;
 }
@@ -11452,7 +11414,7 @@ void CPwSafeDlg::_GetNewDbFileInUserDir(const CString& strLoadedIniLastDb,
 
 			CString strMsg = TRL("File access error: failed to open file in write mode");
 			strMsg += _T(": ");
-			strMsg += TRL("KeePass Password Database");
+			strMsg += TRL("KeePass Database");
 			strMsg += _T(".");
 
 			MessageBox(strMsg, PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);

@@ -1,6 +1,6 @@
 ﻿/*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,12 +38,12 @@
 
 // When making a Windows build, don't forget to update the verinfo resource
 #ifndef _UNICODE
-#define PWM_VERSION_STR  _T("1.38")
+#define PWM_VERSION_STR  _T("1.39")
 #else
-#define PWM_VERSION_STR  _T("1.38 Unicode")
+#define PWM_VERSION_STR  _T("1.39 Unicode")
 #endif
-#define PWM_VERSION_DW   0x01260000
-#define PWM_VERSION_QW   0x0001002600000000ULL
+#define PWM_VERSION_DW   0x01270000
+#define PWM_VERSION_QW   0x0001002700000000ULL
 // #define PWM_DEVSNAPSHOT
 
 // Database file signature bytes
@@ -197,6 +197,7 @@
 #define PWMKEY_AUTOTYPESAMEKEYBLAYOUTS _T("KeeAutoTypeSameKeybLayouts")
 #define PWMKEY_DROPTOBACKONCOPY     _T("KeeDropToBackOnCopy")
 #define PWMKEY_SORTAUTOTYPESELITEMS _T("KeeSortAutoTypeSelItems")
+#define PWMKEY_AUTOTYPENORMDASHES   _T("KeeAutoTypeNormDashes")
 #define PWMKEY_CLEARCLIPONDBCLOSE   _T("KeeClearClipboardOnDbClose")
 #define PWMKEY_USEHELPCENTER        _T("KeeUseHelpCenter")
 #define PWMKEY_USEDPAPIFORMEMPROT   _T("KeeUseDPAPIForMemoryProtection")

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -245,19 +245,19 @@ BOOL CPasswordDlg::OnInitDialog()
 			lp = TRL("Save key file manually to...");
 			m_btBrowseKeyFile.SetTooltipText(lp);
 
-			CString str = TRL("Set Composite Master Key");
+			CString str = TRL("Set Master Key");
 			if(m_strDescriptiveName.GetLength() != 0)
 				str = m_strDescriptiveName;
 			m_banner.SetTitle(str);
 
 			if(m_bChanging == FALSE)
 			{
-				SetWindowText(TRL("Create New Password Database"));
-				m_banner.SetCaption(TRL("Specify the composite master key."));
+				SetWindowText(TRL("Create New Database"));
+				m_banner.SetCaption(TRL("Specify the master key."));
 			}
 			else
 			{
-				str = TRL("Change Composite Master Key");
+				str = TRL("Change Master Key");
 				if(m_strDescriptiveName.GetLength() != 0)
 				{
 					str += _T(" - ");
@@ -265,7 +265,7 @@ BOOL CPasswordDlg::OnInitDialog()
 				}
 				SetWindowText(str);
 
-				m_banner.SetCaption(TRL("Enter the new composite master key."));
+				m_banner.SetCaption(TRL("Specify the new master key."));
 			}
 		}
 		else // m_bConfirm == FALSE, m_bLoadMode == TRUE
@@ -274,7 +274,7 @@ BOOL CPasswordDlg::OnInitDialog()
 			lp = TRL("Select key file manually...");
 			m_btBrowseKeyFile.SetTooltipText(lp);
 
-			CString str = TRL("Enter Composite Master Key");
+			CString str = TRL("Enter Master Key");
 			if(m_strDescriptiveName.GetLength() != 0)
 				str = m_strDescriptiveName;
 			m_banner.SetTitle(str);
@@ -287,7 +287,7 @@ BOOL CPasswordDlg::OnInitDialog()
 			}
 			SetWindowText(str);
 
-			m_banner.SetCaption(TRL("Enter the composite master key."));
+			m_banner.SetCaption(TRL("Enter the master key."));
 
 			m_cPassQuality.ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_STATIC_PWQINFO)->ShowWindow(SW_HIDE);
@@ -303,7 +303,7 @@ BOOL CPasswordDlg::OnInitDialog()
 
 			if(m_bChanging == FALSE)
 			{
-				SetWindowText(TRL("Create New Password Database"));
+				SetWindowText(TRL("Create New Database"));
 				m_banner.SetCaption(TRL("Repeat the master password for the new database."));
 			}
 			else
@@ -323,7 +323,7 @@ BOOL CPasswordDlg::OnInitDialog()
 			// This combination isn't possible
 			ASSERT(FALSE);
 
-			CString str = TRL("Enter Composite Master Key");
+			CString str = TRL("Enter Master Key");
 			if(m_strDescriptiveName.GetLength() != 0)
 				str = m_strDescriptiveName;
 			m_banner.SetTitle(str);
@@ -336,7 +336,7 @@ BOOL CPasswordDlg::OnInitDialog()
 			}
 			SetWindowText(str);
 
-			m_banner.SetCaption(TRL("Enter the composite master key."));
+			m_banner.SetCaption(TRL("Enter the master key."));
 		}
 	}
 

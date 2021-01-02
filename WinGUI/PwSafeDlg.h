@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -149,6 +149,7 @@ public:
 	void ParseAndOpenURLWithEntryInfo(LPCTSTR lpURL, PW_ENTRY *pEntry);
 	void _AutoType(PW_ENTRY *pEntry, BOOL bLoseFocus, DWORD dwAutoTypeSeq,
 		LPCTSTR lpTargetWindowName);
+	CString _AutoTypeNormalizeWindowText(LPCTSTR lp);
 
 	void UpdateGroupList();
 	void UpdatePasswordList();
@@ -512,6 +513,7 @@ private:
 
 	BOOL m_bAutoTypeIEFix;
 	BOOL m_bAutoTypeSameKL;
+	BOOL m_bAutoTypeNormDashes;
 
 	CString m_strWindowTitleSuffix;
 

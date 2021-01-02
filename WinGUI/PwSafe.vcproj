@@ -3538,6 +3538,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewGUI\DragDropEx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NewGUI\DragDropEx.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NewGUI\DwmUtil.cpp"
 				>
 			</File>

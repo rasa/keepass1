@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ static BOOL g_bClipNoPersist = TRUE;
 bool WU_OpenClipboard(HWND hWndNewOwner)
 {
 	// https://referencesource.microsoft.com/#system.windows.forms/winforms/managed/system/winforms/Clipboard.cs
-	const DWORD dwRetries = 15; // Default is 10
+	const DWORD dwRetries = 15; // Default in .NET is 10
 	const DWORD dwDelay = 100;
 
 	for(DWORD i = 0; i < dwRetries; ++i)
@@ -247,22 +247,23 @@ void WU_SetClipboardIgnoreFormats()
 
 	if(g_bClipNoPersist != FALSE)
 	{
-		BOOST_STATIC_ASSERT(sizeof(BOOL) == 4);
+		BOOST_STATIC_ASSERT(sizeof(DWORD) == 4);
+		BOOST_STATIC_ASSERT(static_cast<DWORD>(FALSE) == 0);
+		BOOST_STATIC_ASSERT(static_cast<DWORD>(TRUE) == 1);
+		const DWORD dwFalse = 0;
+		const DWORD dwTrue = 1;
+
+		uID = RegisterClipboardFormat(CFN_MONITORPROC_EXCL);
+		// The value type is not defined/documented; we store a BOOL/DWORD
+		if(uID != 0) WU_SetClipboardData(uID, &dwTrue, sizeof(DWORD));
+		else { ASSERT(FALSE); }
 
 		uID = RegisterClipboardFormat(CFN_CLOUD_ALLOWED);
-		if(uID != 0)
-		{
-			const BOOL b = FALSE;
-			WU_SetClipboardData(uID, &b, sizeof(BOOL));
-		}
+		if(uID != 0) WU_SetClipboardData(uID, &dwFalse, sizeof(DWORD));
 		else { ASSERT(FALSE); }
 
 		uID = RegisterClipboardFormat(CFN_HISTORY_ALLOWED);
-		if(uID != 0)
-		{
-			const BOOL b = FALSE;
-			WU_SetClipboardData(uID, &b, sizeof(BOOL));
-		}
+		if(uID != 0) WU_SetClipboardData(uID, &dwFalse, sizeof(DWORD));
 		else { ASSERT(FALSE); }
 	}
 }
