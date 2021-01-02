@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ public:
 	DWORD m_dwATHotKey;
 	CString m_strDefaultAutoTypeSequence;
 	BOOL m_bAutoTypeIEFix;
+	BOOL m_bAutoTypeNormDashes;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
@@ -74,6 +75,8 @@ public:
 	BOOL m_bSortAutoTypeSelItems;
 	BOOL m_bSameKL;
 	CButton m_cbSameKL;
+	BOOL m_bNormDashes;
+	CButton m_cbNormDashes;
 
 private:
 	void EnableChildControls();

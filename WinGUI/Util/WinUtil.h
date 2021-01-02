@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -35,6 +35,9 @@
 #define WU_MAX_MACHINE_LEN 1024
 
 #define CFN_CLIPBOARD_VIEWER_IGNORE _T("Clipboard Viewer Ignore")
+
+// https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard-formats
+#define CFN_MONITORPROC_EXCL        _T("ExcludeClipboardContentFromMonitorProcessing")
 #define CFN_CLOUD_ALLOWED           _T("CanUploadToCloudClipboard")
 #define CFN_HISTORY_ALLOWED         _T("CanIncludeInClipboardHistory")
 

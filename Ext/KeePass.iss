@@ -11,11 +11,11 @@
 #define MyAppUrlName "KeePass.url"
 #define MyAppHelpName "KeePass.chm"
 
-#define KeeVersionStr "1.38"
-#define KeeVersionWin "1.38.0.0"
-#define KeeVersionWinShort "1.38"
+#define KeeVersionStr "1.39"
+#define KeeVersionWin "1.39.0.0"
+#define KeeVersionWinShort "1.39"
 
-#define KeeDevPeriod "2003-2020"
+#define KeeDevPeriod "2003-2021"
 
 [Setup]
 AppName={#MyAppFullName}
@@ -25,9 +25,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-AppCopyright=Copyright (c) {#KeeDevPeriod} {#MyAppPublisher}
-MinVersion=5.0
-DefaultDirName={pf}\{#MyAppFullName}
+AppCopyright=Copyright © {#KeeDevPeriod} {#MyAppPublisher}
+MinVersion=6.1sp1
+DefaultDirName={autopf}\{#MyAppFullName}
 DefaultGroupName={#MyAppFullName}
 AllowNoIcons=yes
 LicenseFile=..\Docs\License.txt
@@ -43,9 +43,10 @@ ChangesAssociations=yes
 VersionInfoVersion={#KeeVersionWin}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription={#MyAppFullName} {#KeeVersionStr} Setup
-VersionInfoCopyright=Copyright (c) {#KeeDevPeriod} {#MyAppPublisher}
+VersionInfoCopyright=Copyright © {#KeeDevPeriod} {#MyAppPublisher}
 WizardImageFile=compiler:WizModernImage-IS.bmp
 WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
+WizardStyle=classic
 DisableDirPage=auto
 AlwaysShowDirOnReadyPage=yes
 DisableProgramGroupPage=yes
@@ -60,7 +61,7 @@ Name: de; MessagesFile: "compiler:Languages\German.isl"
 Name: es; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: fi; MessagesFile: "compiler:Languages\Finnish.isl"
 Name: fr; MessagesFile: "compiler:Languages\French.isl"
-Name: hu; MessagesFile: "compiler:Languages\Hungarian.isl"
+; Name: hu; MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: it; MessagesFile: "compiler:Languages\Italian.isl"
 Name: ja; MessagesFile: "compiler:Languages\Japanese.isl"
 Name: nb; MessagesFile: "compiler:Languages\Norwegian.isl"
@@ -80,7 +81,7 @@ de.MyOptPlgPage=Die Plugins-Webseite öffnen
 es.MyOptPlgPage=Abrir la página web de los complementos
 fi.MyOptPlgPage=Avaa liitännäiset ja laajennukset sisältävä sivusto
 fr.MyOptPlgPage=Ouvre la page des greffons (plugins) sur la toile
-hu.MyOptPlgPage=Nyissa meg a bővítmények weboldalát
+; hu.MyOptPlgPage=Nyissa meg a bővítmények weboldalát
 it.MyOptPlgPage=Apri la pagina web dei plug-in
 ja.MyOptPlgPage=プラグインのWebページを開きます。
 nl.MyOptPlgPage=Open de plugins webpagina
@@ -124,7 +125,7 @@ Root: HKCR; Subkey: kdbfile\shell\open\command; ValueType: string; ValueData: ""
 ; Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 ; Name: {group}\Help; Filename: {app}\{#MyAppHelpName}
 ; Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {commonprograms}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
+Name: {autoprograms}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; Check: MyDesktopCheck
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; Check: MyAppDataCheck
 

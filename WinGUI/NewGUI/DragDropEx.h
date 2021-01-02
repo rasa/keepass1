@@ -17,25 +17,21 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef ___COLOR_STATIC_EX_H___
-#define ___COLOR_STATIC_EX_H___
+#ifndef ___DRAGDROPEX_H___
+#define ___DRAGDROPEX_H___
 
 #pragma once
 
-class CColorStaticEx : public CStatic
+#include "../../KeePassLibCpp/SysDefEx.h"
+#include <boost/utility.hpp>
+
+class CDragDropEx : boost::noncopyable
 {
-	DECLARE_DYNAMIC(CColorStaticEx)
-
 public:
-	CColorStaticEx();
-	virtual ~CColorStaticEx();
+	static void Perform(LPCTSTR lpText);
 
-	COLORREF m_clr;
-
-protected:
-	afx_msg void OnPaint();
-
-	DECLARE_MESSAGE_MAP()
+private:
+	CDragDropEx();
 };
 
-#endif // ___COLOR_STATIC_EX_H___
+#endif // ___DRAGDROPEX_H___

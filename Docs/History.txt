@@ -1,3 +1,22 @@
+21/01/02 - 1.39
+- Added auto-type matching option 'Consider similar dashes as
+  identical' (in 'Tools' -> 'Options' -> tab 'Advanced' ->
+  button 'Auto-Type', turned on by default)
+- If the option 'Do not store data in the Windows clipboard
+  history and the cloud clipboard' is turned on (which it is by
+  default), KeePass now additionally excludes its clipboard
+  contents from processing by Windows' internal
+  ClipboardMonitor component
+
+- Upgraded to Boost libraries version 1.75.0
+- Upgraded installer
+- Various UI text improvements
+- Various code optimizations
+- Minor other improvements
+
+- Fixed a bug that could cause a crash after performing a
+  drag&drop operation into certain other applications
+
 20/01/13 - 1.38
 - When double-clicking the URL cell of an entry in the main
   entry list while holding the Shift key, KeePass now copies

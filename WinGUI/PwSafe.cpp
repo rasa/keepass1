@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -351,8 +351,8 @@ BOOL CPwSafeApp::RegisterShellAssociation()
 	l = WU_RegCreateKey(HKEY_CLASSES_ROOT, _T("kdbfile"), &hBase);
 	if(l != ERROR_SUCCESS) { ASSERT(FALSE); return FALSE; }
 
-	// _tcscpy_s(tszTemp, TRL("KeePass Password Database"));
-	strTemp = TRL("KeePass Password Database");
+	// _tcscpy_s(tszTemp, TRL("KeePass Database"));
+	strTemp = TRL("KeePass Database");
 
 	dw = static_cast<DWORD>((strTemp.length() + 1) * sizeof(TCHAR));
 	l = RegSetValueEx(hBase, _T(""), 0, REG_SZ, (CONST BYTE *)strTemp.c_str(), dw);
