@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ COptionsAutoTypeDlg::COptionsAutoTypeDlg(CWnd* pParent /*=NULL*/)
 	, m_bIEFix(FALSE)
 	, m_bSortAutoTypeSelItems(TRUE)
 	, m_bSameKL(TRUE)
+	, m_bNormDashes(TRUE)
 {
 }
 
@@ -58,6 +59,8 @@ void COptionsAutoTypeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SORTATITEMS, m_bSortAutoTypeSelItems);
 	DDX_Check(pDX, IDC_CHECK_SAMEKL, m_bSameKL);
 	DDX_Control(pDX, IDC_CHECK_SAMEKL, m_cbSameKL);
+	DDX_Check(pDX, IDC_CHECK_NORMDASHES, m_bNormDashes);
+	DDX_Control(pDX, IDC_CHECK_NORMDASHES, m_cbNormDashes);
 }
 
 BEGIN_MESSAGE_MAP(COptionsAutoTypeDlg, CDialog)
@@ -86,10 +89,37 @@ BOOL COptionsAutoTypeDlg::OnInitDialog()
 	m_hkAutoType.SetRules(HKCOMB_NONE | HKCOMB_S, HOTKEYF_CONTROL | HOTKEYF_ALT);
 	m_hkAutoType.SetHotKey((WORD)(m_dwATHotKey & 0x0000FFFF), (WORD)(m_dwATHotKey >> 16));
 
+	const std::vector<WCHAR>& vDashes = SU_GetNormDashes();
+	if(vDashes.size() >= 3)
+	{
+		std::basic_string<WCHAR> strW(L" (-, -, -, ...)");
+		strW[2] = vDashes[0];
+		strW[5] = vDashes[1];
+		strW[8] = vDashes[2];
+
+		CString str;
+		m_cbNormDashes.GetWindowText(str);
+
+#ifdef _UNICODE
+		str += strW.c_str();
+#else
+		char* lpA = _StringToAnsi(strW.c_str());
+		if(lpA != NULL)
+		{
+			str += lpA;
+			SAFE_DELETE_ARRAY(lpA);
+		}
+		else { ASSERT(FALSE); }
+#endif
+
+		m_cbNormDashes.SetWindowText(str);
+	}
+
 	m_bEnableAT = ((m_bDisableAutoType == FALSE) ? TRUE : FALSE);
 	m_bAlternative = m_bMinimizeBeforeAT;
 	m_strDefaultSeq = m_strDefaultAutoTypeSequence;
 	m_bIEFix = m_bAutoTypeIEFix;
+	m_bNormDashes = m_bAutoTypeNormDashes;
 
 	UpdateData(FALSE);
 	EnableChildControls();
@@ -108,6 +138,7 @@ void COptionsAutoTypeDlg::EnableChildControls()
 	m_hkAutoType.EnableWindow(bActive);
 	m_cbSameKL.EnableWindow(bActive);
 	m_cbSortATItems.EnableWindow(bActive);
+	m_cbNormDashes.EnableWindow(bActive);
 
 	m_btnOK.EnableWindow((m_strDefaultSeq.GetLength() > 0) ? TRUE : FALSE);
 }
@@ -120,6 +151,7 @@ void COptionsAutoTypeDlg::OnBtnOK()
 	m_bMinimizeBeforeAT = m_bAlternative;
 	m_strDefaultAutoTypeSequence = m_strDefaultSeq;
 	m_bAutoTypeIEFix = m_bIEFix;
+	m_bAutoTypeNormDashes = m_bNormDashes;
 
 	WORD wVK = 0, wMod = 0;
 	m_hkAutoType.GetHotKey(wVK, wMod);

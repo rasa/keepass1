@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2020 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include <boost/algorithm/string.hpp>
 #pragma warning(pop)
 #endif
+
+static std::vector<WCHAR> g_vNormHyphen;
 
 // Securely erase a CString object
 void EraseCString(CString* pString)
@@ -954,6 +956,91 @@ TCHAR SU_GetDriveLetter(LPCTSTR lp)
 	if((ch >= _T('A')) && (ch <= _T('Z'))) return ch;
 	if((ch >= _T('a')) && (ch <= _T('z'))) return (ch - _T('a') + _T('A'));
 	return _T('\0');
+}
+
+WCHAR SU_ToAnsiAndBack(WCHAR ch)
+{
+	if(ch == L'\0') return L'\0';
+	if((ch >= L'\xD800') && (ch <= L'\xDFFF')) { ASSERT(FALSE); return L'\0'; } // Surrogate
+
+	WCHAR wsz[2] = { ch, L'\0' };
+	WCHAR chRet = L'\0';
+
+	char* lpA = _StringToAnsi(wsz);
+	if(lpA != NULL)
+	{
+		WCHAR* lpW = _StringToUnicode(lpA);
+		if(lpW != NULL)
+		{
+			if((lpW[0] != L'\0') && (lpW[1] == L'\0')) chRet = lpW[0];
+
+			SAFE_DELETE_ARRAY(lpW);
+		}
+		else { ASSERT(FALSE); }
+
+		SAFE_DELETE_ARRAY(lpA);
+	}
+	else { ASSERT(FALSE); }
+
+	return chRet;
+}
+
+const std::vector<WCHAR>& SU_GetNormDashes()
+{
+	if(g_vNormHyphen.size() == 0)
+	{
+		g_vNormHyphen.push_back(L'-'); // Hyphen-minus (U+002D)
+
+		const size_t ccOther = 7;
+		WCHAR wszOther[ccOther] = {
+			L'\x2010', // Hyphen
+			L'\x2011', // Non-breaking hyphen
+			L'\x2012', // Figure dash
+			L'\x2013', // En dash
+			L'\x2014', // Em dash
+			L'\x2015', // Horizontal bar
+			L'\x2212' // Minus sign
+		};
+
+		for(size_t i = 0; i < ccOther; ++i)
+		{
+			if(SU_ToAnsiAndBack(wszOther[i]) == wszOther[i])
+				g_vNormHyphen.push_back(wszOther[i]);
+		}
+	}
+
+	return g_vNormHyphen;
+}
+
+CString SU_NormalizeDashes(LPCTSTR lpText)
+{
+	if(lpText == NULL) { ASSERT(FALSE); return CString(); }
+	if(*lpText == _T('\0')) return CString();
+
+	std::basic_string<WCHAR> strW = _StringToUnicodeStl(lpText);
+	const size_t ccW = strW.size();
+
+	const std::vector<WCHAR>& vDashes = SU_GetNormDashes();
+	ASSERT((vDashes.size() > 0) && (vDashes[0] == L'-'));
+	for(size_t iD = 1; iD < vDashes.size(); ++iD)
+	{
+		const WCHAR chD = vDashes[iD];
+
+		for(size_t iW = 0; iW < ccW; ++iW)
+		{
+			if(strW[iW] == chD) strW[iW] = vDashes[0];
+		}
+	}
+
+#ifdef _UNICODE
+	return CString(strW.c_str());
+#else
+	char* lpA = _StringToAnsi(strW.c_str());
+	if(lpA == NULL) { ASSERT(FALSE); return CString(lpText); }
+	CString str(lpA);
+	SAFE_DELETE_ARRAY(lpA);
+	return str;
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////
