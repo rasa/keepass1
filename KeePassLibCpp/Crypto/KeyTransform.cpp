@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "KeyTransform_BCrypt.h"
 
 #include "Rijndael.h"
+#include "../Util/AlignedBuffer.h"
 #include "../Util/MemUtil.h"
 
 CKeyTransform::CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey)
@@ -36,26 +37,27 @@ CKeyTransform::CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey)
 
 void CKeyTransform::Run()
 {
-	ASSERT(m_pBuf != NULL); if(m_pBuf == NULL) return;
-	ASSERT(m_pKey != NULL); if(m_pKey == NULL) return;
+	if(m_pBuf == NULL) { ASSERT(FALSE); return; }
+	if(m_pKey == NULL) { ASSERT(FALSE); return; }
 
-	BYTE vData[16]; // Local copy of the data to be transformed
-	memcpy(&vData[0], m_pBuf, 16);
+	CAlignedBuffer abData(16, 16, m_pBuf, true);
+	BYTE* pbData = abData.Data();
+	if(pbData == NULL) { ASSERT(FALSE); return; }
 
-	CKeyTransformBCrypt bCrypt;
-	if(bCrypt.TransformKey(m_pKey, vData, m_qwRounds) != S_OK)
+	CKeyTransformBCrypt ktBCrypt;
+	if(FAILED(ktBCrypt.TransformKey(m_pKey, pbData, m_qwRounds)))
 	{
+		memcpy(pbData, m_pBuf, 16);
+
 		CRijndael aes;
 		if(aes.Init(CRijndael::ECB, CRijndael::EncryptDir, m_pKey,
 			CRijndael::Key32Bytes, 0) != RIJNDAEL_SUCCESS) { ASSERT(FALSE); return; }
 
-		for(UINT64 qw = 0; qw < m_qwRounds; ++qw)
-			aes.BlockEncrypt(&vData[0], 128, &vData[0]);
+		for(UINT64 qw = m_qwRounds; qw != 0; --qw)
+			aes.BlockEncrypt(pbData, 128, pbData);
 	}
 
-	memcpy(m_pBuf, &vData[0], 16);
-	mem_erase(&vData[0], 16);
-
+	memcpy(m_pBuf, pbData, 16);
 	m_bSucceeded = true;
 }
 
@@ -99,8 +101,7 @@ bool CKeyTransform::Transform256(UINT64 qwRounds, UINT8* pBuffer256,
 	VERIFY(CloseHandle(hLeft) != FALSE);
 #endif
 
-	ASSERT(ktLeft.Succeeded() && ktRight.Succeeded());
-	if(!ktLeft.Succeeded() || !ktRight.Succeeded()) return false;
+	if(!ktLeft.Succeeded() || !ktRight.Succeeded()) { ASSERT(FALSE); return false; }
 
 	memcpy(pBuffer256, &vBuf[0], 32);
 	mem_erase(&vBuf[0], 32);
@@ -131,7 +132,7 @@ UINT64 CKeyTransform::Benchmark(DWORD dwTimeMs)
 	const UINT64 qwRight = ktRight.GetComputedRounds();
 	const UINT64 qwSum = qwLeft + qwRight;
 	if((qwSum < qwLeft) || (qwSum < qwRight)) // Overflow
-		return ((qwLeft > qwRight) ? qwLeft : qwRight);
+		return max(qwLeft, qwRight);
 
 	return (qwSum >> 1);
 #endif
@@ -145,38 +146,39 @@ CKeyTransformBenchmark::CKeyTransformBenchmark(DWORD dwTimeMs)
 
 void CKeyTransformBenchmark::Run()
 {
-	ASSERT(m_dwTimeMs != 0); if(m_dwTimeMs == 0) return;
-	ASSERT(m_qwComputedRounds == 0);
+	if(m_dwTimeMs == 0) { ASSERT(FALSE); return; }
+	if(m_qwComputedRounds != 0) { ASSERT(FALSE); m_qwComputedRounds = 0; }
 
 	BYTE vKey[32];
 	memset(&vKey[0], 0x4B, 32);
 
-	BYTE vBuf[16];
-	memset(&vBuf[0], 0x7E, 16);
+	CAlignedBuffer abData(16, 16, false, false);
+	BYTE* pbData = abData.Data();
+	if(pbData == NULL) { ASSERT(FALSE); return; }
+	memset(pbData, 0x7E, 16);
 
-	CKeyTransformBCrypt bCrypt;
-	if(bCrypt.Benchmark(&vKey[0], &vBuf[0], &m_qwComputedRounds, m_dwTimeMs) == S_OK)
+	CKeyTransformBCrypt ktBCrypt;
+	if(SUCCEEDED(ktBCrypt.Benchmark(&vKey[0], pbData, &m_qwComputedRounds, m_dwTimeMs)))
 		return;
-
-	const DWORD dwStartTime = timeGetTime();
 
 	CRijndael aes;
 	if(aes.Init(CRijndael::ECB, CRijndael::EncryptDir, &vKey[0],
 		CRijndael::Key32Bytes, 0) != RIJNDAEL_SUCCESS) { ASSERT(FALSE); return; }
 
-	while(true)
-	{
-		for(DWORD dw = 0; dw < 256; ++dw)
-			aes.BlockEncrypt(&vBuf[0], 128, &vBuf[0]);
+	const UINT64 qwStep = 1024;
+	const DWORD dwStartTime = timeGetTime();
 
-		m_qwComputedRounds += 256;
-		if(m_qwComputedRounds < 256) // Overflow?
+	while((timeGetTime() - dwStartTime) < m_dwTimeMs)
+	{
+		for(UINT64 qw = qwStep; qw != 0; --qw)
+			aes.BlockEncrypt(pbData, 128, pbData);
+
+		m_qwComputedRounds += qwStep;
+		if(m_qwComputedRounds < qwStep) // Overflow
 		{
-			m_qwComputedRounds = (UINT64_MAX - 8);
+			m_qwComputedRounds = UINT64_MAX - 8;
 			break;
 		}
-
-		if((timeGetTime() - dwStartTime) >= m_dwTimeMs) break;
 	}
 }
 

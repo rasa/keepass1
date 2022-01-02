@@ -11,11 +11,11 @@
 #define MyAppUrlName "KeePass.url"
 #define MyAppHelpName "KeePass.chm"
 
-#define KeeVersionStr "1.39"
-#define KeeVersionWin "1.39.0.0"
-#define KeeVersionWinShort "1.39"
+#define KeeVersionStr "1.40"
+#define KeeVersionWin "1.40.0.0"
+#define KeeVersionWinShort "1.40"
 
-#define KeeDevPeriod "2003-2021"
+#define KeeDevPeriod "2003-2022"
 
 [Setup]
 AppName={#MyAppFullName}
@@ -44,8 +44,9 @@ VersionInfoVersion={#KeeVersionWin}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription={#MyAppFullName} {#KeeVersionStr} Setup
 VersionInfoCopyright=Copyright © {#KeeDevPeriod} {#MyAppPublisher}
-WizardImageFile=compiler:WizModernImage-IS.bmp
-WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
+SetupIconFile=compiler:SetupClassicIcon.ico
+; WizardImageFile=compiler:WizClassicImage-IS.bmp
+; WizardSmallImageFile=compiler:WizClassicSmallImage-IS.bmp
 WizardStyle=classic
 DisableDirPage=auto
 AlwaysShowDirOnReadyPage=yes
@@ -102,7 +103,7 @@ Name: "{app}\Plugins"; Flags: uninsalwaysuninstall
 [Files]
 Source: ..\Build\WinGUI_Distrib\KeePass.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\Build\WinGUI_Distrib\KeePass.chm; DestDir: {app}; Flags: ignoreversion
-Source: ..\Build\WinGUI_Distrib\KeePass.ini; DestDir: {app}; Flags: onlyifdoesntexist
+Source: ..\Build\WinGUI_Distrib\KeePass.ini; DestDir: {app}; Flags: ignoreversion
 Source: ..\Build\WinGUI_Distrib\License.txt; DestDir: {app}; Flags: ignoreversion
 
 [Registry]

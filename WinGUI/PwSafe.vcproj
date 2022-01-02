@@ -4565,6 +4565,14 @@
 				Name="Util"
 				>
 				<File
+					RelativePath="..\KeePassLibCpp\Util\AlignedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\KeePassLibCpp\Util\AlignedBuffer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\KeePassLibCpp\Util\AppUtil.h"
 					>
 				</File>

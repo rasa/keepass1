@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,7 +23,11 @@
 #pragma once
 
 #include <windows.h>
-#include <boost/scoped_array.hpp>
+#include <boost/shared_ptr.hpp>
+#include "../Util/AlignedBuffer.h"
+
+// 4096 * 16 bytes = 64 KB; cf. step in benchmark
+#define KTBC_BUF_BLOCKS 4096
 
 #define BCRYPT_DLLNAME _T("BCrypt.dll")
 
@@ -31,7 +35,7 @@
 #define BCFN_CAP "BCryptCloseAlgorithmProvider"
 #define BCFN_GP  "BCryptGetProperty"
 #define BCFN_SP  "BCryptSetProperty"
-#define BCFN_GSK "BCryptGenerateSymmetricKey"
+// #define BCFN_GSK "BCryptGenerateSymmetricKey"
 #define BCFN_IK  "BCryptImportKey"
 #define BCFN_DK  "BCryptDestroyKey"
 #define BCFN_E   "BCryptEncrypt"
@@ -47,7 +51,7 @@ typedef PVOID BCRYPT_KEY_HANDLE;
 #define BCRYPT_KEY_DATA_BLOB   L"KeyDataBlob"
 #define BCRYPT_PROVIDER_HANDLE L"ProviderHandle"
 #define BCRYPT_CHAINING_MODE   L"ChainingMode"
-#define BCRYPT_CHAIN_MODE_ECB  L"ChainingModeECB"
+#define BCRYPT_CHAIN_MODE_CBC  L"ChainingModeCBC"
 #define BCRYPT_KEY_DATA_BLOB_MAGIC 0x4d42444b
 #define BCRYPT_KEY_DATA_BLOB_VERSION1 0x1
 #endif
@@ -61,7 +65,7 @@ typedef struct _BCRYPT_KEY_DATA_BLOB_32
 	ULONG dwMagic;
 	ULONG dwVersion;
 	ULONG cbKeyData;
-	BYTE pbData[32];
+	BYTE vKeyData[32];
 } BCRYPT_KEY_DATA_BLOB_32;
 
 typedef NTSTATUS(WINAPI *LPBCRYPTOPENALGORITHMPROVIDER)(BCRYPT_ALG_HANDLE* phAlgorithm,
@@ -76,9 +80,9 @@ typedef NTSTATUS(WINAPI *LPBCRYPTGETPROPERTY)(BCRYPT_HANDLE hObject, LPCWSTR psz
 typedef NTSTATUS(WINAPI *LPBCRYPTSETPROPERTY)(BCRYPT_HANDLE hObject, LPCWSTR pszProperty,
 	PUCHAR pbInput, ULONG cbInput, ULONG dwFlags);
 
-typedef NTSTATUS(WINAPI *LPBCRYPTGENERATESYMMETRICKEY)(BCRYPT_ALG_HANDLE hAlgorithm,
-	BCRYPT_KEY_HANDLE* phKey, PUCHAR pbKeyObject, ULONG cbKeyObject, PUCHAR pbSecret,
-	ULONG cbSecret, ULONG dwFlags);
+// typedef NTSTATUS(WINAPI *LPBCRYPTGENERATESYMMETRICKEY)(BCRYPT_ALG_HANDLE hAlgorithm,
+//	BCRYPT_KEY_HANDLE* phKey, PUCHAR pbKeyObject, ULONG cbKeyObject, PUCHAR pbSecret,
+//	ULONG cbSecret, ULONG dwFlags);
 
 typedef NTSTATUS(WINAPI *LPBCRYPTIMPORTKEY)(BCRYPT_ALG_HANDLE hAlgorithm,
 	BCRYPT_KEY_HANDLE hImportKey, LPCWSTR pszBlobType, BCRYPT_KEY_HANDLE *phKey,
@@ -104,21 +108,27 @@ public:
 
 private:
 	void _FreeLib();
-	HRESULT _InitBCrypt(BCRYPT_ALG_HANDLE& hAes, BCRYPT_KEY_HANDLE& hKey,
-		boost::scoped_array<UCHAR>& pKeyObj, const BYTE* pbKey32);
+
+	bool _InitBCrypt(BCRYPT_ALG_HANDLE& hAes, BCRYPT_KEY_HANDLE& hKey,
+		boost::shared_ptr<CAlignedBuffer>& spKeyObj, const BYTE* pbKey32);
 	void _DestroyBCrypt(BCRYPT_ALG_HANDLE& hAes, BCRYPT_KEY_HANDLE& hKey);
 
-	static BOOL m_bEnableBCrypt;
+	bool _Encrypt(BCRYPT_KEY_HANDLE hKey, BYTE* pbData16, UINT64 qwRounds);
+
+	static BOOL g_bEnableBCrypt;
 
 	HMODULE m_hLib;
 	LPBCRYPTOPENALGORITHMPROVIDER m_lpBCryptOpenAlgorithmProvider;
 	LPBCRYPTCLOSEALGORITHMPROVIDER m_lpBCryptCloseAlgorithmProvider;
 	LPBCRYPTGETPROPERTY m_lpBCryptGetProperty;
 	LPBCRYPTSETPROPERTY m_lpBCryptSetProperty;
-	LPBCRYPTGENERATESYMMETRICKEY m_lpBCryptGenerateSymmetricKey;
+	// LPBCRYPTGENERATESYMMETRICKEY m_lpBCryptGenerateSymmetricKey;
 	LPBCRYPTIMPORTKEY m_lpBCryptImportKey;
 	LPBCRYPTDESTROYKEY m_lpBCryptDestroyKey;
 	LPBCRYPTENCRYPT m_lpBCryptEncrypt;
+
+	boost::shared_ptr<CAlignedBuffer> m_spBufZero;
+	boost::shared_ptr<CAlignedBuffer> m_spBuf;
 };
 
 #endif // ___KEY_TRANSFORM_BCRYPT_H___
