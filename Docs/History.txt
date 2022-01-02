@@ -1,3 +1,20 @@
+22/01/02 - 1.40
+- On most Windows systems, AES-KDF is now about 3 times as fast
+  as before
+- Added database file information dialog that is displayed when
+  creating a new database
+- When double-clicking the title cell of an entry in the main
+  entry list while holding down the Shift key, the title is now
+  copied to the clipboard
+
+- Improved default configuration file
+- Various CHM file improvements
+- Upgraded to Boost libraries version 1.78.0
+- Installer: improved file overwriting
+- Upgraded installer
+- Various code optimizations
+- Minor other improvements
+
 21/01/02 - 1.39
 - Added auto-type matching option 'Consider similar dashes as
   identical' (in 'Tools' -> 'Options' -> tab 'Advanced' ->
@@ -1678,7 +1695,8 @@
   minimized automatically when starting KeePass)
 - Moved start and exit options into the 'advanced' tab
 - Added option to start KeePass with Windows ('advanced' tab)
-- Added option to backup modified entries into a 'Backup' group
+- Added option to back up modified entries into a 'Backup'
+  group
 - Improved comboboxes (better XP theme compatibility, better
   item indentation)
 - When auto-typing, the window is minimized to tray if you

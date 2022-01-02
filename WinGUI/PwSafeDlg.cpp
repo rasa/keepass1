@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2021 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -930,11 +930,7 @@ BOOL CPwSafeDlg::OnInitDialog()
 		APPHS_ONLINE : APPHS_LOCAL);
 
 	cConfig.Get(PWMKEY_ROWCOLOR, szTemp);
-	if(szTemp[0] != 0)
-	{
-		COLORREF cref = (COLORREF)_ttol(szTemp);
-		m_cList.SetRowColorEx(cref);
-	}
+	if(szTemp[0] != 0) m_cList.SetRowColorEx((COLORREF)_ttol(szTemp));
 
 	cConfig.Get(PWMKEY_AUTOTYPEMETHOD, szTemp);
 	if(szTemp[0] != 0) m_nAutoTypeMethod = _ttoi(szTemp);
@@ -1355,11 +1351,11 @@ BOOL CPwSafeDlg::OnInitDialog()
 
 	cConfig.Get(PWMKEY_SPLITTERX, szTemp);
 	if(szTemp[0] != 0) m_lSplitterPosHoriz = _ttol(szTemp);
-	else m_lSplitterPosHoriz = NewGUI_Scale(GUI_GROUPLIST_EXT + 1, this);
+	// Default: see above
 
 	cConfig.Get(PWMKEY_SPLITTERY, szTemp);
 	if(szTemp[0] != 0) m_lSplitterPosVert = _ttol(szTemp);
-	// else m_lSplitterPosVert = PWS_DEFAULT_SPLITTER_Y; // Set above already
+	// Default: see above
 
 	// if(m_bAlwaysOnTop == TRUE)
 	//	SetWindowPos(&wndTopMost, 0, 0, 0, 0,
@@ -3875,8 +3871,18 @@ void CPwSafeDlg::OnDblclkPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 	switch(pnmItem->iSubItem)
 	{
 	case 0:
-		if((bIsTAN == TRUE) && (m_dwPwListMode != LVS_REPORT)) OnPwlistCopyPw();
-		else OnPwlistEdit();
+		if((pnmItem->uKeyFlags & LVKF_SHIFT) != 0)
+		{
+			CopyStringToClipboard(p->pszTitle, p, &m_mgr, this->GetSafeHwnd());
+			m_nClipboardCountdown = static_cast<int>(m_dwClipboardSecs);
+			SetStatusTextEx(TRL("Field copied to clipboard."));
+			DropToBackgroundIfOptionEnabled(false);
+		}
+		else
+		{
+			if((bIsTAN == TRUE) && (m_dwPwListMode != LVS_REPORT)) OnPwlistCopyPw();
+			else OnPwlistEdit();
+		}
 		p = NULL; // p may now be invalid!
 		break;
 	case 1:
@@ -4126,6 +4132,20 @@ void CPwSafeDlg::OnFileNew()
 	if(m_bFileOpen == TRUE) return;
 
 	if(_CallPlugins(KPM_FILE_NEW_PRE, 0, 0) == FALSE) return;
+
+	_SetDisplayDialog(true);
+	CString strTitle = TRL("Create New Database");
+	CString strMsg = TRL("Your data will be stored in a KeePass database file, which is a regular file. When saving for the first time, you will be prompted to specify the location where KeePass should save this file.");
+	strMsg += _T("\r\n\r\n");
+	strMsg += TRL("It is important that you remember where the database file is stored.");
+	strMsg += _T("\r\n\r\n");
+	strMsg += TRL("You should regularly create a backup of the database file (onto an independent data storage device).");
+	int r = CVistaTaskDialog::ShowMessageBox(this->m_hWnd, strTitle, strMsg,
+		TD_INFORMATION_ICON, TRL("OK"), IDOK, TRL("Cancel"), IDCANCEL);
+	if(r < 0)
+		r = MessageBox(strMsg, strTitle, MB_OKCANCEL | MB_ICONINFORMATION);
+	_SetDisplayDialog(false);
+	if(r != IDOK) return;
 
 	m_mgr.NewDatabase();
 	if(_ChangeMasterKey(NULL, TRUE) == FALSE) return;

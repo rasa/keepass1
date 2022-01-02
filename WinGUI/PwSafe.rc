@@ -111,7 +111,7 @@ CAPTION "About KeePass"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,203,111,58,14,WS_GROUP
-    LTEXT           "Copyright © 2003-2021 Dominik Reichl.",IDC_STATIC,7,7,254,8
+    LTEXT           "Copyright © 2003-2022 Dominik Reichl.",IDC_STATIC,7,7,254,8
     LTEXT           "KeePass is OSI Certified Open Source Software.",IDC_STATIC,7,20,254,8
     LTEXT           "The program is distributed under the terms of the GNU General Public License v2 or later.",IDC_STATIC,7,33,254,17
     LTEXT           "<>",IDC_HLINK_HOMEPAGE,7,65,254,8
@@ -121,7 +121,7 @@ BEGIN
     LTEXT           "<>",IDC_HLINK_DONATE,7,117,184,8
 END
 
-IDD_PWSAFE_DIALOG DIALOGEX 0, 0, 448, 228
+IDD_PWSAFE_DIALOG DIALOGEX 0, 0, 449, 238
 STYLE DS_ABSALIGN | DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_NOFAILCREATE | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "KeePass"
@@ -129,7 +129,7 @@ MENU IDR_MAINMENU
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     CONTROL         "",IDC_MENULINE,"Static",SS_ETCHEDHORZ,0,0,69,1
-    CONTROL         "Tree1",IDC_GROUPLIST,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,45,114,127
+    CONTROL         "Tree1",IDC_GROUPLIST,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,45,114,127
     CONTROL         "List1",IDC_PWLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_AUTOARRANGE | WS_BORDER | WS_TABSTOP,135,27,144,129
     PUSHBUTTON      "&New...",IDC_TB_NEW,1,2,15,14,NOT WS_TABSTOP
     PUSHBUTTON      "&Open...",IDC_TB_OPEN,17,2,15,14,NOT WS_TABSTOP
@@ -666,9 +666,9 @@ BEGIN
     IDD_PWSAFE_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 441
+        RIGHTMARGIN, 442
         TOPMARGIN, 7
-        BOTTOMMARGIN, 221
+        BOTTOMMARGIN, 231
     END
 
     IDD_PASSWORD_DLG, DIALOG
@@ -856,8 +856,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,39,0,0
- PRODUCTVERSION 1,39,0,0
+ FILEVERSION 1,40,0,0
+ PRODUCTVERSION 1,40,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -874,13 +874,13 @@ BEGIN
         BEGIN
             VALUE "Comments", "https://keepass.info/"
             VALUE "CompanyName", "Dominik Reichl"
-            VALUE "FileDescription", "KeePass Password Safe 1.39"
-            VALUE "FileVersion", "1.39.0.0"
+            VALUE "FileDescription", "KeePass Password Safe 1.40"
+            VALUE "FileVersion", "1.40.0.0"
             VALUE "InternalName", "PwSafe"
-            VALUE "LegalCopyright", "Copyright © 2003-2021 Dominik Reichl"
+            VALUE "LegalCopyright", "Copyright © 2003-2022 Dominik Reichl"
             VALUE "OriginalFilename", "KeePass.exe"
-            VALUE "ProductName", "KeePass Password Safe 1.39"
-            VALUE "ProductVersion", "1.39.0.0"
+            VALUE "ProductName", "KeePass Password Safe 1.40"
+            VALUE "ProductVersion", "1.40.0.0"
         END
     END
     BLOCK "VarFileInfo"

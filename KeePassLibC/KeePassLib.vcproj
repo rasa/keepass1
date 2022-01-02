@@ -55,6 +55,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -155,6 +156,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="__AMD64__;NDEBUG;WIN32;_WINDOWS;_USRDLL;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -253,6 +255,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -353,6 +356,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="__AMD64__;_DEBUG;WIN32;_WINDOWS;_USRDLL;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -455,6 +459,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;_UNICODE;UNICODE;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -555,6 +560,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)Lib&quot;;&quot;$(ProjectDir)Lib\Argon2\include&quot;"
 				PreprocessorDefinitions="__AMD64__;NDEBUG;WIN32;_WINDOWS;_USRDLL;_UNICODE;UNICODE;KP_NO_DEFAULT_SHARE;_AFX_NO_DB_SUPPORT"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -980,6 +986,14 @@
 				Name="Util"
 				>
 				<File
+					RelativePath="..\KeePassLibCpp\Util\AlignedBuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\KeePassLibCpp\Util\AlignedBuffer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\KeePassLibCpp\Util\AppUtil.h"
 					>
 				</File>
@@ -1388,6 +1402,390 @@
 				RelativePath="KeePassAPI\StructAPI.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="Lib"
+			>
+			<File
+				RelativePath=".\Lib\stdint.h"
+				>
+			</File>
+			<Filter
+				Name="Argon2"
+				>
+				<File
+					RelativePath=".\Lib\Argon2\LICENSE"
+					>
+				</File>
+				<File
+					RelativePath=".\Lib\Argon2\README.md"
+					>
+				</File>
+				<Filter
+					Name="include"
+					>
+					<File
+						RelativePath=".\Lib\Argon2\include\argon2.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="src"
+					>
+					<File
+						RelativePath=".\Lib\Argon2\src\argon2.c"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\core.c"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4204"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\core.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\encoding.c"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\encoding.h"
+						>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\ref.c"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\thread.c"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release Unicode|x64"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Lib\Argon2\src\thread.h"
+						>
+					</File>
+					<Filter
+						Name="blake2"
+						>
+						<File
+							RelativePath=".\Lib\Argon2\src\blake2\blake2-impl.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Lib\Argon2\src\blake2\blake2.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Lib\Argon2\src\blake2\blake2b.c"
+							>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|x64"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Debug|x64"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release Unicode|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release Unicode|x64"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\Lib\Argon2\src\blake2\blamka-round-ref.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
