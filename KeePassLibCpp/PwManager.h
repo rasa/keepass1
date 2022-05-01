@@ -38,12 +38,12 @@
 
 // When making a Windows build, don't forget to update the verinfo resource
 #ifndef _UNICODE
-#define PWM_VERSION_STR  _T("1.40")
+#define PWM_VERSION_STR  _T("1.40.1")
 #else
-#define PWM_VERSION_STR  _T("1.40 Unicode")
+#define PWM_VERSION_STR  _T("1.40.1 Unicode")
 #endif
-#define PWM_VERSION_DW   0x01280000
-#define PWM_VERSION_QW   0x0001002800000000ULL
+#define PWM_VERSION_DW   0x01280100
+#define PWM_VERSION_QW   0x0001002800010000ULL
 // #define PWM_DEVSNAPSHOT
 
 // Database file signature bytes
@@ -404,6 +404,9 @@ public:
 
 	void InitPrimaryInstance();
 
+	static void GetNeverExpireTime(_Out_ PW_TIME *pPwTime);
+	static LPCTSTR GetTranslationDisplayVersion(LPCTSTR lpFileVersion);
+
 	// Set the master key for the database
 	int SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive, const TCHAR *pszSecondKey,
 		const CNewRandomInterface *pARI, BOOL bOverwrite, const TCHAR *pszProviderName);
@@ -484,9 +487,6 @@ public:
 
 	DWORD GetKeyEncRounds() const;
 	void SetKeyEncRounds(DWORD dwRounds);
-
-	// Get the never-expire time
-	static void GetNeverExpireTime(_Out_ PW_TIME *pPwTime);
 
 	// Checks and corrects the group tree (level order, etc.)
 	void FixGroupTree();

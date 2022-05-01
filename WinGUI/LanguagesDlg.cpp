@@ -214,7 +214,7 @@ BOOL CLanguagesDlg::OnInitDialog()
 			lvi.iItem = m_listLang.InsertItem(LVIF_TEXT | LVIF_IMAGE,
 				m_listLang.GetItemCount(), strTemp, 0, 0, 1, NULL);
 
-			strTemp = TRL("~LANGUAGEVERSION");
+			strTemp = CPwManager::GetTranslationDisplayVersion(TRL("~LANGUAGEVERSION"));
 			if(strTemp == _T("~LANGUAGEVERSION")) strTemp.Empty();
 			lvi.iSubItem = 1; lvi.mask = LVIF_TEXT;
 			lvi.pszText = (LPTSTR)(LPCTSTR)strTemp;

@@ -109,6 +109,21 @@ void CPwManager::CleanUp()
 	m_vCustomKVPs.clear();
 }
 
+void CPwManager::GetNeverExpireTime(_Out_ PW_TIME *pPwTime)
+{
+	ASSERT(pPwTime != NULL); if(pPwTime == NULL) return;
+	memcpy(pPwTime, &g_pwTimeNever, sizeof(PW_TIME));
+}
+
+LPCTSTR CPwManager::GetTranslationDisplayVersion(LPCTSTR lpFileVersion)
+{
+	if(lpFileVersion == NULL) { ASSERT(FALSE); return _T(""); }
+
+	if(_tcscmp(lpFileVersion, _T("1.40")) == 0) return _T("1.40.1 / 1.40");
+
+	return lpFileVersion;
+}
+
 int CPwManager::SetMasterKey(const TCHAR *pszMasterKey, BOOL bDiskDrive,
 	const TCHAR *pszSecondKey, const CNewRandomInterface *pARI, BOOL bOverwrite,
 	const TCHAR *pszProviderName)
@@ -1402,12 +1417,6 @@ void CPwManager::SortGroup(DWORD idGroup, DWORD dwSortByField)
 	}
 
 	SAFE_DELETE_ARRAY(p);
-}
-
-void CPwManager::GetNeverExpireTime(_Out_ PW_TIME *pPwTime)
-{
-	ASSERT(pPwTime != NULL); if(pPwTime == NULL) return;
-	memcpy(pPwTime, &g_pwTimeNever, sizeof(PW_TIME));
 }
 
 void CPwManager::FixGroupTree()

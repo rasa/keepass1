@@ -36,7 +36,7 @@
 #define PDCS_LOWER_HEX        L"0123456789abcdef"
 #define PDCS_UPPER_HEX        L"0123456789ABCDEF"
 
-#define PDCS_CONFUSING        L"O0l1I|"
+#define PDCS_CONFUSING        L"O0Il1|"
 
 #define PCS_TABSIZE (0x10000 / 8)
 

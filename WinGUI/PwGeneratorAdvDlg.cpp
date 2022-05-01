@@ -80,7 +80,7 @@ BOOL CPwGeneratorAdvDlg::OnInitDialog()
 
 	CString str;
 	GetDlgItem(IDC_CHECK_EXCLUDE_LOOKALIKE)->GetWindowText(str);
-	GetDlgItem(IDC_CHECK_EXCLUDE_LOOKALIKE)->SetWindowText(str + _T(" (l|1I, O0) *"));
+	GetDlgItem(IDC_CHECK_EXCLUDE_LOOKALIKE)->SetWindowText(str + _T(" (O0, Il1|) *"));
 
 	GetDlgItem(IDC_CHECK_NO_REPEAT)->GetWindowText(str);
 	GetDlgItem(IDC_CHECK_NO_REPEAT)->SetWindowText(str + _T(" *"));

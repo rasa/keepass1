@@ -29,6 +29,8 @@ BOOL CKeyTransformBCrypt::g_bEnableBCrypt = TRUE;
 CKeyTransformBCrypt::CKeyTransformBCrypt() :
 	m_hLib(NULL)
 {
+	m_bWine = (AU_IsWine() != FALSE);
+
 	if(g_bEnableBCrypt == FALSE) return;
 
 	// BCrypt.dll is only supported on >= Vista
@@ -156,6 +158,7 @@ bool CKeyTransformBCrypt::_Encrypt(BCRYPT_KEY_HANDLE hKey, BYTE* pbData16, UINT6
 
 	BYTE* pbBufIn = m_spBufZero->Data();
 	BYTE* pbBufOut = m_spBuf->Data();
+	const bool bWine = m_bWine;
 
 	while(qwRounds != 0)
 	{
@@ -173,6 +176,9 @@ bool CKeyTransformBCrypt::_Encrypt(BCRYPT_KEY_HANDLE hKey, BYTE* pbData16, UINT6
 		ASSERT(*(UINT64*)pbBufIn == 0);
 		ASSERT(memcmp(pbData16, pbBufOut + (cb - 16), 16) == 0);
 		ASSERT(cbResult == cb);
+
+		// Workaround for https://bugs.winehq.org/show_bug.cgi?id=52457
+		if(bWine) memcpy(pbData16, pbBufOut + (cb - 16), 16);
 
 		qwRounds -= r;
 	}

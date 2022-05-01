@@ -129,6 +129,8 @@ private:
 
 	boost::shared_ptr<CAlignedBuffer> m_spBufZero;
 	boost::shared_ptr<CAlignedBuffer> m_spBuf;
+
+	bool m_bWine;
 };
 
 #endif // ___KEY_TRANSFORM_BCRYPT_H___
