@@ -8693,7 +8693,7 @@ void CPwSafeDlg::OnInfoTranslation()
 
 	str += TRL("Version"); str += _T(":\r\n");
 	if(_tcscmp(TRL("~LANGUAGEVERSION"), _T("~LANGUAGEVERSION")) != 0)
-		str += TRL("~LANGUAGEVERSION");
+		str += CPwManager::GetTranslationDisplayVersion(TRL("~LANGUAGEVERSION"));
 	else str += _T("Unknown or English version");
 	str += _T("\r\n\r\n");
 

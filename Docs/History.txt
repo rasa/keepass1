@@ -1,3 +1,12 @@
+22/05/01 - 1.40.1
+- Added workaround for Wine bug 52457
+
+- Increased Authenticode certificate key length
+- Various CHM/help improvements
+- Upgraded to Boost libraries version 1.79.0
+- Upgraded installer
+- Minor other improvements
+
 22/01/02 - 1.40
 - On most Windows systems, AES-KDF is now about 3 times as fast
   as before
@@ -1271,7 +1280,7 @@
 - Installer now uses best compression available
 - Fixed a bug that could increase the database size when saving
   a database multiple times, which has previously been modified
-  by KeePassX (Linux/MacOSX port of KeePass); existing inflated
+  by KeePassX (Linux/MacOS port of KeePass); existing inflated
   databases are shrinked to their normal size without data loss
 - Replaced password generation button by a help button in the
   master key dialog
