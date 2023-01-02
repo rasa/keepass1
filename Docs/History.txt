@@ -1,3 +1,28 @@
+23/01/02 - 1.41
+- Added {EDGE} placeholder, which is replaced by the executable
+  path of the new (Chromium-based) Microsoft Edge, if installed
+- The {FIREFOX} placeholder now supports detecting the
+  Microsoft Store version of Firefox (in addition to the
+  regular versions)
+- When trying to rearrange entries while automatic sorting is
+  activated, KeePass now asks whether to deactivate automatic
+  sorting
+- Added border for headings in HTML exports/printouts
+- Added horizontal entry separator lines in HTML
+  exports/printouts
+
+- Improved item separation in the entry details view
+- When moving an entry fails, the last access time of the entry
+  is not updated anymore
+- Improved HTML generation for HTML exports/printouts
+- Improved fonts used when printing or exporting to HTML
+- HTML exports/printouts: improved encoding of white-space
+  characters in passwords
+- Reordered fields/columns in exports for improved consistency
+- Upgraded to Boost libraries version 1.81.0
+- Various code optimizations
+- Minor other improvements
+
 22/05/01 - 1.40.1
 - Added workaround for Wine bug 52457
 

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -6509,23 +6509,18 @@ void CPwSafeDlg::OnPwlistMoveUp()
 {
 	NotifyUserActivity();
 
-	DWORD dwRelativeEntry = GetSelectedEntry();
+	const DWORD dwRelativeEntry = GetSelectedEntry();
 	if(dwRelativeEntry == 0) return;
 
-	DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
-	ASSERT(dwEntryIndex != DWORD_MAX); if(dwEntryIndex == DWORD_MAX) return;
+	const DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
+	if(dwEntryIndex == DWORD_MAX) { ASSERT(FALSE); return; }
+
+	if(!_CheckIfCanRearrange()) return;
 
 	_TouchEntry(dwRelativeEntry, FALSE);
 
-	if(m_nAutoSort != 0)
-	{
-		MessageBox(TRL("Auto-sorting of the entry list is enabled; you cannot move entries manually."),
-			PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);
-		return;
-	}
-
-	PW_ENTRY *p = m_mgr.GetEntry(dwEntryIndex);
-	ASSERT(p != NULL); if(p == NULL) return;
+	const PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
+	if(p == NULL) { ASSERT(FALSE); return; }
 	m_mgr.MoveEntry(p->uGroupId, dwRelativeEntry, dwRelativeEntry - 1);
 
 	_List_SaveView();
@@ -6546,25 +6541,18 @@ void CPwSafeDlg::OnPwlistMoveTop()
 {
 	NotifyUserActivity();
 
-	DWORD dwRelativeEntry = GetSelectedEntry();
+	const DWORD dwRelativeEntry = GetSelectedEntry();
 	if(dwRelativeEntry == 0) return;
 
-	DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
-	ASSERT(dwEntryIndex != DWORD_MAX); if(dwEntryIndex == DWORD_MAX) return;
+	const DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
+	if(dwEntryIndex == DWORD_MAX) { ASSERT(FALSE); return; }
 
-	PW_ENTRY *p;
+	if(!_CheckIfCanRearrange()) return;
 
 	_TouchEntry(dwRelativeEntry, FALSE);
 
-	if(m_nAutoSort != 0)
-	{
-		MessageBox(TRL("Auto-sorting of the entry list is enabled; you cannot move entries manually."),
-			PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);
-		return;
-	}
-
-	p = m_mgr.GetEntry(dwEntryIndex);
-	ASSERT(p != NULL); if(p == NULL) return;
+	const PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
+	if(p == NULL) { ASSERT(FALSE); return; }
 	m_mgr.MoveEntry(p->uGroupId, dwRelativeEntry, 0);
 
 	_List_SaveView();
@@ -6585,26 +6573,20 @@ void CPwSafeDlg::OnPwlistMoveDown()
 {
 	NotifyUserActivity();
 
-	DWORD dwItemCount = (DWORD)m_cList.GetItemCount();
-	PW_ENTRY *p;
+	const DWORD dwItemCount = (DWORD)m_cList.GetItemCount();
 
-	DWORD dwRelativeEntry = GetSelectedEntry();
+	const DWORD dwRelativeEntry = GetSelectedEntry();
 	if(dwRelativeEntry == (dwItemCount - 1)) return;
 
-	DWORD dwEntryIndex = _ListSelToEntryIndex();
-	ASSERT(dwEntryIndex != DWORD_MAX); if(dwEntryIndex == DWORD_MAX) return;
+	const DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
+	if(dwEntryIndex == DWORD_MAX) { ASSERT(FALSE); return; }
+
+	if(!_CheckIfCanRearrange()) return;
 
 	_TouchEntry(dwRelativeEntry, FALSE);
 
-	if(m_nAutoSort != 0)
-	{
-		MessageBox(TRL("Auto-sorting of the entry list is enabled; you cannot move entries manually."),
-			PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);
-		return;
-	}
-
-	p = m_mgr.GetEntry(dwEntryIndex);
-	ASSERT(p != NULL); if(p == NULL) return;
+	const PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
+	if(p == NULL) { ASSERT(FALSE); return; }
 	m_mgr.MoveEntry(p->uGroupId, dwRelativeEntry, dwRelativeEntry + 1);
 
 	_List_SaveView();
@@ -6626,26 +6608,20 @@ void CPwSafeDlg::OnPwlistMoveBottom()
 {
 	NotifyUserActivity();
 
-	DWORD dwItemCount = (DWORD)m_cList.GetItemCount();
-	PW_ENTRY *p;
+	const DWORD dwItemCount = (DWORD)m_cList.GetItemCount();
 
-	DWORD dwRelativeEntry = GetSelectedEntry();
+	const DWORD dwRelativeEntry = GetSelectedEntry();
 	if(dwRelativeEntry == (dwItemCount - 1)) return;
 
-	DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
-	if(dwEntryIndex == DWORD_MAX) return;
+	const DWORD dwEntryIndex = _ListSelToEntryIndex(dwRelativeEntry);
+	if(dwEntryIndex == DWORD_MAX) { ASSERT(FALSE); return; }
+
+	if(!_CheckIfCanRearrange()) return;
 
 	_TouchEntry(dwRelativeEntry, FALSE);
 
-	if(m_nAutoSort != 0)
-	{
-		MessageBox(TRL("Auto-sorting of the entry list is enabled; you cannot move entries manually."),
-			PWM_PRODUCT_NAME_SHORT, MB_OK | MB_ICONWARNING);
-		return;
-	}
-
-	p = m_mgr.GetEntry(dwEntryIndex);
-	ASSERT(p != NULL); if(p == NULL) return;
+	const PW_ENTRY* p = m_mgr.GetEntry(dwEntryIndex);
+	if(p == NULL) { ASSERT(FALSE); return; }
 	m_mgr.MoveEntry(p->uGroupId, dwRelativeEntry, dwItemCount - 1);
 
 	_List_SaveView();
@@ -7310,8 +7286,7 @@ void CPwSafeDlg::OnColumnClickPwlist(NMHDR* pNMHDR, LRESULT* pResult)
 
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	*pResult = 0;
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList((DWORD)pNMListView->iSubItem, FALSE);
+	if(_CheckIfCanRearrange()) _SortList((DWORD)pNMListView->iSubItem, FALSE);
 }
 
 void CPwSafeDlg::OnImportCWallet()
@@ -7938,8 +7913,6 @@ CString CPwSafeDlg::_MakeRtfString(LPCTSTR lptString)
 
 void CPwSafeDlg::ShowEntryDetails(PW_ENTRY *p)
 {
-	CString str, str2;
-
 	if(p != NULL) { ASSERT_ENTRY(p); }
 
 	if(m_bEntryView == FALSE) return;
@@ -7954,12 +7927,20 @@ void CPwSafeDlg::ShowEntryDetails(PW_ENTRY *p)
 		return;
 	}
 
+	LPCTSTR lpItemSep = _T(". \\b ");
+	const size_t cchItemSep = 2; // Character count without formatting
+	LPCTSTR lpKvpSep = _T("\\b0  ");
+	const size_t cchKvpSep = 1;
+	LPCTSTR lpKvpSepC = _T(":\\b0  ");
+	const size_t cchKvpSepC = 2;
+	const size_t cchSeps = cchItemSep + cchKvpSep;
+
 	CHARRANGE crURL;
 	ZeroMemory(&crURL, sizeof(CHARRANGE));
 
 	// === Begin entry view RTF assembly ===
 
-	CString strTemp;
+	CString str, str2, strTemp;
 	str = _T("{\\rtf1\\ansi\\ansicpg");
 	strTemp.Format(_T("%u"), m_uACP);
 	str += strTemp;
@@ -7978,29 +7959,30 @@ void CPwSafeDlg::ShowEntryDetails(PW_ENTRY *p)
 	strTemp.Format(_T("%d"), m_nListFontSize * 2);
 	str += _T("\\fs"); str += strTemp;
 	str += _T("\\b ");
-	str += TRL("Group:"); str += _T("\\b0  ");
+	str += TRL("Group:"); str += lpKvpSep;
 	const PW_GROUP *pg = m_mgr.GetGroupById(p->uGroupId); ASSERT(pg != NULL);
 	if(pg != NULL) str += _MakeRtfString(pg->pszGroupName);
 
-	m_lGroupUrlStart = static_cast<LONG>(_tcslen(TRL("Group:")) + 1);
+	m_lGroupUrlStart = static_cast<LONG>(_tcslen(TRL("Group:")) + cchKvpSep);
 	crURL.cpMin += (m_lGroupUrlStart + static_cast<LONG>(_tcslen(pg->pszGroupName)));
 
 	if((p->pszTitle != NULL) && (p->pszTitle[0] != 0))
 	{
-		str += _T(", \\b ");
-		str += TRL("Title:"); str += _T("\\b0  ");
+		str += lpItemSep;
+		str += TRL("Title:"); str += lpKvpSep;
 		str += _MakeRtfString(p->pszTitle);
 
-		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("Title:")) + 3 +
+		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("Title:")) + cchSeps +
 			_tcslen(p->pszTitle));
 	}
 
 	if((p->pszUserName != NULL) && (p->pszUserName[0] != 0))
 	{
-		str += _T(", \\b ");
-		str += TRL("User Name"); str += _T(":\\b0  ");
+		str += lpItemSep;
+		str += TRL("User Name"); str += lpKvpSepC;
 
-		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("User Name")) + 4);
+		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("User Name")) +
+			cchItemSep + cchKvpSepC);
 
 		if(m_bUserStars == FALSE)
 		{
@@ -8017,10 +7999,10 @@ void CPwSafeDlg::ShowEntryDetails(PW_ENTRY *p)
 	m_mgr.UnlockEntryPassword(p);
 	if((p->pszPassword != NULL) && (p->pszPassword[0] != 0))
 	{
-		str += _T(", \\b ");
-		str += TRL("Password:"); str += _T("\\b0  ");
+		str += lpItemSep;
+		str += TRL("Password:"); str += lpKvpSep;
 
-		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("Password:")) + 3);
+		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("Password:")) + cchSeps);
 
 		if(m_bPasswordStars == FALSE)
 		{
@@ -8045,42 +8027,44 @@ void CPwSafeDlg::ShowEntryDetails(PW_ENTRY *p)
 
 	if((p->pszURL != NULL) && (p->pszURL[0] != 0))
 	{
-		str += _T(", \\b ");
-		str += TRL("URL:"); str += _T("\\b0  ");
+		str += lpItemSep;
+		str += TRL("URL:"); str += lpKvpSep;
 		str += _MakeRtfString(p->pszURL);
 
-		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("URL:")) + 3);
+		crURL.cpMin += static_cast<LONG>(_tcslen(TRL("URL:")) + cchSeps);
 	}
 
-	str += _T(", \\b ");
-	str += TRL("Creation Time"); str += _T(":\\b0  ");
+	str += lpItemSep;
+	str += TRL("Creation Time"); str += lpKvpSepC;
 	_PwTimeToStringEx(p->tCreation, str2, CPwSafeDlg::m_bUseLocalTimeFormat);
 	str += _MakeRtfString(str2);
 
-	str += _T(", \\b ");
-	str += TRL("Last Modification"); str += _T(":\\b0  ");
+	str += lpItemSep;
+	str += TRL("Last Modification"); str += lpKvpSepC;
 	_PwTimeToStringEx(p->tLastMod, str2, CPwSafeDlg::m_bUseLocalTimeFormat);
 	str += _MakeRtfString(str2);
 
-	str += _T(", \\b ");
-	str += TRL("Last Access"); str += _T(":\\b0  ");
+	str += lpItemSep;
+	str += TRL("Last Access"); str += lpKvpSepC;
 	_PwTimeToStringEx(p->tLastAccess, str2, CPwSafeDlg::m_bUseLocalTimeFormat);
 	str += _MakeRtfString(str2);
 
 	if(memcmp(&p->tExpire, &g_tNeverExpire, sizeof(PW_TIME)) != 0)
 	{
-		str += _T(", \\b ");
-		str += TRL("Expires"); str += _T(":\\b0  ");
+		str += lpItemSep;
+		str += TRL("Expires"); str += lpKvpSepC;
 		_PwTimeToStringEx(p->tExpire, str2, CPwSafeDlg::m_bUseLocalTimeFormat);
 		str += _MakeRtfString(str2);
 	}
 
 	if((p->pszBinaryDesc != NULL) && (p->pszBinaryDesc[0] != 0))
 	{
-		str += _T(", \\b ");
-		str += TRL("Attachment"); str += _T(":\\b0  ");
+		str += lpItemSep;
+		str += TRL("Attachment"); str += lpKvpSepC;
 		str += _MakeRtfString((LPCTSTR)(p->pszBinaryDesc));
 	}
+
+	str += _T(".");
 
 	if((p->pszAdditional != NULL) && (p->pszAdditional[0] != 0))
 	{
@@ -8994,13 +8978,18 @@ void CPwSafeDlg::OnUpdateGroupSort(CCmdUI* pCmdUI)
 	pCmdUI->Enable(b);
 }
 
-BOOL CPwSafeDlg::_CheckIfCanSort()
+bool CPwSafeDlg::_CheckIfCanRearrange()
 {
-	if(m_nAutoSort == 0) return TRUE;
+	if(m_nAutoSort == 0) return true;
 
-	MessageBox(TRL("Auto-sorting of the entry list is enabled; you cannot sort the list manually now."),
-		PWM_PRODUCT_NAME_SHORT, MB_ICONWARNING | MB_OK);
-	return FALSE;
+	CString str = TRL("Entries currently cannot be rearranged, because automatic sorting is activated.");
+	str += _T("\r\n\r\n");
+	str += TRL("Do you want to deactivate automatic sorting?");
+
+	const int r = MessageBox(str, PWM_PRODUCT_NAME_SHORT, MB_YESNO | MB_ICONQUESTION);
+	if((r == IDYES) || (r == IDOK)) OnViewAutosortNosort();
+
+	return false;
 }
 
 void CPwSafeDlg::_UpdateSortMenuItemState(CCmdUI* pCmdUI)
@@ -9016,8 +9005,7 @@ void CPwSafeDlg::_UpdateSortMenuItemState(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortTitle()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(0, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(0, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortTitle(CCmdUI* pCmdUI)
@@ -9028,8 +9016,7 @@ void CPwSafeDlg::OnUpdatePwlistSortTitle(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortUser()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(1, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(1, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortUser(CCmdUI* pCmdUI)
@@ -9040,8 +9027,7 @@ void CPwSafeDlg::OnUpdatePwlistSortUser(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortUrl()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(2, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(2, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortUrl(CCmdUI* pCmdUI)
@@ -9052,8 +9038,7 @@ void CPwSafeDlg::OnUpdatePwlistSortUrl(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortPassword()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(3, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(3, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortPassword(CCmdUI* pCmdUI)
@@ -9064,8 +9049,7 @@ void CPwSafeDlg::OnUpdatePwlistSortPassword(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortNotes()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(4, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(4, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortNotes(CCmdUI* pCmdUI)
@@ -9076,8 +9060,7 @@ void CPwSafeDlg::OnUpdatePwlistSortNotes(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortCreation()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(5, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(5, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortCreation(CCmdUI* pCmdUI)
@@ -9088,8 +9071,7 @@ void CPwSafeDlg::OnUpdatePwlistSortCreation(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortLastmodify()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(6, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(6, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortLastmodify(CCmdUI* pCmdUI)
@@ -9100,8 +9082,7 @@ void CPwSafeDlg::OnUpdatePwlistSortLastmodify(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortLastaccess()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(7, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(7, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortLastaccess(CCmdUI* pCmdUI)
@@ -9112,8 +9093,7 @@ void CPwSafeDlg::OnUpdatePwlistSortLastaccess(CCmdUI* pCmdUI)
 void CPwSafeDlg::OnPwlistSortExpire()
 {
 	NotifyUserActivity();
-	if(_CheckIfCanSort() == FALSE) return;
-	_SortList(8, FALSE);
+	if(_CheckIfCanRearrange()) _SortList(8, FALSE);
 }
 
 void CPwSafeDlg::OnUpdatePwlistSortExpire(CCmdUI* pCmdUI)
