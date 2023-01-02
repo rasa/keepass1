@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,16 +38,16 @@ CPwExport::CPwExport()
 	m_aDefaults[PWEXP_TXT].bGroup = TRUE;
 	m_aDefaults[PWEXP_TXT].bTitle = TRUE;
 	m_aDefaults[PWEXP_TXT].bUserName = TRUE;
-	m_aDefaults[PWEXP_TXT].bURL = TRUE;
 	m_aDefaults[PWEXP_TXT].bPassword = TRUE;
+	m_aDefaults[PWEXP_TXT].bURL = TRUE;
 	m_aDefaults[PWEXP_TXT].bNotes = TRUE;
 
 	ZeroMemory(&m_aDefaults[PWEXP_HTML], sizeof(PWEXPORT_OPTIONS));
 	m_aDefaults[PWEXP_HTML].bGroup = TRUE;
 	m_aDefaults[PWEXP_HTML].bTitle = TRUE;
 	m_aDefaults[PWEXP_HTML].bUserName = TRUE;
-	m_aDefaults[PWEXP_HTML].bURL = TRUE;
 	m_aDefaults[PWEXP_HTML].bPassword = TRUE;
+	m_aDefaults[PWEXP_HTML].bURL = TRUE;
 	m_aDefaults[PWEXP_HTML].bNotes = TRUE;
 
 	ZeroMemory(&m_aDefaults[PWEXP_XML], sizeof(PWEXPORT_OPTIONS));
@@ -55,8 +55,8 @@ CPwExport::CPwExport()
 	m_aDefaults[PWEXP_XML].bGroupTree = TRUE;
 	m_aDefaults[PWEXP_XML].bTitle = TRUE;
 	m_aDefaults[PWEXP_XML].bUserName = TRUE;
-	m_aDefaults[PWEXP_XML].bURL = TRUE;
 	m_aDefaults[PWEXP_XML].bPassword = TRUE;
+	m_aDefaults[PWEXP_XML].bURL = TRUE;
 	m_aDefaults[PWEXP_XML].bNotes = TRUE;
 	m_aDefaults[PWEXP_XML].bUUID = TRUE;
 	m_aDefaults[PWEXP_XML].bImage = TRUE;
@@ -69,8 +69,8 @@ CPwExport::CPwExport()
 	ZeroMemory(&m_aDefaults[PWEXP_CSV], sizeof(PWEXPORT_OPTIONS));
 	m_aDefaults[PWEXP_CSV].bTitle = TRUE;
 	m_aDefaults[PWEXP_CSV].bUserName = TRUE;
-	m_aDefaults[PWEXP_CSV].bURL = TRUE;
 	m_aDefaults[PWEXP_CSV].bPassword = TRUE;
+	m_aDefaults[PWEXP_CSV].bURL = TRUE;
 	m_aDefaults[PWEXP_CSV].bNotes = TRUE;
 
 	ZeroMemory(&m_aDefaults[PWEXP_KEEPASS], sizeof(PWEXPORT_OPTIONS));
@@ -78,8 +78,8 @@ CPwExport::CPwExport()
 	m_aDefaults[PWEXP_KEEPASS].bGroupTree = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bTitle = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bUserName = TRUE;
-	m_aDefaults[PWEXP_KEEPASS].bURL = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bPassword = TRUE;
+	m_aDefaults[PWEXP_KEEPASS].bURL = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bNotes = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bUUID = TRUE;
 	m_aDefaults[PWEXP_KEEPASS].bImage = TRUE;
@@ -150,7 +150,7 @@ void CPwExport::_ExpXmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags)
 
 void CPwExport::_ExpHtmlStr(LPCTSTR lpString, DWORD dwXmlEncFlags)
 {
-	if(lpString[0] == 0) _ExpStr(_T("&nbsp;"));
+	if(lpString[0] == _T('\0')) _ExpStr(_T("&nbsp;"));
 	else _ExpXmlStr(lpString, dwXmlEncFlags);
 }
 
@@ -402,19 +402,14 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("body {"));
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #FFFFFF;"));
-		_ExpLine(_T("\tfont-family: \"Tahoma\", \"MS Sans Serif\", \"Sans Serif\", \"Verdana\", sans-serif;"));
+		_ExpLine(_T("\tfont-family: \"Tahoma\", \"Arial\", \"Microsoft Sans Serif\", \"Noto Sans\", \"Verdana\", \"DejaVu Sans\", sans-serif;"));
 		_ExpLine(_T("\tfont-size: 10pt;"));
 		_ExpLine(_T("}"));
 
-		_ExpLine(_T("h2 {"));
+		_ExpLine(_T("h2, h3 {"));
 		_ExpLine(_T("\tcolor: #000000;"));
 		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
-		_ExpLine(_T("\tpadding-left: 2pt;"));
-		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
-		_ExpLine(_T("}"));
-		_ExpLine(_T("h3 {"));
-		_ExpLine(_T("\tcolor: #000000;"));
-		_ExpLine(_T("\tbackground-color: #D0D0D0;"));
+		_ExpLine(_T("\tborder: 1px solid #808080;"));
 		_ExpLine(_T("\tpadding-left: 2pt;"));
 		_ExpLine(_T("\tpadding-right: 2pt;")); // RTL support
 		_ExpLine(_T("}"));
@@ -439,6 +434,23 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("\tfont-weight: bold;"));
 		_ExpLine(_T("}"));
 
+		_ExpLine(_T("table.t_entries_t tr th {"));
+		_ExpLine(_T("\t-webkit-hyphens: auto;"));
+		_ExpLine(_T("\t-moz-hyphens: auto;"));
+		_ExpLine(_T("\t-ms-hyphens: auto;"));
+		_ExpLine(_T("\thyphens: auto;"));
+		_ExpLine(_T("}"));
+
+		_ExpLine(_T("table.t_entries_t tr td {"));
+		// _ExpLine(_T("\tword-break: break-all;"));
+		_ExpLine(_T("\toverflow-wrap: break-word;"));
+		_ExpLine(_T("\tword-wrap: break-word;"));
+		_ExpLine(_T("\tborder-style: solid none;"));
+		_ExpLine(_T("\tborder-width: 1px 0px;"));
+		_ExpLine(_T("\tborder-top-color: #808080;"));
+		_ExpLine(_T("\tborder-bottom-color: #808080;"));
+		_ExpLine(_T("}"));
+
 		_ExpLine(_T("a {"));
 		_ExpLine(_T("\tcolor: #0000DD;"));
 		_ExpLine(_T("\ttext-decoration: none;"));
@@ -448,20 +460,10 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpLine(_T("\ttext-decoration: underline;"));
 		_ExpLine(_T("}"));
 
-		_ExpLine(_T(".field_name {"));
-		_ExpLine(_T("\t-webkit-hyphens: auto;"));
-		_ExpLine(_T("\t-moz-hyphens: auto;"));
-		_ExpLine(_T("\t-ms-hyphens: auto;"));
-		_ExpLine(_T("\thyphens: auto;"));
-		_ExpLine(_T("}"));
-		_ExpLine(_T(".field_data {"));
-		// _ExpLine(_T("\tword-break: break-all;"));
-		_ExpLine(_T("\toverflow-wrap: break-word;"));
-		_ExpLine(_T("\tword-wrap: break-word;"));
-		_ExpLine(_T("}"));
-
-		_ExpLine(_T(".fserif {"));
-		_ExpLine(_T("\tfont-family: \"Times New Roman\", serif;"));
+		_ExpLine(_T(".f_password {"));
+		_ExpLine(_T("\tfont-family: \"Courier New\", \"Noto Mono\", \"DejaVu Sans Mono\", \"Lucida Console\", monospace;"));
+		_ExpLine(_T("\twhite-space: pre-wrap;"));
+		_ExpLine(_T("\ttab-size: 4;"));
 		_ExpLine(_T("}"));
 
 		_ExpLine(_T("/* ]]> */"));
@@ -474,15 +476,16 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpStr(_T(" &#8211; "));
 		_ExpXmlStr(PWM_PRODUCT_NAME_SHORT);
 		_ExpLine(_T("</h2>"));
-		_ExpLine(_T("<table><tr>"));
+		_ExpLine(_T("<table class=\"t_entries_t\">"));
+		_ExpLine(_T("<tr>"));
 
 		DWORD dwEquiCols = 0;
 		if(pOptions->bGroup != FALSE) ++dwEquiCols;
 		if(pOptions->bGroupTree != FALSE) ++dwEquiCols;
 		if(pOptions->bTitle != FALSE) ++dwEquiCols;
 		if(pOptions->bUserName != FALSE) ++dwEquiCols;
-		if(pOptions->bURL != FALSE) ++dwEquiCols;
 		if(pOptions->bPassword != FALSE) ++dwEquiCols;
+		if(pOptions->bURL != FALSE) ++dwEquiCols;
 		if(pOptions->bNotes != FALSE) dwEquiCols += 2;
 		if(pOptions->bUUID != FALSE) ++dwEquiCols;
 		if(pOptions->bImage != FALSE) ++dwEquiCols;
@@ -494,23 +497,24 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		if(pOptions->bAttachment != FALSE) dwEquiCols += 2; // Data
 
 		if(dwEquiCols == 0) dwEquiCols = 1;
-		int nWidth = 10000 / static_cast<int>(dwEquiCols);
+		const DWORD dwWidth = (100000 / dwEquiCols + 5) / 10; // Round
+		const DWORD dwWidth2 = (200000 / dwEquiCols + 5) / 10; // Round
 
 		std::basic_string<TCHAR> strWidth =
-			boost::lexical_cast<std::basic_string<TCHAR> >(nWidth / 100);
+			boost::lexical_cast<std::basic_string<TCHAR> >(dwWidth / 100);
 		strWidth += _T(".");
-		strWidth += boost::lexical_cast<std::basic_string<TCHAR> >(nWidth % 100);
+		strWidth += boost::lexical_cast<std::basic_string<TCHAR> >(dwWidth % 100);
 
 		std::basic_string<TCHAR> strWidth2 =
-			boost::lexical_cast<std::basic_string<TCHAR> >((nWidth * 2) / 100);
+			boost::lexical_cast<std::basic_string<TCHAR> >(dwWidth2 / 100);
 		strWidth2 += _T(".");
-		strWidth2 += boost::lexical_cast<std::basic_string<TCHAR> >((nWidth * 2) % 100);
+		strWidth2 += boost::lexical_cast<std::basic_string<TCHAR> >(dwWidth2 % 100);
 
-		std::basic_string<TCHAR> strTH = _T("<th class=\"field_name\" style=\"width: ");
+		std::basic_string<TCHAR> strTH = _T("<th style=\"width: ");
 		strTH += strWidth;
 		strTH += _T("%;\">");
 
-		std::basic_string<TCHAR> strTH2 = _T("<th class=\"field_name\" style=\"width: ");
+		std::basic_string<TCHAR> strTH2 = _T("<th style=\"width: ");
 		strTH2 += strWidth2;
 		strTH2 += _T("%;\">");
 
@@ -523,7 +527,7 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		strClTH2 += strTH2;
 
 		if((pOptions->bGroup | pOptions->bGroupTree | pOptions->bTitle |
-			pOptions->bUserName | pOptions->bURL | pOptions->bPassword) != FALSE)
+			pOptions->bUserName | pOptions->bPassword | pOptions->bURL) != FALSE)
 			_ExpStr(strTH.c_str());
 		else _ExpStr(strTH2.c_str());
 
@@ -534,8 +538,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpXmlStrIf(pOptions->bGroupTree, TRL("Group Tree"));
 		_ExpXmlStrIf(pOptions->bTitle, TRL("Title"));
 		_ExpXmlStrIf(pOptions->bUserName, TRL("User Name"));
-		_ExpXmlStrIf(pOptions->bURL, TRL("URL"));
 		_ExpXmlStrIf(pOptions->bPassword, TRL("Password"));
+		_ExpXmlStrIf(pOptions->bURL, TRL("URL"));
 
 		_ExpSetSep(strClTH2.c_str());
 		_ExpXmlStrIf(pOptions->bNotes, TRL("Notes"));
@@ -553,7 +557,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 		_ExpXmlStrIf(pOptions->bAttachment, TRL("Attachment"));
 		_ExpSetSep(strClTH.c_str());
 
-		_ExpLine(_T("</th></tr>"));
+		_ExpLine(_T("</th>"));
+		_ExpLine(_T("</tr>"));
 		_ExpSetSep(NULL); // Release strClTH
 	}
 	else if(m_nFormat == PWEXP_XML)
@@ -692,15 +697,15 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				_ExpStrIf(pOptions->bUserName, p->pszUserName);
 				if(pOptions->bUserName == TRUE) _ExpStr(m_pszNewLine);
 
-				_ExpStrIf(pOptions->bURL, TRL("URL:"));
-				_ExpStrIf(pOptions->bURL, _T(" "));
-				_ExpStrIf(pOptions->bURL, p->pszURL);
-				if(pOptions->bURL == TRUE) _ExpStr(m_pszNewLine);
-
 				_ExpStrIf(pOptions->bPassword, TRL("Password:"));
 				_ExpStrIf(pOptions->bPassword, _T(" "));
 				_ExpStrIf(pOptions->bPassword, p->pszPassword);
 				if(pOptions->bPassword == TRUE) _ExpStr(m_pszNewLine);
+
+				_ExpStrIf(pOptions->bURL, TRL("URL:"));
+				_ExpStrIf(pOptions->bURL, _T(" "));
+				_ExpStrIf(pOptions->bURL, p->pszURL);
+				if(pOptions->bURL == TRUE) _ExpStr(m_pszNewLine);
 
 				_ExpStrIf(pOptions->bNotes, TRL("Notes:"));
 				_ExpStrIf(pOptions->bNotes, _T(" "));
@@ -758,11 +763,12 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 			}
 			else if(m_nFormat == PWEXP_HTML)
 			{
-				_ExpStr(_T("<tr><td class=\"field_data\">"));
+				_ExpLine(_T("<tr>"));
+				_ExpStr(_T("<td>"));
 
 				std::basic_string<TCHAR> strClTD = _T("</td>");
 				strClTD += m_pszNewLine;
-				strClTD += _T("<td class=\"field_data\">");
+				strClTD += _T("<td>");
 
 				_ExpSetSep(strClTD.c_str());
 				_ExpResetSkip();
@@ -771,6 +777,13 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				_ExpStrIf(pOptions->bGroupTree, strGroupTree); // Is encoded already
 				_ExpHtmlStrIf(pOptions->bTitle, p->pszTitle);
 				_ExpHtmlStrIf(pOptions->bUserName, p->pszUserName);
+
+				if(pOptions->bPassword != FALSE)
+				{
+					_ExpStrIf(pOptions->bPassword, _T("<span class=\"f_password\">"));
+					_ExpHtmlStr(p->pszPassword); // XEF_NBSP
+					_ExpStr(_T("</span>"));
+				}
 
 				if((pOptions->bURL != FALSE) && (_tcslen(p->pszURL) != 0))
 				{
@@ -781,13 +794,6 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 					_ExpStr(_T("</a>"));
 				}
 				else _ExpHtmlStrIf(pOptions->bURL, _T(""));
-
-				if(pOptions->bPassword != FALSE)
-				{
-					_ExpStrIf(pOptions->bPassword, _T("<code>"));
-					_ExpHtmlStr(p->pszPassword, XEF_NBSP);
-					_ExpStr(_T("</code>"));
-				}
 
 				CString strNotesConv = SU_ConvertNewLines(p->pszAdditional, m_pszNewLine);
 				_ExpHtmlStrIf(pOptions->bNotes, strNotesConv);
@@ -808,7 +814,8 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				else
 					_ExpHtmlStrIf(pOptions->bAttachment, _T(""));
 
-				_ExpLine(_T("</td></tr>"));
+				_ExpLine(_T("</td>"));
+				_ExpLine(_T("</tr>"));
 				_ExpSetSep(NULL); // Release strClTD
 			}
 			else if(m_nFormat == PWEXP_XML)
@@ -839,15 +846,15 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 				_ExpStrIf(pOptions->bUserName, _T("</username>"));
 				if(pOptions->bUserName == TRUE) _ExpStr(m_pszNewLine);
 
-				_ExpStrIf(pOptions->bURL, _T("\t<url>"));
-				_ExpXmlStrIf(pOptions->bURL, p->pszURL);
-				_ExpStrIf(pOptions->bURL, _T("</url>"));
-				if(pOptions->bURL == TRUE) _ExpStr(m_pszNewLine);
-
 				_ExpStrIf(pOptions->bPassword, _T("\t<password>"));
 				_ExpXmlStrIf(pOptions->bPassword, p->pszPassword);
 				_ExpStrIf(pOptions->bPassword, _T("</password>"));
 				if(pOptions->bPassword == TRUE) _ExpStr(m_pszNewLine);
+
+				_ExpStrIf(pOptions->bURL, _T("\t<url>"));
+				_ExpXmlStrIf(pOptions->bURL, p->pszURL);
+				_ExpStrIf(pOptions->bURL, _T("</url>"));
+				if(pOptions->bURL == TRUE) _ExpStr(m_pszNewLine);
 
 				_ExpStrIf(pOptions->bNotes, _T("\t<notes>"));
 				CString strNotesConv = SU_ConvertNewLines(p->pszAdditional, m_pszNewLine);
@@ -960,8 +967,9 @@ BOOL CPwExport::ExportGroup(const TCHAR *pszFile, DWORD dwGroupId, const PWEXPOR
 	}
 	else if(m_nFormat == PWEXP_HTML)
 	{
-		_ExpStr(_T("</table></body></html>"));
-		_ExpStr(m_pszNewLine);
+		_ExpLine(_T("</table>"));
+		_ExpLine(_T("</body>"));
+		_ExpLine(_T("</html>"));
 	}
 	else if(m_nFormat == PWEXP_XML)
 	{

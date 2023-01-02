@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -468,7 +468,7 @@ CString CsRemoveMeta(CString *psString)
 
 CString CsFileOnly(const CString *psFilePath)
 {
-	ASSERT(psFilePath != NULL); if(psFilePath == NULL) return CString("");
+	if(psFilePath == NULL) { ASSERT(FALSE); return CString(); }
 
 	const int i = psFilePath->ReverseFind(_T('\\'));
 	const int j = psFilePath->ReverseFind(_T('/'));

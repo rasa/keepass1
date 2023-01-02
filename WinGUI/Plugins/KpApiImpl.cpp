@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2022 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -408,7 +408,7 @@ STDMETHODIMP CKpApiImpl::ParseAndOpenUrlWithEntryInfo(LPCTSTR lpUrl, PW_ENTRY* p
 
 STDMETHODIMP_(BOOL) CKpApiImpl::CanSort()
 {
-	return g_pMainDlg->_CheckIfCanSort();
+	return (g_pMainDlg->_CheckIfCanRearrange() ? TRUE : FALSE);
 }
 
 STDMETHODIMP CKpApiImpl::SortListIfAutoSort()
