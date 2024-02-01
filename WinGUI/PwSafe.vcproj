@@ -4445,6 +4445,22 @@
 					>
 				</File>
 				<File
+					RelativePath="..\KeePassLibCpp\Crypto\ChaCha20.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\KeePassLibCpp\Crypto\ChaCha20.h"
+					>
+				</File>
+				<File
+					RelativePath="..\KeePassLibCpp\Crypto\CtrBlockCipher.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\KeePassLibCpp\Crypto\CtrBlockCipher.h"
+					>
+				</File>
+				<File
 					RelativePath="..\KeePassLibCpp\Crypto\KeyTransform.cpp"
 					>
 				</File>

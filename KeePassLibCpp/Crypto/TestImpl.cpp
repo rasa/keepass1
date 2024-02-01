@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "Rijndael.h"
 #include "TwofishClass.h"
 #include "ARCFour.h"
+#include "ChaCha20.h"
 #include "../Util/StrUtil.h"
 
 static const char g_szVectABCX[] =
@@ -103,17 +104,38 @@ static const unsigned char g_uVectTwofishCipher[16] =
 	0x9F, 0x0C, 0xFC, 0xCA, 0xE8, 0x7C, 0xFA, 0x20
 };
 
+// Test vector from RFC 8439, section 2.4.2
+static const char g_szVectChaCha20Plain[] =
+	"Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.";
+
+static const size_t g_cbVectChaCha20 = 114;
+static const unsigned char g_uVectChaCha20Cipher[g_cbVectChaCha20] =
+{
+	0x6E, 0x2E, 0x35, 0x9A, 0x25, 0x68, 0xF9, 0x80,
+	0x41, 0xBA, 0x07, 0x28, 0xDD, 0x0D, 0x69, 0x81,
+	0xE9, 0x7E, 0x7A, 0xEC, 0x1D, 0x43, 0x60, 0xC2,
+	0x0A, 0x27, 0xAF, 0xCC, 0xFD, 0x9F, 0xAE, 0x0B,
+	0xF9, 0x1B, 0x65, 0xC5, 0x52, 0x47, 0x33, 0xAB,
+	0x8F, 0x59, 0x3D, 0xAB, 0xCD, 0x62, 0xB3, 0x57,
+	0x16, 0x39, 0xD6, 0x24, 0xE6, 0x51, 0x52, 0xAB,
+	0x8F, 0x53, 0x0C, 0x35, 0x9F, 0x08, 0x61, 0xD8,
+	0x07, 0xCA, 0x0D, 0xBF, 0x50, 0x0D, 0x6A, 0x61,
+	0x56, 0xA3, 0x8E, 0x08, 0x8A, 0x22, 0xB6, 0x5E,
+	0x52, 0xBC, 0x51, 0x4D, 0x16, 0xCC, 0xF8, 0x06,
+	0x81, 0x8C, 0xE9, 0x1A, 0xB7, 0x79, 0x37, 0x36,
+	0x5A, 0xF9, 0x0B, 0xBF, 0x74, 0xA3, 0x5B, 0xE6,
+	0xB4, 0x0B, 0x8E, 0xED, 0xF2, 0x78, 0x5E, 0x42,
+	0x87, 0x4D
+};
+
 UINT32 TestCryptoImpl()
 {
-	UINT32 uTestMask;
+	UINT32 uTestMask = TestTypeDefs();
 	sha256_ctx hash256;
 	sha512_ctx hash512;
 	UINT8 aHash[128], aTemp[128], aTemp2[128];
 	CRijndael rdcrypt, rddummy;
 	CTwofish twofish;
-	int i, j;
-
-	uTestMask = TestTypeDefs();
 
 	sha256_begin(&hash256);
 	sha256_hash((const unsigned char *)g_szVectABCX,
@@ -151,7 +173,7 @@ UINT32 TestCryptoImpl()
 	else
 	{
 		// 128 is the size of the buffer, 32 the key and 16 the pad space
-		i = rdcrypt.PadEncrypt(aHash + 32, 128 - 32 - 16, aTemp);
+		const int i = rdcrypt.PadEncrypt(aHash + 32, 128 - 32 - 16, aTemp);
 		ASSERT(i != 0);
 
 		if(rdcrypt.Init(CRijndael::CBC, CRijndael::DecryptDir, aHash,
@@ -161,7 +183,7 @@ UINT32 TestCryptoImpl()
 		}
 		else
 		{
-			j = rdcrypt.PadDecrypt(aTemp, i, aTemp2);
+			const int j = rdcrypt.PadDecrypt(aTemp, i, aTemp2);
 
 			if(j != (128 - 32 - 16)) uTestMask |= TI_ERR_RIJNDAEL_DECRYPT;
 
@@ -227,6 +249,43 @@ UINT32 TestCryptoImpl()
 	ARCFourCrypt(aTemp2, 32, (const UINT8 *)"abcdef", 6);
 	if(memcmp(aHash, aTemp2, 32) != 0) uTestMask |= TI_ERR_ARCFOUR_CRYPT;
 	if(memcmp(aHash, aTemp, 32) == 0) uTestMask |= TI_ERR_ARCFOUR_CRYPT;
+
+	if(szlen(g_szVectChaCha20Plain) != g_cbVectChaCha20)
+		uTestMask |= TI_ERR_CHACHA20;
+	else
+	{
+		for(size_t i = 0; i < 32; ++i) aTemp[i] = (UINT8)i;
+
+		memset(aTemp2, 0, 12);
+		aTemp2[7] = 0x4A;
+
+		BYTE aMsg[g_cbVectChaCha20];
+		memcpy(aMsg, g_szVectChaCha20Plain, g_cbVectChaCha20);
+
+		CChaCha20 c(aTemp, aTemp2, true);
+		if(FAILED(c.Encrypt(aHash, 0, 64))) // Skip first block
+			uTestMask |= TI_ERR_CHACHA20;
+		if(FAILED(c.Encrypt(aMsg, 0, 19)))
+			uTestMask |= TI_ERR_CHACHA20;
+		if(FAILED(c.Encrypt(aMsg, 19, 7)))
+			uTestMask |= TI_ERR_CHACHA20;
+		if(FAILED(c.Encrypt(aMsg, 19 + 7, g_cbVectChaCha20 - (19 + 7))))
+			uTestMask |= TI_ERR_CHACHA20;
+
+		if(memcmp(aMsg, g_uVectChaCha20Cipher, g_cbVectChaCha20) != 0)
+			uTestMask |= TI_ERR_CHACHA20;
+
+#ifdef _DEBUG
+		CChaCha20 d(aTemp, aTemp2, true);
+		if(FAILED(d.Seek(64, SEEK_SET)))
+			uTestMask |= TI_ERR_CHACHA20;
+		if(FAILED(d.Decrypt(aMsg, 0, g_cbVectChaCha20)))
+			uTestMask |= TI_ERR_CHACHA20;
+
+		if(memcmp(aMsg, g_szVectChaCha20Plain, g_cbVectChaCha20) != 0)
+			uTestMask |= TI_ERR_CHACHA20;
+#endif
+	}
 
 #ifdef _DEBUG
 	WCHAR* pw = _StringToUnicode("Test567890123");

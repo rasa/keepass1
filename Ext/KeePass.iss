@@ -11,11 +11,11 @@
 #define MyAppUrlName "KeePass.url"
 #define MyAppHelpName "KeePass.chm"
 
-#define KeeVersionStr "1.41"
-#define KeeVersionWin "1.41.0.0"
-#define KeeVersionWinShort "1.41"
+#define KeeVersionStr "1.42"
+#define KeeVersionWin "1.42.0.0"
+#define KeeVersionWinShort "1.42"
 
-#define KeeDevPeriod "2003-2023"
+#define KeeDevPeriod "2003-2024"
 
 [Setup]
 AppName={#MyAppFullName}
@@ -81,7 +81,7 @@ da.MyOptPlgPage=Åbn websiden med plugins
 de.MyOptPlgPage=Die Plugins-Webseite öffnen
 es.MyOptPlgPage=Abrir la página web de los complementos
 fi.MyOptPlgPage=Avaa liitännäiset ja laajennukset sisältävä sivusto
-fr.MyOptPlgPage=Ouvre la page des greffons (plugins) sur la toile
+fr.MyOptPlgPage=Ouvre la page des greffons (plug-ins) sur la toile
 ; hu.MyOptPlgPage=Nyissa meg a bővítmények weboldalát
 it.MyOptPlgPage=Apri la pagina web dei plug-in
 ja.MyOptPlgPage=プラグインのWebページを開きます。
@@ -92,9 +92,9 @@ ptPT.MyOptPlgPage=Abrir a página web dos miniaplicativos
 ru.MyOptPlgPage=Открыть веб-страницу плагинов
 
 [Tasks]
-Name: fileassoc; Description: {cm:AssocFileExtension,{#MyAppName},.kdb}
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: FileAssoc; Description: {cm:AssocFileExtension,{#MyAppName},.kdb}
+Name: DesktopIcon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+; Name: QuickLaunchIcon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Dirs]
 Name: "{app}\Languages"; Flags: uninsalwaysuninstall
@@ -108,15 +108,15 @@ Source: ..\Build\WinGUI_Distrib\License.txt; DestDir: {app}; Flags: ignoreversio
 
 [Registry]
 ; Always unregister .kdb association at uninstall
-Root: HKCR; Subkey: .kdb; Flags: uninsdeletekey; Tasks: not fileassoc
-Root: HKCR; Subkey: kdbfile; Flags: uninsdeletekey; Tasks: not fileassoc
+Root: HKCR; Subkey: .kdb; Flags: uninsdeletekey; Tasks: not FileAssoc
+Root: HKCR; Subkey: kdbfile; Flags: uninsdeletekey; Tasks: not FileAssoc
 ; Register .kdb association at install, and unregister at uninstall
-Root: HKCR; Subkey: .kdb; ValueType: string; ValueData: kdbfile; Flags: uninsdeletekey; Tasks: fileassoc
-Root: HKCR; Subkey: kdbfile; ValueType: string; ValueData: KeePass Database; Flags: uninsdeletekey; Tasks: fileassoc
-Root: HKCR; Subkey: kdbfile; ValueType: string; ValueName: AlwaysShowExt; Flags: uninsdeletekey; Tasks: fileassoc
-Root: HKCR; Subkey: kdbfile\DefaultIcon; ValueType: string; ValueData: """{app}\{#MyAppExeName}"",0"; Flags: uninsdeletekey; Tasks: fileassoc
-Root: HKCR; Subkey: kdbfile\shell\open; ValueType: string; ValueData: &Open with {#MyAppName}; Flags: uninsdeletekey; Tasks: fileassoc
-Root: HKCR; Subkey: kdbfile\shell\open\command; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey; Tasks: fileassoc
+Root: HKCR; Subkey: .kdb; ValueType: string; ValueData: kdbfile; Flags: uninsdeletekey; Tasks: FileAssoc
+Root: HKCR; Subkey: kdbfile; ValueType: string; ValueData: KeePass Database; Flags: uninsdeletekey; Tasks: FileAssoc
+Root: HKCR; Subkey: kdbfile; ValueType: string; ValueName: AlwaysShowExt; Flags: uninsdeletekey; Tasks: FileAssoc
+Root: HKCR; Subkey: kdbfile\DefaultIcon; ValueType: string; ValueData: """{app}\{#MyAppExeName}"",0"; Flags: uninsdeletekey; Tasks: FileAssoc
+Root: HKCR; Subkey: kdbfile\shell\open; ValueType: string; ValueData: &Open with {#MyAppName}; Flags: uninsdeletekey; Tasks: FileAssoc
+Root: HKCR; Subkey: kdbfile\shell\open\command; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekey; Tasks: FileAssoc
 
 ; [INI]
 ; Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}
@@ -127,8 +127,8 @@ Root: HKCR; Subkey: kdbfile\shell\open\command; ValueType: string; ValueData: ""
 ; Name: {group}\Help; Filename: {app}\{#MyAppHelpName}
 ; Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
 Name: {autoprograms}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; Check: MyDesktopCheck
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; Check: MyAppDataCheck
+Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: DesktopIcon
+; Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: QuickLaunchIcon; Check: MyAppDataCheck
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: "{cm:LaunchProgram,{#MyAppName}}"; Flags: postinstall nowait skipifsilent
@@ -142,6 +142,8 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}.lnk; Type: files
 Name: {group}\Help.lnk; Type: files
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}.lnk; Type: files
 Name: {group}; Type: dirifempty
+Name: {userdesktop}\{#MyAppName}.lnk; Type: files; Check: MyDesktopCheck
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}.lnk; Type: files; Check: MyAppDataCheck
 
 ; [UninstallDelete]
 ; Type: files; Name: {app}\{#MyAppUrlName}

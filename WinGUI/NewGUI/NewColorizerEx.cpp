@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ void NewGUI_ColorToHsv(COLORREF clr, float* pfHue, float* pfSaturation,
 COLORREF NewGUI_ColorFromHsv(float fHue, float fSaturation, float fValue)
 {
 	const float d = fHue / 60.0f;
-	const float fl = floor(d);
+	const float fl = floorf(d);
 	const float f = d - fl;
 
 	fValue *= 255.0f;

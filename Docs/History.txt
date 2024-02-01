@@ -1,3 +1,22 @@
+24/02/01 - 1.42
+- Added option 'Show warning when the key transformation
+  settings are weak' (in 'Tools' -> 'Options' -> tab
+  'Advanced', turned on by default)
+- Added accessibility help page
+
+- Increased default number of AES-KDF iterations
+- Improved dialog banner styles
+- Minor process memory protection improvements
+- Installer: the desktop shortcut is now created for all users
+  (if the option 'Create a desktop shortcut' is activated)
+- Installer: removed the Quick Launch shortcut option
+- Upgraded installer
+- Various UI text improvements
+- Various code optimizations
+- Minor other improvements
+
+- Fixed background of CHM help pages
+
 23/01/02 - 1.41
 - Added {EDGE} placeholder, which is replaced by the executable
   path of the new (Chromium-based) Microsoft Edge, if installed

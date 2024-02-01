@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -45,8 +45,8 @@ static ULONG_PTR g_gdiplusToken = 0;
 static BOOL g_bImgButtons = 0;
 static CThemeHelperST* g_pThemeHelper = NULL;
 
-static COLORREF m_crBannerStart = RGB(151, 154, 173); // = RGB(235, 235, 255);
-static COLORREF m_crBannerEnd = RGB(27, 27, 37); // = RGB(192, 192, 255);
+static COLORREF m_crBannerStart = RGB(160, 160, 176); // = RGB(240, 240, 255);
+static COLORREF m_crBannerEnd = RGB(16, 16, 32); // = RGB(192, 192, 255);
 static COLORREF m_crBannerText = RGB(255, 255, 255); // RGB(0, 0, 0);
 static bool m_bBannerFlip = true; // = false;
 static CFont* m_pfBannerTitleFont = NULL;
@@ -62,7 +62,7 @@ void NewGUI_CleanUp()
 
 void NewGUI_SetWin32Banner()
 {
-	m_crBannerStart = RGB(235, 235, 255);
+	m_crBannerStart = RGB(240, 240, 255);
 	m_crBannerEnd = RGB(192, 192, 255);
 	m_crBannerText = RGB(0, 0, 0);
 	m_bBannerFlip = false;

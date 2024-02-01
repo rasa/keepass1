@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2023 Dominik Reichl
+  Copyright (C) 2008-2024 Dominik Reichl
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without

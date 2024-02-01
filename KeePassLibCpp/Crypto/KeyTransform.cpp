@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,12 +27,19 @@
 #include "../Util/AlignedBuffer.h"
 #include "../Util/MemUtil.h"
 
+BOOL CKeyTransform::g_bKeyTransformWeakWarning = TRUE;
+
 CKeyTransform::CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey)
 {
 	m_qwRounds = qwRounds;
 	m_pBuf = pBuf;
 	m_pKey = pKey;
 	m_bSucceeded = false;
+}
+
+BOOL* CKeyTransform::GetKeyTransformWeakWarningPtr()
+{
+	return &g_bKeyTransformWeakWarning;
 }
 
 void CKeyTransform::Run()
