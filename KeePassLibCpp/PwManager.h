@@ -1,6 +1,6 @@
 ﻿/*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,12 +38,12 @@
 
 // When making a Windows build, don't forget to update the verinfo resource
 #ifndef _UNICODE
-#define PWM_VERSION_STR  _T("1.41")
+#define PWM_VERSION_STR  _T("1.42")
 #else
-#define PWM_VERSION_STR  _T("1.41 Unicode")
+#define PWM_VERSION_STR  _T("1.42 Unicode")
 #endif
-#define PWM_VERSION_DW   0x01290000
-#define PWM_VERSION_QW   0x0001002900000000ULL
+#define PWM_VERSION_DW   0x012A0000
+#define PWM_VERSION_QW   0x0001002A00000000ULL
 // #define PWM_DEVSNAPSHOT
 
 // Database file signature bytes
@@ -202,6 +202,7 @@
 #define PWMKEY_USEHELPCENTER        _T("KeeUseHelpCenter")
 #define PWMKEY_USEDPAPIFORMEMPROT   _T("KeeUseDPAPIForMemoryProtection")
 #define PWMKEY_USECNGBCRYPTFORKEYT  _T("KeeUseCNGForKeyTransformations")
+#define PWMKEY_KEYTWEAKWARNING      _T("KeeKeyTransformWeakWarning")
 #define PWMKEY_FORCEALLOWCHANGEMKEY _T("KeeForceAllowChangeMasterKey")
 #define PWMKEY_FORCEALLOWPRINTING   _T("KeeForceAllowPrinting")
 #define PWMKEY_FORCEALLOWIMPORT     _T("KeeForceAllowImport")
@@ -249,9 +250,9 @@
 #define PWM_FLAG_ARCFOUR         4
 #define PWM_FLAG_TWOFISH         8
 
-#define PWM_SESSION_KEY_SIZE     12
+#define PWM_SESSION_KEY_SIZE     32
 
-#define PWM_STD_KEYENCROUNDS     60000
+#define PWM_STD_KEYENCROUNDS     600000
 
 #define PWM_STD_ICON_GROUP       48
 #define PWM_STD_ICON_GROUP_OPEN  49

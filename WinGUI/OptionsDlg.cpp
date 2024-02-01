@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "Util/CmdLine/Executable.h"
 #include "../KeePassLibCpp/Util/TranslateEx.h"
 #include "../KeePassLibCpp/Crypto/MemoryProtectionEx.h"
+#include "../KeePassLibCpp/Crypto/KeyTransform.h"
 #include "../KeePassLibCpp/Crypto/KeyTransform_BCrypt.h"
 #include "OptionsAutoTypeDlg.h"
 
@@ -282,6 +283,7 @@ BOOL COptionsDlg::OnInitDialog()
 	m_olAdvanced.AddCheckItem(TRL("Use file transactions for writing databases"), &m_bUseTransactedFileWrites, NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Use advanced memory protection (DPAPI, only Windows Vista and higher)"), CMemoryProtectionEx::GetEnabledPtr(), NULL, OL_LINK_NULL);
 	m_olAdvanced.AddCheckItem(TRL("Use CNG/BCrypt for key transformations (only Windows Vista and higher)"), CKeyTransformBCrypt::GetEnabledPtr(), NULL, OL_LINK_NULL);
+	m_olAdvanced.AddCheckItem(TRL("Show warning when the key transformation settings are weak"), CKeyTransform::GetKeyTransformWeakWarningPtr(), NULL, OL_LINK_NULL);
 
 	AddTcItem(TRL(OPTSZ_SECURITY), 29);
 	AddTcItem(TRL(OPTSZ_GUI), 6);

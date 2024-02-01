@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "../KeePassLibCpp/Util/PopularPasswords.h"
 #include "../KeePassLibCpp/Util/StrUtil.h"
 #include "../KeePassLibCpp/Crypto/MemoryProtectionEx.h"
+#include "../KeePassLibCpp/Crypto/KeyTransform.h"
 #include "../KeePassLibCpp/Crypto/KeyTransform_BCrypt.h"
 #include "Util/ShutdownBlocker.h"
 #include "Util/WinUtil.h"
@@ -158,6 +159,7 @@ BOOL CPwSafeApp::InitInstance()
 		dlg.m_bCheckForInstance = pc->GetBool(PWMKEY_SINGLEINSTANCE, FALSE);
 		CMemoryProtectionEx::SetEnabledAtStart(pc->GetBool(PWMKEY_USEDPAPIFORMEMPROT, TRUE));
 		*CKeyTransformBCrypt::GetEnabledPtr() = pc->GetBool(PWMKEY_USECNGBCRYPTFORKEYT, TRUE);
+		*CKeyTransform::GetKeyTransformWeakWarningPtr() = pc->GetBool(PWMKEY_KEYTWEAKWARNING, TRUE);
 		delete pc; pc = NULL;
 	}
 	else { ASSERT(FALSE); }

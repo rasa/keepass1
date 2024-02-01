@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ class CKeyTransform : boost::noncopyable
 public:
 	CKeyTransform(UINT64 qwRounds, UINT8* pBuf, const UINT8* pKey);
 
+	static BOOL* GetKeyTransformWeakWarningPtr();
+
 	void Run();
 	bool Succeeded() const { return m_bSucceeded; }
 
@@ -36,6 +38,8 @@ public:
 	static UINT64 Benchmark(DWORD dwTimeMs);
 
 private:
+	static BOOL g_bKeyTransformWeakWarning;
+
 	UINT64 m_qwRounds;
 	UINT8* m_pBuf;
 	const UINT8* m_pKey;

@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "../KeePassLibCpp/Util/PwUtil.h"
 #include "../KeePassLibCpp/Crypto/TestImpl.h"
 #include "../KeePassLibCpp/Crypto/MemoryProtectionEx.h"
+#include "../KeePassLibCpp/Crypto/KeyTransform.h"
 #include "../KeePassLibCpp/Crypto/KeyTransform_BCrypt.h"
 #include "../KeePassLibCpp/Util/MemUtil.h"
 #include "../KeePassLibCpp/Util/StrUtil.h"
@@ -1155,6 +1156,8 @@ BOOL CPwSafeDlg::OnInitDialog()
 			{ strTCI += TRL("- Arcfour crypto routine"); strTCI += _T("\r\n"); }
 		if((ulTest & TI_ERR_TWOFISH) != 0)
 			{ strTCI += TRL("- Twofish algorithm"); strTCI += _T("\r\n"); }
+		if((ulTest & TI_ERR_CHACHA20) != 0)
+			{ strTCI += TRL("- ChaCha20 algorithm"); strTCI += _T("\r\n"); }
 
 		strTCI += _T("\r\n");
 		strTCI += TRL("The program will exit now.");
@@ -2470,6 +2473,7 @@ void CPwSafeDlg::SaveOptions()
 
 	pcfg.SetBool(PWMKEY_USEDPAPIFORMEMPROT, *CMemoryProtectionEx::GetEnabledPtr());
 	pcfg.SetBool(PWMKEY_USECNGBCRYPTFORKEYT, *CKeyTransformBCrypt::GetEnabledPtr());
+	pcfg.SetBool(PWMKEY_KEYTWEAKWARNING, *CKeyTransform::GetKeyTransformWeakWarningPtr());
 }
 
 void CPwSafeDlg::_SaveWindowPositionAndSize(CPrivateConfigEx* pConfig)
@@ -4505,23 +4509,19 @@ void CPwSafeDlg::_OpenDatabase(CPwManager *pDbMgr, const TCHAR *pszFile,
 	NotifyUserActivity();
 
 	CString strFile, strText;
-	DWORD dwFlags;
-	INT_PTR nRet = IDCANCEL;
 	int nErr;
 	const TCHAR *pSuffix = _T("");
 	CPasswordDlg *pDlgPass = NULL;
-	CPwManager *pMgr;
-	DWORD_PTR dwOpFlags = 0;
-	DWORD_PTR aOpParams[7];
-
-	if(pDbMgr == NULL) pMgr = &m_mgr;
-	else pMgr = pDbMgr;
+	CPwManager *pMgr = ((pDbMgr != NULL) ? pDbMgr : &m_mgr);
 
 	PWDB_REPAIR_INFO repairInfo;
 	ZeroMemory(&repairInfo, sizeof(PWDB_REPAIR_INFO));
 
+	DWORD_PTR dwOpFlags = 0;
 	if(bOpenLocked == TRUE) dwOpFlags |= 1;
 	if(bIgnoreCorrupted == TRUE) dwOpFlags |= 2;
+
+	DWORD_PTR aOpParams[7];
 	aOpParams[0] = 0; // Currently unused
 	aOpParams[1] = 0; // Deprecated, (DWORD_PTR)pDbMgr;
 	aOpParams[2] = (DWORD_PTR)pszFile;
@@ -4536,13 +4536,14 @@ void CPwSafeDlg::_OpenDatabase(CPwManager *pDbMgr, const TCHAR *pszFile,
 	strFilter += TRL("All Files");
 	strFilter += _T(" (*.*)|*.*||");
 
-	dwFlags = (OFN_LONGNAMES | OFN_EXTENSIONDIFFERENT | OFN_EXPLORER | OFN_ENABLESIZING);
-	dwFlags |= (OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST); // | OFN_HIDEREADONLY
+	DWORD dwFlags = (OFN_LONGNAMES | OFN_EXTENSIONDIFFERENT | OFN_EXPLORER |
+		OFN_ENABLESIZING | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST); // | OFN_HIDEREADONLY
 	if(m_bFileReadOnly == TRUE) dwFlags |= OFN_READONLY;
 	if(pDbMgr != NULL) dwFlags |= OFN_NOCHANGEDIR;
 
 	CFileDialog dlg(TRUE, NULL, NULL, dwFlags, strFilter, this);
 
+	INT_PTR nRet = IDCANCEL;
 	if(pszFile == NULL) nRet = NewGUI_DoModal(&dlg);
 	else strFile = pszFile;
 
@@ -4773,13 +4774,31 @@ void CPwSafeDlg::_OpenDatabase(CPwManager *pDbMgr, const TCHAR *pszFile,
 					// const FullPathName database((LPCTSTR)m_strFile);
 					// m_strFileAbsolute = database.getFullPathName().c_str();
 
-					m_bFileOpen = TRUE;
-
 					m_bModified = FALSE;
+
+					if((*CKeyTransform::GetKeyTransformWeakWarningPtr() != FALSE) &&
+						(m_bFileReadOnly == FALSE) &&
+						(pMgr->GetKeyEncRounds() < PWM_STD_KEYENCROUNDS))
+					{
+						CString strMessage = m_strFileAbsolute;
+						strMessage += _T("\r\n\r\n");
+						strMessage += TRL("The key transformation settings of the database are weak.");
+						strMessage += _T("\r\n\r\n");
+						strMessage += TRL("Do you want to set them to the current default values (recommended)?");
+
+						if(MessageBox(strMessage, PWM_PRODUCT_NAME_SHORT,
+							MB_YESNO | MB_ICONQUESTION) == IDYES)
+						{
+							pMgr->SetKeyEncRounds(PWM_STD_KEYENCROUNDS);
+							m_bModified = TRUE;
+						}
+					}
+
+					m_bFileOpen = TRUE;
+					m_bLocked = FALSE;
+
 					m_cList.EnableWindow(TRUE);
 					m_cGroups.EnableWindow(TRUE);
-
-					m_bLocked = FALSE;
 
 					pSuffix = _GetCmdAccelExt(_T("&Lock Workspace"));
 					strText = TRL("&Lock Workspace");
@@ -4824,7 +4843,7 @@ void CPwSafeDlg::_OpenDatabase(CPwManager *pDbMgr, const TCHAR *pszFile,
 					_CallPlugins(KPM_OPENDB_COMMITTED, (LPARAM)pMgr->GetLastDatabaseHeader(), 0);
 					break;
 				}
-				else if(pDbMgr != NULL) break;
+				else { ASSERT(pDbMgr != NULL); break; }
 			}
 		}
 	}

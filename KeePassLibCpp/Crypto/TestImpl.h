@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 #define TI_ERR_TWOFISH         128
 #define TI_ERR_UINT_TYPE       256
 #define TI_ERR_INT_TYPE        512
+#define TI_ERR_CHACHA20       1024
 
 UINT32 TestCryptoImpl();
 UINT32 TestTypeDefs();

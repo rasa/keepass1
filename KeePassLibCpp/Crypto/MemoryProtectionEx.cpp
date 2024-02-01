@@ -1,6 +1,6 @@
 /*
   KeePass Password Safe - The Open-Source Password Manager
-  Copyright (C) 2003-2023 Dominik Reichl <dominik.reichl@t-online.de>
+  Copyright (C) 2003-2024 Dominik Reichl <dominik.reichl@t-online.de>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "MemoryProtectionEx.h"
 #include "../Util/AppUtil.h"
 #include "../Util/StrUtil.h"
-#include "ARCFour.h"
+// #include "ARCFour.h"
 
 // #include <mmsystem.h>
 // #include <string>
